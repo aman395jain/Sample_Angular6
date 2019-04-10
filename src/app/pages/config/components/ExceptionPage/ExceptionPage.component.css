@@ -1,0 +1,103 @@
+a{
+    color: black;
+    text-decoration:none;
+}
+
+
+#scrollBody{
+    position: relative;
+    overflow-y: scroll;
+    height: 90%;
+}
+
+
+
+.options-group{
+	padding:6px;
+    border-top: 1px solid;
+    border-color:  rgba(0, 0, 0, 0.11);
+}
+.option{
+	width: 100px;
+	height: 100px;
+	margin: 3px;
+	padding:0;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+
+.option-text{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  width: 100%;
+  overflow-wrap: break-word;
+  font-size: .8em;
+}
+.option-image {
+	display:block;
+	max-height:50px;
+	margin: 0px auto;
+}
+
+.optionAdded{
+    background-color: #f2f2f2;
+    color: #000;
+    border: 1px solid #4d4d4d;
+}
+
+.option:hover {
+    background-color: #f2f2f2;
+    color: #000;
+    border: 1px solid #4d4d4d;
+}
+
+/*flex container */
+.flex-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  -ms-box-orient: horizontal;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -moz-flex;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.wrap { 
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+
+
+.optionFullSquare{
+	height: 100px;
+}
+
+
+
+button:hover:disabled {
+	color: graytext;
+	background-color: white;
+	cursor: no-drop;
+}
+
+button{
+    background: none;
+    border: none;
+    height: inherit;
+    width: inherit;
+}
+
+
+

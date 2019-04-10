@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>{{ data.customOption.description}}</h1>
+<div>
+  <form [formGroup]="customOptionsForm" name="customOptionsForm" (ngSubmit)="onSubmit()" >
+    <div *ngFor="let option of data.customOption.customOptions">
+      <mat-form-field style="width: 100%;" *ngIf="option.customKey != 'GetDescription'" >
+        <input  *ngIf="option.customKey != 'GetDescription'" matInput placeholder="{{option.customPrompt}}"
+                [formControlName]="option.customKey"  [name]="option.customKey" #option.customKey
+                aria-label="option.customKey" #focusElement>
+        <mat-error *ngIf="customOptionsForm.get(option.customKey).hasError('error')">{{customOptionsForm.get(option.customKey).getError('msg')}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field style="width: 100%;" *ngIf="option.customKey == 'GetDescription'" >
+        <textarea matInput placeholder="{{option.customPrompt}}" [formControlName]="option.customKey"  [name]="option.customKey" #option.customKey></textarea>
+        <mat-error *ngIf="customOptionsForm.get(option.customKey).hasError('error')">{{customOptionsForm.get(option.customKey).getError('msg')}}</mat-error>
+        <mat-hint align="end">{{customOptionsForm.get(option.customKey).value.length}} / 500</mat-hint>
+      </mat-form-field>
+    </div>
+    <mat-dialog-actions>
+      <div class="float-right" style="margin-left: auto;">
+        <button mat-button mat-dialog-close >{{'BUTTON.cancel' | translate}}</button>
+        <div class="divider"></div>
+        <button  [disabled]="!customOptionsForm.valid" mat-stroked-button color="primary" type="submit">{{'BUTTON.submit' | translate}}</button>
+      </div>
+    </mat-dialog-actions>
+  </form>
+</div>

@@ -1,0 +1,42 @@
+.optin-hide {
+  visibility: hidden;
+  display: none;
+}
+
+.optin-show {
+  visibility: visible;
+}
+
+.email-long {
+  flex: 1 0 100%;
+  max-width: 100%;
+}
+
+.cust-toggle {
+  padding: 4px 0 4px 14px;
+}
+
+.width49 {
+  max-width: 49%;
+}
+
+.no-rt-pad {
+  padding-right: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.contentMargin {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/deep/ label.mat-radio-label {
+    width: 100% !important;
+}
+
+/deep/ div.mat-radio-label-content {
+    width: 100% !important;
+}

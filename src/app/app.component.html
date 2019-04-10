@@ -1,0 +1,6 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<app-topnavbar *ngIf="showNavBar()"></app-topnavbar>
+<div class="hack-for-double-header">
+    <router-outlet></router-outlet>
+    <app-background-task-status [hidden]="!statusService.showStatusWindow" [@slideInOut]="statusService.showStatusWindow"></app-background-task-status>
+</div>

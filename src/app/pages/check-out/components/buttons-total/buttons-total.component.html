@@ -1,0 +1,90 @@
+<div *ngIf="orderConfigService?.cartCount() == 0" style="text-align: center;">
+	<h4 class="col-md-12 text-center">{{'CHECKOUT.shoppingCart' | translate}} | {{orderConfigService.cartCount()}} {{'CHECKOUT.items' | translate}}</h4>
+	<button mat-stroked-button class="col-md-8" color=primary type="button" (click)="addProduct()">{{ 'BUTTON.addAProduct' | translate }}</button>
+</div>
+<div *ngIf="orderConfigService?.cartCount() == 1" style="text-align: center;">
+	<h4 class="col-md-12">{{'CHECKOUT.shoppingCart' | translate}} | {{orderConfigService.cartCount()}} {{'CHECKOUT.item' | translate}}</h4>
+	<button mat-stroked-button class="col-md-8" color=primary type="button" (click)="addProduct()">{{ 'BUTTON.addAnotherProduct' | translate }}</button>
+</div>
+<div *ngIf="orderConfigService?.cartCount() > 1" style="text-align: center;">
+	<h4 class="col-md-12">{{'CHECKOUT.shoppingCart' | translate}} | {{orderConfigService.cartCount()}} {{'CHECKOUT.items' | translate}}</h4>
+	<button mat-stroked-button class="col-md-8" color=primary type="button" (click)="addProduct()">{{ 'BUTTON.addAnotherProduct' | translate }}</button>
+</div>
+
+<hr>
+
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+		<!-- ALL DATA COMES FROM JOBS STEP -->
+		<div *ngIf="!this.orderConfigService.shippingIsLoaded">
+			<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+		</div>
+		<table class="float-right table table-striped" >
+		  <tr>
+		    <th>{{'CHECKOUT.item' | translate}}</th>
+		    <th class="text-center hideColumn">{{'CHECKOUT.quantity' | translate}}</th>
+		    <th class="text-center">{{'COMMON.price' | translate}}</th>
+		  </tr>
+
+		  <tr *ngFor="let key of (jobkeyList | async)">
+		    <td>
+           {{key}}. {{ orderConfigService.cart[key].configProduct.name }}
+          <br>
+          <div *ngIf="orderConfigService.cart[key].jobLevelDiscount !== 0" class="additionalJobCharges">Job Discount</div>
+          <div *ngIf="orderConfigService.cart[key].availabilityFee !== 0 && !orderConfigService.shippingSelected" class="additionalJobCharges">{{ 'ORDER.summary.expressService' | translate }}</div>
+        </td>
+		    <td class="text-center hideColumn">{{orderConfigService.cart[key].quantity}}</td>
+				<td class="text-center" *ngIf="orderConfigService.cart[key].selectedTurnTime == null">
+          {{ orderConfigService.cart[key].basePrice | currency:'USD':'symbol-narrow' }}
+        </td>
+				<td class="text-center" *ngIf="orderConfigService.cart[key].selectedTurnTime != null">
+			  	{{ orderConfigService.cart[key].basePrice | currency:'USD':'symbol-narrow' }}
+          <br>
+          <div *ngIf="orderConfigService.cart[key].jobLevelDiscount !== 0" class="additionalJobCharges">-{{orderConfigService.cart[key].jobLevelDiscount | currency:'USD':'symbol-narrow'}}</div>
+          <div *ngIf="orderConfigService.cart[key].availabilityFee !== 0" class="additionalJobCharges">+{{orderConfigService.cart[key].availabilityFee | currency:'USD':'symbol-narrow'}}</div>
+        </td>
+      </tr>
+      <tr *ngIf="orderConfigService.shippingEnabled.value">
+        <td class="text-center">{{ orderConfigService.shippingOption.serviceName }}</td>
+        <td class="text-center"></td>
+        <td class="text-center">{{ orderConfigService.shippingOption.total | currency:'USD':'symbol-narrow' }}</td>
+      </tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+    <table width="100%">
+      <tr *ngIf="subtotal - total !== 0 && !orderConfigService.shippingEnabled.value">
+        <td>Subtotal: </td>
+        <td class="float-right">{{subtotal | currency:'USD':'symbol-narrow'}}</td>
+      </tr>
+      <tr *ngIf="orderLevelDiscount != 0">
+        <td>Discount: </td>
+        <td class="float-right">{{orderLevelDiscount | currency:'USD':'symbol-narrow'}}</td>
+      </tr>
+      <tr>
+        <td>Total:</td>
+        <td class="float-right">{{total | currency:'USD':'symbol-narrow'}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+	<div class="mb-2 col-md-12">
+		<h6 class="float-left"><small>{{ 'CHECKOUT.finalPriceAtPos' | translate }}</small></h6>
+	</div>
+</div>
+
+<div class="mt-2 row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+    <button class="halfWidth resizeFont " style="float:left;" mat-stroked-button type="button" (click)="submit('saveForLater')"
+      [disabled]="orderConfigService.cartCount() == 0 || orderConfigService.hasWorkFrontJob" >{{ 'BUTTON.saveForLater' | translate }}</button>
+    <button class="halfWidth resizeFont" style="float:right;" mat-stroked-button type="button" (click)="cancelOrder()"
+      [disabled]="orderConfigService.cartCount() == 0">
+      {{'BUTTON.cancelOrder' | translate }}
+    </button>
+  </div>
+</div>

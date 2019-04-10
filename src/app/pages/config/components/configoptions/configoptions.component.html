@@ -1,0 +1,165 @@
+<div data-spy="scroll" data-target="#sidebar" data-offset="0">
+    <nav id="sidebar" [class.active]="showSideBar">
+        <div class="sidebar-header">
+            <h5>
+                {{orderConfigService?.getActiveConfigProduct()?.name}}
+                <span *ngIf="true" style="padding-right:8px;" (click)="openOptionsNav()"><i class="float-right fas fa-angle-double-right click" aria-hidden="true"></i></span>
+            </h5>
+        </div>
+        <ul class="list-unstyled components">
+            <li  *ngFor="let cat of orderConfigService.getActiveJob()?.groupVO; let i = index" class="click" (click)="openOptionsMenu()" [attr.data-index]="i">
+                <a [ngClass]="{'sidebarLink': i == 0}" id="l{{cat.id}}"  (click)="scrollToAnchor('s' + cat.id)"> <!--    <i class="glyphicon glyphicon-home"></i> -->
+                    {{ cat.name}}
+                </a>
+            </li>
+            <li *ngIf="orderConfigService.activeJob.exceptionPageObj"><a class="click" id="lExceptionPage"  (click)="scrollToAnchor('sExceptionPage')">{{ 'CONFIG.exceptionPages.exceptionPageTitle' | translate}}</a></li>
+            <li><a class="click" id="lSpecialInstructions" (click)="scrollToAnchor('sSpecialInstructions')">{{ 'CONFIG.specialInstructions'| translate }}</a></li>
+        </ul>
+    </nav>
+    <nav id="optionsSidebar" [@slideInOut]="showSideBar" [class.optionsSidebarPreview]="!optionsFullScreen" [class.optionsSidebarFull]="optionsFullScreen">
+        <div class="sidebar-header list-group-item-title">
+            <h5>
+                {{ currentCategory }}
+                <span class="float-right">
+                <span (click)="closeOptionsNav()"><i class="fas fa-angle-double-left click" aria-hidden="true" ></i></span> <div style='width:5px; display: inline-block;'></div>
+                <span *ngIf="!this.optionsFullScreen" style="padding-right:8px;" (click)="toggleOptionsFullScreen()"><i class="fas fa-angle-double-right click" aria-hidden="true"></i></span></span>
+            </h5>
+        </div>
+        <!-- Sidebar Links -->
+
+    <div id="scrollBody" (scroll)="setActiveSidebarLink($event)">
+            <div *ngFor="let cat of orderConfigService.getActiveJob()?.groupVO">
+               <div id="wrap{{cat.id}}">
+                   <div id="s{{cat.id}}" style="height: 32px;">
+                       <h4 *ngIf="cat.id != currentSectionId" class="bg-gray font-white optionTitle text-center" style="margin-bottom: 0px; padding:2px;">{{ cat.name}}</h4>
+                   </div>
+            <!--    <ng-template [ngIf]="cat.name !=='Exception Pages'" [ngIfElse]="exceptionPage">-->
+                    <div *ngFor="let options of cat?.keyVO">
+                        <div *ngIf="count(options?.optionVO.groupingVO) > 0" class="options-group">
+                            <h5 class="list-group-item-heading">{{options.key}}</h5>
+                            <div class=" flex-container wrap">
+                                <div *ngFor="let key of options.optionVO.groupingVOKeyList">
+                                    <!--normal option -->
+                                    <button *ngIf="options.optionVO.groupingVO[key].length == 1 && !hasCustomOptions(options.optionVO.groupingVO[key][0])"
+                                        (click)="optionSelected(options.optionVO.groupingVO[key][0])" class="btn btn-default option optionFullSquare"
+                                        [ngClass]="{ 'optionAdded': options.optionVO.groupingVO[key][0]?.isSelected=='N', 'optionAdded': options.optionVO.groupingVO[key][0]?.isSelected=='Y'  }"
+                                        [disabled]="options.optionVO.groupingVO[key][0]?.isDisabled"
+                                        [attr.code]="options.optionVO.groupingVO[key][0].code"
+                                        [attr.id]="options.optionVO.groupingVO[key][0].id"
+                                        matTooltip="{{options.optionVO.groupingVO[key][0].description}}"
+                                        [matTooltipPosition]="position" matTooltipShowDelay="1000">
+                                      <img *ngIf="orderConfigService.getActiveProductDetails()?.hasOwnProperty(options.optionVO.groupingVO[key][0].id)"  matBadge="22"
+                                            class=" button-option option-image" [src]="formatUrl(orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id).content.smallImageURL,orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id)?.content.smallImageName)">
+
+                                      <span class="option-text">
+                                        {{options.optionVO.groupingVO[key][0].value }}
+                                      </span>
+                                      <span *ngIf="options.optionVO.groupingVO[key][0]?.isDCS == 'Y'" [@dcsTruckOut]="options.optionVO.groupingVO[key][0]?.dcsAnimate" matTooltip="DCS Processing" class="badge badge-pill badge-light dcsTruck" (click)="dcsTruck(options.optionVO.groupingVO[key][0]);  $event.stopPropagation();" id="dcs_{{options.optionVO.groupingVO[key][0].id}}" >
+                                        <i class="fas fa-truck"></i>
+                                      </span>
+                                    </button>
+
+                                    <!--option with grouping and popup ie media type-->
+                                    <button *ngIf="options.optionVO.groupingVO[key].length > 1" class="btn btn-default option optionFullSquare" (click)="openAttributeOptionDialog(options.optionVO.groupingVO[key], key);"
+                                        [ngClass]="{ 'optionAdded': options.optionVO.selectedGroup != key, 'optionAdded': options.optionVO.selectedGroup == key  }"
+                                        [attr.code]="options.optionVO.groupingVO[key][0].code"
+                                        [attr.id]="options.optionVO.groupingVO[key][0].id"
+                                         matTooltip="{{ 'CONFIG.selectForAdditionalOptions' | translate }}"
+                                        [matTooltipPosition]="position" matTooltipShowDelay="1000"
+                                        [disabled]="checkIfGroupIsDisabled(options.optionVO.groupingVO[key])">
+                                      <img *ngIf="orderConfigService.getActiveProductDetails()?.hasOwnProperty(options.optionVO.groupingVO[key][0].id)"
+                                                class="option-image" [src]="formatUrl(orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id).content.smallImageURL, orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id)?.content.smallImageName)">
+                                      <span class="option-text">{{key}}</span>
+                                      <span *ngIf="options.optionVO.groupingVO[key][0]?.isDCS == 'Y'"  matTooltip="DCS Processing" class="badge badge-pill badge-light dcsTruck" >
+                                        <i class="fas fa-truck"></i>
+                                      </span>
+                                    </button>
+
+                                    <!--Button with custom options-->
+                                    <button *ngIf="options.optionVO.groupingVO[key].length == 1 && hasCustomOptions(options.optionVO.groupingVO[key][0])" class="btn btn-default option optionFullSquare" (click)="openCustomInputDialog(options.optionVO.groupingVO[key][0], key);"
+                                        [ngClass]="{ 'optionAdded': options.optionVO.selectedGroup != key, 'optionAdded': options.optionVO.selectedGroup == key  }"
+                                            [disabled]="options.optionVO.groupingVO[key][0]?.isDisabled"
+                                        [attr.code]="options.optionVO.groupingVO[key][0].code"
+                                        [attr.id]="options.optionVO.groupingVO[key][0].id"
+                                        matTooltip="{{ 'CONFIG.selectForCustomOptions' | translate }}"
+                                        [matTooltipPosition]="position" matTooltipShowDelay="1000">
+                                      <img *ngIf="orderConfigService.getActiveProductDetails()?.hasOwnProperty(options.optionVO.groupingVO[key][0].id)"
+                                            class="option-image" [src]="formatUrl(orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id).content.smallImageURL, orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id)?.content.smallImageName)">
+                                      <span class="option-text">{{options.optionVO.groupingVO[key][0].value }}</span>
+                                      <span *ngIf="options.optionVO.groupingVO[key][0]?.isDCS == 'Y'" matTooltip="DCS Processing" [@dcsTruckOut]="options.optionVO.groupingVO[key][0]?.dcsAnimate" class="badge badge-pill badge-light dcsTruck" >
+                                        <i class="fas fa-truck"></i>
+                                      </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+         <!--       </ng-template>
+                <ng-template #exceptionPage>
+                    hello
+                </ng-template>-->
+                </div>
+            </div>
+            <!-- Exception page Div-->
+            <div *ngIf="orderConfigService.activeJob.exceptionPageObj" style="padding-bottom: 100px;">
+                <div id="wrapExceptionPage">
+                    <div id="sExceptionPage" >
+                        <h4 *ngIf="'ExceptionPage' != currentSectionId" class="bg-gray font-white optionTitle text-center" style="margin-bottom: 0px; padding:2px;">{{ 'CONFIG.exceptionPages.exceptionPageTitle'| translate}}</h4>
+                    </div>
+                    <div class="exceptionPageContent">
+                        <p>
+                            <i class="fas fa-lightbulb"></i>
+                            {{ 'CONFIG.exceptionPages.desc'| translate}}
+                        </p>
+                        <ul>
+                            <li>{{ 'CONFIG.exceptionPages.page'| translate}}</li>
+                            <li>{{ 'CONFIG.exceptionPages.multiplePage'| translate}}</li>
+                            <li>{{ 'CONFIG.exceptionPages.pageRangeEx'| translate}}</li>
+                        </ul>
+                        <button mat-stroked-button color="primary" class="center" [disabled]="impressionCountInvalid()" (click)="addExceptionPage()">{{ addExceptionTitle }}</button>
+                    </div>
+                    <div class="exceptionPageContent">
+
+                        <table class="table table-striped">
+                            <tr *ngFor="let expKey of returnKeys(orderConfigService.activeJob.exceptionPages)">
+                                <td>
+                                        <p style="display: inline"><b>{{ 'CONFIG.exceptionPages.pageRange'| translate}}: {{orderConfigService.activeJob.exceptionPages[expKey].pageRange}}</b></p>
+                                        <div class="inline float-right">
+                                            <button mat-stroked-button color="primary" (click)="editExceptionPage(expKey)">{{ 'BUTTON.edit'| translate}}</button>
+                                            <div class="divider"></div>
+                                            <button mat-stroked-button color="primary" (click)="deleteExceptionPage(expKey)">{{ 'BUTTON.delete'| translate}}</button>
+                                        </div>
+                                        <div>
+                                            <ul><span  *ngFor="let key of orderConfigService.getSelectedExceptionPageValues(orderConfigService.activeJob.exceptionPages[expKey])|keys">
+                                                <li *ngIf="orderConfigService.getSelectedExceptionPageValues(orderConfigService.activeJob.exceptionPages[expKey])[key].value != 'None'">
+                                                    <b>{{key}}:</b> {{orderConfigService.getSelectedExceptionPageValues(orderConfigService.activeJob.exceptionPages[expKey])[key].value}}
+                                                </li> </span>
+                                            </ul>
+                                        </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Instructions Div-->
+               <div id="wrapSpecialInstructions" style="padding-bottom: 85vh;">
+                   <div id="sSpecialInstructions">
+                        <h4 *ngIf="'SpecialInstructions' != currentSectionId" class="bg-gray font-white optionTitle text-center" style="margin-bottom: 0px; padding:2px;">{{ 'CONFIG.specialInstructions'| translate }}</h4>
+                   </div>
+                   <div class="specialInstructionsContent">
+                    <div>
+                        <mat-form-field class="col-sm-12 col-md-12 mt-2 mb-5">
+                        <textarea matInput #specialInstructions maxlength="500" (change)="updateSpecialInstructions(specialInstructions.value)"
+                          [(ngModel)]="orderConfigService.activeJob.specialInstructions" placeholder="{{ 'CONFIG.pleaseProvideSpecialInstructions'| translate }}:"></textarea>
+                        <mat-hint align="end">{{ 'CONFIG.youHaveEntered'| translate }} {{specialInstructions.value.length}} / 500 {{ 'CONFIG.characters'| translate }}</mat-hint>
+                      </mat-form-field>
+                    </div>
+                   </div>
+               </div>
+
+        </div>
+    </nav>
+</div>

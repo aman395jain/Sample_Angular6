@@ -1,0 +1,21 @@
+{
+   "/api": {
+   "target": "https://prodsolutionbuilder.staples.com/sbcustsvcs/",
+   "secure": false,
+   "changeOrigin": true,
+   "logLevel": "info"
+},
+   "/oauth": {
+      "target": "https://prodsolutionbuilder.staples.com/sbcustsvcs/",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "info"
+   },
+   "/v2": {
+      "target": "https://prodsolutionbuilder.staples.com/sbcustsvcs/",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "info"
+   }
+
+}

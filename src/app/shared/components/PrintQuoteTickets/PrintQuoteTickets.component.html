@@ -1,0 +1,230 @@
+<iframe #printTablePreview id="printTablePreview" [attr.srcDoc]="printTable | safe" hidden>
+	</iframe>
+<table id="PrintTable" style="background-color:#fff; color:#4b4b4b; font-size:13px; line-height:18px; text-align:justify; margin:0; padding:0;" border="0" cellpadding="0" cellspacing="0" width="100%" >
+  <tbody>
+    <tr>
+      <td style="background:#FFF; margin:0;">
+          <table style="margin-top:5px; margin-bottom:15px; font-family:arial; font-size:12px; margin-left:auto; margin-right:auto;" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+             <tbody>
+               <tr><td style="height:15px;" colspan="2"></td></tr>
+               <tr><td align="left"><img src="http://www.staples.com/sbd/cre/copyandprint/sb/images/copyandprint.png" alt="Staples copy and Print" /></td></tr>
+
+               <tr style="height:25px;"></tr>
+               <tr style="font-size:13px; line-height:18px;margin-top:25px;">
+                  <td align="left" width="500" style="font-size:13px; line-height:18px;">
+                    <b>{{'PRINT.quoteProvidedTo' | translate}}</b>
+                    <p style="margin:0; font-weight:normal;" ><span >{{orderData.customerFirstName}}&nbsp;</span><span >{{orderData.customerLastName}}</span></p>
+                    <p style="margin:0; font-weight:normal;" >{{quoteData.customeraddress1}}</p>
+                    <p style="margin:0; font-weight:normal;" >{{quoteData.customeraddress2}}</p>
+                    <p style="margin:0; font-weight:normal;"><span >{{quoteData.customercity}},&nbsp;</span><span >{{quoteData.customerstate}},&nbsp;</span><span >{{quoteData.customerzip}}</span></p>
+                    <p style="margin:0; font-weight:normal;">{{'COMMON.phone' | translate}}:&nbsp; <span >{{orderData.customerPhoneNumber}}</span></p>
+                  </td>
+                  <td align="right" valign="top" width="350"> <p style="margin:0; font-weight:normal;"><b>{{'PRINT.date' | translate}}:&nbsp; </b><span >{{quoteData.orderCreationDateWithoutTime}}</span></p></td>
+               </tr>
+               <tr><td style="height:25px;" colspan="2"></td></tr>
+               <tr>
+                 <td colspan="2" style="font-size:13px; line-height:18px;">
+                 <h4 style="font-size:18px; font-weight:normal; margin-bottom:15px; margin-top:0;">{{'PRINT.quoteReview' | translate}}</h4>
+                 <p style="margin:0; font-weight:normal;" style="margin-bottom:5px;">{{'PRINT.quoteCustomerGreetings1' | translate}}Staples&reg; Copy &amp; Print.{{'PRINT.quoteCustomerGreetings2' | translate}}</p>
+
+                 </td>
+               </tr>
+               <tr><td style="height:10px;" colspan="2"></td></tr>
+
+               <tr>
+                  <td align="left" style="font-size:13px; line-height:18px;">
+                    <p style="margin:0; font-weight:normal;" style="font-size:1.28em; margin-bottom:5px;"><b>{{'PRINT.quoteConfirmation' | translate}}</b></p>
+                    <p style="margin:0; font-weight:normal;"><b><span>{{'PRINT.quoteNumber' | translate}}</span> <span >{{orderData.orderNo}}</span></b></p>
+                    <p style="margin:0; font-weight:normal;"><b><span>{{'PRINT.quoteExpiresOn' | translate}}</span> <span >{{quoteData.quoteExpiryDateWithoutTime}}</span></b></p>
+                  </td>
+               </tr>
+               <tr><td style="height:15px;" colspan="2"></td></tr>
+
+               <tr>
+                  <td width="600" colspan="2" style="font-size:13px; line-height:18px;">
+                    <p style="margin:0; font-weight:normal;" style="font-size:1.28em; margin-bottom:5px;"><b>{{'PRINT.quoteProvidedBy' | translate}}</b></p>
+                    <p style="margin:0; font-weight:normal;"><span>{{'PRINT.staplesStore' | translate}}</span> <span >{{quoteData.storeNumber}}</span></p>
+                    <p style="margin:0; font-weight:normal;" >{{quoteData.storeAddress1}}</p>
+                    <p style="margin:0; font-weight:normal;" >{{quoteData.storeAddress2}}</p>
+                    <p style="margin:0; font-weight:normal;"><span >{{quoteData.storeCity}},&nbsp;</span> <span >{{quoteData.storeState}},&nbsp;</span><span >{{quoteData.storeZip}}</span></p>
+                    <p style="margin:0; font-weight:normal;"><span>{{'COMMON.phone' | translate}}&nbsp;#:&nbsp; </span> <span>{{quoteData.storePhonenumber}}</span></p>
+                  </td>
+               </tr>
+               <tr><td style="height:10px;" colspan="2"></td></tr>
+
+               <tr>
+                  <td width="600"  colspan="2" style="font-size:13px; line-height:18px;">
+                   <p style="margin:0; font-weight:normal;"><b>{{'PRINT.hours' | translate}}</b></p>
+                   <p style="margin:0; font-weight:normal;"><span>Sunday: </span> <span >{{quoteData.storeSundayOpen}}-</span> <span > {{quoteData.storeSundayClose}}</span></p>
+                   <p style="margin:0; font-weight:normal;"><span>Mon-Fri: </span> <span >{{quoteData.storeWeekdayOpen}}-</span> <span >{{quoteData.storeWeekdayClose}}</span></p>
+                   <p style="margin:0; font-weight:normal;"><span>Saturday: </span> <span >{{quoteData.storeSaturdayOpen}}-</span> <span >{{quoteData.storeSaturdayClose}}</span></p>
+                  </td>
+               </tr>
+               <tr><td style="height:15px;" colspan="2"></td></tr>
+
+               <!--start of price table-->
+               <tr>
+               	   <td colspan="2">
+                      <table style="border-top:1px solid #D2D2D2; border-bottom:1px solid #D2D2D2; border-left:1px solid #D2D2D2; border-right:1px solid #D2D2D2;" align="center" border="0" cellpadding="4" cellspacing="4" width="600">
+                          <tbody>
+								<div *ngFor="let job of orderData.jobs; let i = index" >
+										<div *ngIf="job.isActive=='Y'">
+                             <tr style="padding-top:5px;">
+                                <td style="font-size:13px; line-height:18px;"><span><b>{{'PRINT.service' | translate}} <span>{{(i+1)}}</span></b></span>
+									<div *ngIf="job.productName==null;else displayproductname">
+											{{job.categoryName}}
+										</div>
+										<div>
+											<ng-template #displayproductname>{{job.productName}}</ng-template>
+										</div>
+                                </td>
+                                <td style="font-size:13px; line-height:18px;"><span><b>{{'PRINT.sets' | translate}}</b></span> <span>{{job.quantity}}</span></td>
+                                <td style="font-size:13px; line-height:18px;"><span><b>{{'PRINT.impressions' | translate}}</b></span> <span>{{job.impressions}}</span></td>
+                             </tr>
+                             <tr *ngIf="!quoteData.atQuoteDesk">
+                                <td colspan="3"><span><b>{{'PRINT.staplesStore' | translate}}</b></span> <span>{{(job.price / job.quantity) | number : '0.0-2' }}</span> </td>
+                             </tr>
+                             <tr>
+                               <td colspan="3">
+                                  <table style="border-top:1px solid #B6B6B6; border-bottom:1px solid #B6B6B6; border-left:1px solid #B6B6B6; border-right:1px solid #B6B6B6;" align="center" border="0" cellpadding="4" cellspacing="0" width="580">
+                                       <thead style="background:#4d4d4d; color:#ffffff; padding-top:5px; padding-bottom:5px; padding-left:5px; padding-right:5px;">
+                                         <tr >
+                                          <th  style="font-size:13px; line-height:18px;text-align:left;" width="280px">{{'PRINT.products' | translate}}</th>
+                                          <th  style="font-size:13px; line-height:18px;text-align:left;" width="100px">{{'PRINT.quantity' | translate}}</th>
+                                          <th  style="font-size:13px; line-height:18px;text-align:left;" width="80px">{{'PRINT.unitPrice' | translate}}</th>
+                                          <th  style="font-size:13px; line-height:18px;text-align:left;" width="100px">{{'PRINT.extendedPrice' | translate}}</th>
+                                         </tr>
+                                       </thead>
+                                       <tbody cellpadding="8" cellspacing="8" >
+											<div *ngIf="job.priceResponse && job.priceResponse.baseList">
+													<div *ngFor="let mappingItem of job.priceResponse.baseList; let i = index">
+	                                           <tr><td style="height:8px;" colspan="4"></td></tr>
+	                                           <tr style="padding:10px;">
+	                                              <td style="font-size:13px; line-height:18px;" width="280px"><p style="margin:0; font-weight:normal;" >{{mappingItem.skuDescription}}</p></td>
+	                                              <td style="font-size:13px; line-height:18px;" width="100px"><p style="margin:0; font-weight:normal;" >{{mappingItem.inputMultiplierQuantity}}</p></td>
+
+												  <td style="font-size:13px; line-height:18px;" width="70px" *ngIf="!quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;">{{mappingItem.singleSKUPrice | number : '0.0-3' }}</p></td>
+												  <td style="font-size:13px; line-height:18px;" align="center" width="100px" *ngIf="!quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;" >{{mappingItem.totalSKUPrice | number : '0.0-3' }}</p></td>
+												  <div *ngIf="quoteData.atQuoteDesk">
+												  <td style="font-size:13px; line-height:18px;" align="center" width="100px" ><p style="margin:0; font-weight:normal;" >{{'PRINT.routedquote' | translate}}</p></td>
+												</div>
+	                                           </tr>
+	                                           <tr><td style="height:25px; border-bottom:1px solid #e6e6e6;" colspan="4"></td></tr>
+											</div></div>
+											<div *ngIf="job.priceResponse && job.priceResponse.exceptionList">
+													<div *ngFor="let mappingItem of job.priceResponse.exceptionList; let i = index">
+
+	                                           <tr><td style="height:8px;" colspan="4"></td></tr>
+	                                           <tr style="padding:10px;">
+													<td width="280px"><p style="margin:0; font-weight:normal;" >{{mappingItem.skuDescription}}</p></td>
+													<td width="100px"><p style="margin:0; font-weight:normal;" >{{mappingItem.inputMultiplierQuantity}}</p></td>
+
+															<td width="70px" *ngIf="!quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;">{{mappingItem.singleSKUPrice | number : '0.0-3' }}</p></td>
+															<td align="center" width="100px" *ngIf="!quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;" >{{mappingItem.totalSKUPrice | number : '0.0-3' }}</p></td>
+
+															<td align="center" width="100px" *ngIf="quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;" >{{'PRINT.routedquote' | translate}}</p></td>
+
+	                                           </tr>
+	                                           <tr><td style="height:25px; border-bottom:1px solid #e6e6e6;" colspan="4"></td></tr>
+											</div></div>
+										   <div *ngIf="job.priceResponse && job.priceResponse.instructionList">
+												<div *ngFor="let mappingItem of job.priceResponse.instructionList; let i = index">
+
+	                                           <tr><td style="height:8px;" colspan="4"></td></tr>
+	                                           <tr style="padding:10px;">
+													<td width="280px"><p style="margin:0; font-weight:normal;" >{{mappingItem.skuDescription}}</p></td>
+													<td width="100px"><p style="margin:0; font-weight:normal;" >{{mappingItem.inputMultiplierQuantity}}</p></td>
+													<td width="70px" *ngIf="!quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;">{{mappingItem.singleSKUPrice | number : '0.0-3' }}</p></td>
+													<td align="center" width="100px" *ngIf="!quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;" >{{mappingItem.totalSKUPrice | number : '0.0-3' }}</p></td>
+													<td align="center" width="100px" *ngIf="quoteData.atQuoteDesk"><p style="margin:0; font-weight:normal;" >{{'PRINT.routedquote' | translate}}</p></td>
+												</tr>
+	                                           <tr><td style="height:25px; border-bottom:1px solid #e6e6e6;" colspan="4"></td></tr>
+											</div></div>
+                                       </tbody>
+                                  </table>
+                               </td>
+                             </tr>
+							 </div></div>
+                             <tr>
+                                <td colspan="3">
+                                   <table style="background:#f5f5f5; border-top:1px solid #B6B6B6; border-bottom:1px solid #B6B6B6; border-left:1px solid #B6B6B6; border-right:1px solid #B6B6B6;" align="center" border="0" cellpadding="8" cellspacing="0" width="580">
+                                       <tbody>
+                                           <tr style="padding:10px;" *ngIf="!quoteData.atQuoteDesk">
+                                              <td width="320px"> </td>
+                                              <td width="150px" style="font-size:13px; line-height:18px;">
+                                                <p style="margin:0; font-weight:normal;" style="margin-bottom:6px;"><b>{{'PRINT.subTotal' | translate}}</b></p>
+                                                <p style="margin:0; font-weight:normal;" style="margin-bottom:6px;" *ngIf="orderData.bdpDiscountOnOrder > 0.00"><b>{{'PRINT.bdpDiscount' | translate}}</b></p>
+                                                <p style="margin:0; font-weight:normal;" style="margin-bottom:6px;" *ngIf="orderData.quoteDiscountOnOrder > 0.00"><b>{{'PRINT.quoteDiscount' | translate}}</b></p>
+                                                <p style="margin:0; font-weight:normal;"><b>{{'PRINT.total' | translate}}</b></p>
+                                              </td>
+                                              <td width="100px" style="font-size:13px; line-height:18px;">
+                                                <p style="margin:0; font-weight:normal;" style="margin-bottom:6px;"><b>{{orderData.totalOrderPrice| number : '0.0-2' }}</b></p>
+                                                <p style="margin:0; font-weight:normal;" style="margin-bottom:6px;" *ngIf="orderData.bdpDiscountOnOrder > 0.00"><b>{{orderData.bdpDiscountOnOrder| number : '0.0-2' }}</b></p>
+                                                <p style="margin:0; font-weight:normal;" style="margin-bottom:6px;" *ngIf="orderData.quoteDiscountOnOrder > 0.00"><b>{{orderData.quoteDiscountOnOrder| number : '0.0-2' }}</b></p>
+                                                <p style="margin:0; font-weight:normal;"><b>{{orderData.totalOrderDiscountedPrice| number : '0.0-2' }}</b></p>
+                                              </td>
+                                           </tr>
+                                           <tr *ngIf="quoteData.atQuoteDesk">
+                                           		<td style="font-size:13px; line-height:18px;">
+                                           			<p style="margin:0; font-weight:normal;" id="priceMorethan3000Msg">{{'PRINT.priceMorethan3000Msg' | translate}}</p>
+                                           		</td>
+                                           </tr>
+                                       </tbody>
+                                   </table>
+                                </td>
+                             </tr>
+
+                          </tbody>
+                      </table>
+                   </td>
+               </tr>
+               <!--end of price table-->
+
+               <tr><td style="height:10px;" colspan="2"></td></tr>
+               <tr *ngIf="selectedCustomer && selectedCustomer.rewardsNumber!=null && (!orderData.isbdpPriceCallSuccess) && orderData.totalDiscountOnOrder == 0.00">
+					<td colspan="3" style="font-size:13px; line-height:18px;" align="left">{{'PRINT.noteSavings' | translate}}</td>
+			   </tr>
+			   <tr><td style="height:10px;" colspan="2"></td></tr>
+               <tr>
+                  <td style="font-size:13px; line-height:18px;" colspan="2">
+                     <h3 style="margin-bottom:5px;" *ngIf="quoteData.messageLine1 &&  !quoteData.isAtQuoteDesk">{{quoteData.messageLine1}}</h3>
+                     <h3 style="margin-bottom:5px;" *ngIf="quoteData.messageLine1 &&  !quoteData.isAtQuoteDesk">{{quoteData.messageLine2}}</h3>
+                     <h3 style="margin-bottom:5px;" *ngIf="quoteData.messageLine1 &&  quoteData.isAtQuoteDesk">{{'PRINT.bdpInstantSavings' | translate}}</h3>
+                     <p style="margin:0; font-weight:normal;" style="margin-bottom:5px;">{{'PRINT.quoteDisclaimer1' | translate}}</p>
+					<p style="margin:0; font-weight:normal;" style="margin-bottom:5px;">{{'PRINT.quoteDisclaimer2' | translate}}<a style="color:#46b2e1;" href="http://www.staples.com/sbd/content/copyandprint/index.html">Staples.com/copyandprint.</a>{{'PRINT.quoteDisclaimer3' | translate}}</p>
+					 <p style="margin:0; font-weight:normal;" style="margin-bottom:5px;">{{'PRINT.quoteDisclaimer4' | translate}}</p>
+                  </td>
+               </tr>
+
+               <tr><td style="height:10px;" colspan="2"></td></tr>
+               <tr>
+                 <td colspan="2" style="margin:0; padding:0;">
+                   <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                      <tr rowspan="0" style="margin:0; padding:0;">
+                         <td colspan="2" style="line-height:0;"><img src="http://www.staples.com/sbd/cre/copyandprint/sb/images/rewards_topportion.jpg" /></td>
+                      </tr>
+                      <tr>
+                         <td><img src="http://www.staples.com/sbd/cre/copyandprint/sb/images/rewards_bottomleft.jpg" /></td>
+                         <td><img src="http://www.staples.com/sbd/cre/copyandprint/sb/images/rewards_bottomright.jpg" /></td>
+                      </tr>
+                      <tr><td colspan="2" style="margin:0; padding:0;"><img src="http://www.staples.com/sbd/cre/copyandprint/sb/images/bdp.png" /></td></tr>
+                   </table>
+                 </td>
+               </tr>
+
+               <tr><td style="height:15px;" colspan="2"></td></tr>
+               <tr>
+                  <td style="font-size:13px; line-height:18px;" colspan="2">
+                  <p style="margin:0; font-weight:normal;" style="margin-bottom:5px;">{{'PRINT.quoteDisclaimer5' | translate}}<a style="color:#46b2e1;" href="https://www.staplesrewardscenter.com/SORC/UserManagement/Login/Login.aspx">staplesrewards.com</a>{{'PRINT.quoteDisclaimer6' | translate}}</p>
+                  <p style="margin:0; font-weight:normal;" style="margin-bottom:5px;">{{'PRINT.quoteDisclaimer8' | translate}}<a style="color:#46b2e1;" href="https://www.staplesrewardscenter.com/SORC/UserManagement/Login/Login.aspx">staplesrewards.com.</a></p>
+
+				  <p style="margin:0; font-weight:normal;" style="margin-bottom:5px;">{{'PRINT.quoteDisclaimer9' | translate}}<a style="color:#46b2e1;" href="https://www.staples.com">staples.com,</a>{{'PRINT.quoteDisclaimer10' | translate}}<a style="color:#46b2e1;" href="https://www.amazon.com">Amazon.com,</a>{{'PRINT.quoteDisclaimer11' | translate}}<a style="color:#46b2e1;" href="https://www.staples.com">staples.com,</a>{{'PRINT.quoteDisclaimer12' | translate}}<a style="color:#46b2e1;" href="https://www.staples.com">staples.com,</a></p>
+                  </td>
+               </tr>
+
+             </tbody>
+          </table>
+      </td>
+    </tr>
+  </tbody>
+</table>

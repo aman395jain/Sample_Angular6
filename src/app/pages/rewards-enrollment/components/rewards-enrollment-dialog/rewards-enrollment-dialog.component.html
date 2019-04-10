@@ -1,0 +1,21 @@
+<h3 mat-dialog-title>{{ 'REWARDSENROLLMENT.rewardsCustomer' | translate }}</h3>
+<mat-dialog-content>
+  <div *ngIf="data.status === 'New'; else existing_block">
+    {{ 'REWARDSENROLLMENT.rewardsSuccess' | translate }} {{ data.rewardsNumber }} 
+    {{ 'REWARDSENROLLMENT.rewardsSuccessCreated' | translate }} {{ data.lastname }}, {{ data.firstname }}
+  </div>
+  <ng-template #existing_block>
+    {{ 'REWARDSENROLLMENT.existingRewardsNumber' | translate }} {{ data.lastname }}, {{ data.firstname }}: 
+    {{ data.rewardsNumber }}
+  </ng-template>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>{{ 'BUTTON.back' | translate }}</button>
+
+    <div *ngIf="data.status === 'New'; else existing_button">
+        <button mat-button [mat-dialog-close]="true">{{ 'BUTTON.createOrder' | translate }}</button>
+    </div>
+    <ng-template #existing_button>
+        <button mat-button [mat-dialog-close]="true">{{ 'BUTTON.enrollNew' | translate }}</button>
+    </ng-template>
+</mat-dialog-actions>

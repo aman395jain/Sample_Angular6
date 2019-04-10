@@ -1,0 +1,29 @@
+{
+  "/api": {
+    "target": "http://localhost:3131",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/oauth": {
+    "target": "http://localhost:3131",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  },
+  "/v2": {
+    "target": "http://localhost:3131",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  },
+  "/workfrontproxy/*": {
+    "target": "https://staplesservices.my.workfront.com/",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info",
+    "pathRewrite": {
+      "^/workfrontproxy": ""
+    }
+  }
+}

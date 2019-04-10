@@ -1,0 +1,188 @@
+@media only screen and (min-width: 900px) and (max-width: 1300px) {
+    .optionsSidebarPreview{
+        width: 500px;
+        padding-bottom: 10px;
+    }
+
+    .optionsSidebarFull{
+        padding-bottom: 10px;
+        width: calc(100% - 336px);
+    }
+}
+@media only screen and (min-height: 801px) {
+    #sidebar ul li {
+        padding: 20px 10px;
+    }
+}
+
+/* for 1024x768 screens */
+@media only screen and (max-height: 800px) {
+    #sidebar ul li {
+        padding: 10px 10px;
+    }
+}
+
+
+a{
+    color: black;
+    text-decoration:none;
+}
+
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: white;
+    color: black;
+    transition: all 0.3s;
+    position: absolute;
+    top: 107px;
+    right: 0;
+    z-index: 200;
+    position: fixed;
+    width: 0;
+    margin-left: -250px;
+    min-height: 100%;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+#sidebar.active {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+}
+
+#sidebar.active .sidebar-header  {
+    display: none;
+}
+
+#sidebar.active .sidebar-header  {
+   background-color: white;
+}
+
+#sidebar.active .sidebar-header strong {
+    display: block;
+}
+
+#sidebar ul li {
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+    margin-top: -1px;
+    border-color:  rgba(0, 0, 0, 0.11);
+
+}
+
+/*make font size of radio button labels a little smaller*/
+.mat-radio-label-content {
+    font-size: .7em;
+}
+
+.fullWidth {
+    margin: 3px 0px;
+    display:block;
+    width: 100%;
+}
+
+.halfWidth {
+    width: 49%;
+}
+
+.greenBkg {
+    /*background-color: #28a745!important;*/
+    color: #006600;
+}
+
+.yellowBkg {
+    background-color: #ffc107!important;
+    color: white;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
+}
+
+.savingsTotalLine{
+    border-style: solid;
+    border-width: 1px 0px 0px 0px;
+    border-color:  rgba(0, 0, 0, 0.11);
+}
+
+.click {
+    cursor: pointer; /* "hand" cursor */
+}
+
+.hoverBackgound:hover {
+    background-color: #4d4d4d;
+    color: white;
+}
+
+.qty {
+	width: 35%;
+}
+
+.pad {
+	padding-top: 5px !important;
+}
+
+.colorRed {
+  color: #b50000;
+}
+
+.hoverBackgound:hover .colorRed{
+  background-color: #4d4d4d;
+  color: white;
+}
+
+.buttonIncrement {
+    padding-right: 0;
+    padding-left: 0;
+    width: 40px;
+    min-width: 40px;
+    display: inline-block;
+}
+
+.numInput {
+    width: 60px;
+    border: 1px solid currentColor;
+
+    text-align: center;
+}
+
+.number-spinner {
+    margin-left: 60px;
+}
+
+/*Disable input number spinner*/
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+
+.accordion {
+    padding: 0;
+    margin: 0 auto;
+}
+
+
+.accordion:hover .accordion-item:hover .accordion-item-content,
+.accordion .accordion-item--default .accordion-item-content {
+    height: 3.5em;
+}
+
+.accordion-item-content,
+.accordion:hover .accordion-item-content {
+    height: 0;
+    overflow: hidden;
+    transition: height .25s;
+}
+
+.additionalJobCharges{
+  font-size: 0.8rem;
+}

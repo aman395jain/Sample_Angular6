@@ -1,0 +1,50 @@
+<mat-accordion class="example-headers-align">
+
+  <mat-expansion-panel [expanded]="currentAccordionTab === 0"
+                       (opened)="setAccordionTab(0)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'CUSTOMERSEARCH.search' | translate }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-customer-search #customerSearchViewChild [displayMode]="DISPLAY_MODE"
+                         (nextAccordionTab)="nextAccordionTab()"
+                         (setCustomerSearchErrorMessage)="setCustomerSearchErrorMessage($event)"
+                         (setCustomerSearchResultList)="setCustomerSearchResultList($event)"
+                         (setSearchResultsTabEnabled)="setSearchResultsTabEnabled($event)">
+    </app-customer-search>
+    <mat-action-row>
+      <button mat-button type="reset" (click)="customerSearchViewChild.resetForm()">
+        {{ 'BUTTON.reset' | translate }}
+      </button>
+      <div class="divider"></div>
+      <button type="submit" mat-flat-button color="primary" (click)="customerSearchViewChild.checkAndSubmit()"
+              [disabled]="!customerSearchViewChild.custSearchForm.form.valid || !customerSearchViewChild.input">
+        {{ 'BUTTON.search' | translate }}
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="currentAccordionTab === 1"
+                       (opened)="setAccordionTab(1)"
+                       [disabled]="!searchResultsTabEnabled">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'CUSTOMERSEARCH.searchResults' | translate }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-customer-search-results #searchResultsViewChild
+                                 [displayMode]="DISPLAY_MODE"
+                                 [customerSearchErrorMessage]="customerSearchErrorMessage"
+                                 [customerSearchResultList]="customerSearchResultList"
+                                 (prevAccordionTab)="prevAccordionTab()"
+                                 (closeDialogRef)="closeDialogRef()"
+                                 (setCustomerSearchResultList)="setCustomerSearchResultList($event)"
+                                 (setSearchResultsTabEnabled)="setSearchResultsTabEnabled($event)">
+    </app-customer-search-results>
+    <mat-action-row>
+      <button mat-stroked-button (click)="searchResultsViewChild.newSearch()"> {{ 'BUTTON.newSearch' | translate }}</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <button mat-stroked-button mat-dialog-close class="float-right mt-2"> {{ 'BUTTON.cancel' | translate }}</button>
+</mat-accordion>

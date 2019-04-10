@@ -1,0 +1,79 @@
+<div *ngIf="successStatus; else error_message">
+  <div class="pad">{{ 'WES.success' | translate }}</div>
+  <div class="float-right">
+  	  <button mat-stroked-button class="mr-1" type="button" (click)="print()" id="wesConfirmPrint">{{ 'BUTTON.print' | translate }}</button>
+      <button mat-stroked-button class="mr-1" type="button" (click)="continueWithOrder()" *ngIf="!showCloseButton" id="wesConfirmContinueOrder">{{ 'BUTTON.continueWithOrder' | translate }}</button>
+      <button mat-stroked-button class="mr-1" type="button" (click)="nextCustomer()" *ngIf="!showCloseButton" id="wesConfirmNextCustomer">{{ 'BUTTON.nextCustomer' | translate }}</button>
+      <button mat-stroked-button color=primary type="button" mat-dialog-close id="wesConfirmClose">{{ 'BUTTON.close' | translate }}</button>
+  </div>
+</div>
+
+<ng-template #error_message>
+  <div class="pad">{{ 'WES.errorMessage' | translate }}</div>
+  <div class='float-right'>
+      <button mat-stroked-button color=primary type="button" (click)="onNoClick()">{{ 'BUTTON.back' | translate }}</button>
+  </div>
+</ng-template>
+
+<!--
+Template for Print Receipt for WES Lead
+-->
+<iframe #printPreview id="printPreview" [attr.srcDoc]="printSrc | safe" hidden>
+</iframe>
+
+<div id="printSrc" hidden>
+    <h1>{{ 'WES.submissionReceipt' | translate }}</h1>
+    <br>
+    <table width="100%" border="1">
+    <tr>
+    <td align="left" width="50%">{{ 'WES.storeNumber' | translate }}:</td><td>{{ storeNumber }}</td>
+    </tr>
+    <tr>
+    <td align="left" width="50%">{{ 'PRINT.date' | translate }}:</td><td>{{ currentDate }}</td>
+    </tr>
+    <tr>
+      <td align="left" width="50%">{{ 'WES.customerName' | translate }}:</td>
+       <td align="left">{{ model.lastName }}, {{ model.firstName }}</td>
+     </tr>
+    <tr *ngIf="model.rewardsNumber != null">
+       <td align="left" width="50%">{{ 'WES.staplesRewardsNumber' | translate }}:</td>
+       <td align="left">{{ model.rewardsNumber }}</td>
+     </tr>
+     <tr>
+       <td align="left" width="50%">{{ 'WES.contactNumber' | translate }}:</td>
+       <td align="left">{{ model.phoneNumber }}</td>
+     </tr>
+    <tr>
+       <td align="left" width="50%">{{ 'COMMON.email' | translate }}:</td>
+       <td align="left">{{ model.email }}</td>
+     </tr>
+     <tr *ngIf="model.company != null">
+       <td align="left" width="50%">{{ 'COMMON.company' | translate }}:</td>
+       <td align="left">{{ model.company }}</td>
+     </tr>
+     <tr>
+       <td align="left" valign="top" width="50%">{{ 'COMMON.address' | translate }}:</td>
+       <td >
+       <div> 
+         <span align="left">{{ model.address1 }}</span><br>
+         <span align="left">{{ model.address2 }}</span><br>
+         <span align="left">{{ model.city }}</span><br>
+         <span align="left">{{ model.state }}</span><br>
+         <span align="left">{{ model.zipCode}}</span>
+       </div>
+       </td>
+     </tr>
+     <tr>
+       <td align="left" width="50%">{{ 'WES.bestTimeToCall' | translate }}:</td>
+       <td align="left">{{ model.bestTimeToCall}}</td>
+     </tr>
+     <tr>
+       <td align="left" width="50%">{{ 'WES.projectDueDate' | translate }}:</td>
+       <td align="left">{{ model.projectDueDate }}</td>
+     </tr>
+     <tr>
+       <td align="left" width="50%">{{ 'WES.projectDetails' | translate }}:</td>
+       <td align="left">{{ model.projectDetails }}</td>
+     </tr>
+    </table>
+</div>

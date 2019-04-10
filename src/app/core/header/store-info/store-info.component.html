@@ -1,0 +1,45 @@
+<input #storeNumberInput type="text" class="form-control" placeholder="{{ 'COMMON.enterStoreNumber' | translate }}" (keyup.enter)="searchForStoreInfo(storeNumberInput.value)" >
+<div class="center">
+  <button mat-stroked-button class="searchButton" color="primary" (click)="searchForStoreInfo(storeNumberInput.value); $event.stopPropagation();">{{ 'BUTTON.search' | translate }}</button>
+</div>
+<hr>
+<div *ngIf="storeDetails != null">
+  <h5><strong>{{ 'NAVBAR.storeInfo' | translate }}</strong>: {{ storeDetails.storeNumber }}</h5>
+  <strong>{{ 'COMMON.address' | translate}}:</strong>
+  <br>
+  {{ storeDetails.address1}} {{ this.storeDetails.address2}}
+  <br>
+  {{ this.storeDetails.city}}, {{ storeDetails.state}} {{ storeDetails.zip}} {{storeDetails.country.shortName}}
+  <br>
+  <br>
+  <strong>{{ 'COMMON.phoneNumber' | translate}}:</strong>
+  <br>
+  {{ storeDetails.phoneNumber | phone}}
+  <br>
+  <br>
+  <strong>{{ 'COMMON.faxNumber' | translate}}:</strong>
+  <br>
+  {{ storeDetails.faxNumber | phone}}
+  <br>
+  <br>
+  <!-- Removing email address until database is updated with correct values
+  <strong>{{ 'COMMON.copyCenterEmail' | translate}}:</strong>
+  <br>
+  {{ this.storeDetails.emailCopyCenter}}
+  <br>
+  <br>-->
+  <strong>{{ 'COMMON.storeHours' | translate}}:</strong>
+
+  <table >
+    <tbody>
+    <tr *ngFor="let date of storeDetails.storeHours">
+      <td> {{ date.dayOfWeek | titlecase }} </td>
+      <td> {{ date.openTime | amParse:'Hmm' | amDateFormat:'LT' }}-{{ date.closeTime | amParse:'Hmm' | amDateFormat:'LT' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="error" class="alert alert-danger">
+  {{error}};
+</div>

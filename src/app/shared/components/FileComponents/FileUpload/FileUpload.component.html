@@ -1,0 +1,81 @@
+<h2  mat-dialog-title>
+    {{ 'FILEUPLOAD.dialogHeader' | translate}} <small class="text-secondary"></small>
+</h2>
+<mat-dialog-content [style.max-height.px]="innerHeight">
+    <div class="alert alert-warning" role="alert" *ngIf="this.sharedDataService.pbServerStatus === 'Local Unavailable' && selectedTab === 0" (click)="animateError()" [@hinge]="hingeError">{{ 'FILEUPLOAD.localPrintBrokerDown' | translate}}</div>
+    <div class="alert alert-danger fileUploadError" role="alert" *ngIf="errorMsg && selectedTab === 0" (click)="animateError()" [@hinge]="hingeError">{{errorMsg}}</div>
+    <div class="alert alert-warning" role="alert" *ngIf="showChangeFileWarning">{{ 'FILEUPLOAD.changeFileWarning' | translate}}</div>
+    <mat-tab-group   mat-stretch-tabs #tabGroup [dynamicHeight]="true" (selectedTabChange)="tabChanged($event)" [selectedIndex]="selectedTab">
+        <mat-tab [disabled]="isFinishingOnly">
+            <ng-template mat-tab-label>
+              <span id="digital">
+                  {{ 'FILEUPLOAD.options.digital' | translate}} <i class="fas fa-save"></i>
+              </span>
+            </ng-template>
+            <form #form="ngForm" (ngSubmit)="selectFileType(notesFile.value)" enctype="multipart/form-data" style="padding: 5px;">
+                <ng-template #DigitalFileUpload></ng-template>
+                  <mat-form-field appearance="outline" class="full-width" style="padding-top: 10px; padding-bottom: 10px">
+                    <mat-label>{{ 'FILEUPLOAD.notes' | translate}}</mat-label>
+                    <textarea matInput maxlength="200" matTextareaAutosize matAutosizeMinRows="0" matAutosizeMaxRows="5"
+                       #notesFile [(ngModel)]="orderConfigService.activeJob.fileNotes" name="notesFile">
+                    </textarea>
+                    <mat-hint align="end">{{notesFile.value.length}} / 200</mat-hint>
+                  </mat-form-field>
+                  <button mat-flat-button color="primary" type="submit" class="float-right" [disabled]="proceedDisabled">{{ 'BUTTON.proceed' | translate}}</button>
+                  <button mat-stroked-button class="float-right mr-1" (click)="onNoClick()" [disabled]="!allowCancel">{{ 'BUTTON.cancel' | translate}}</button>
+            </form>
+        </mat-tab>
+
+        <mat-tab [disabled]="data.isWesUpload || isFinishingOnly" >
+            <ng-template mat-tab-label>
+                <span id="hardCopy">
+                {{ 'FILEUPLOAD.options.hardCopy' | translate}}  <i class="fas fa-paperclip"></i>
+                </span>
+            </ng-template>
+            <form #form = "ngForm" (ngSubmit)="selectFileType(notesHardCopy.value)">
+                <div class="row pt-2">
+                    <div class="col-md-12">
+                        <mat-checkbox color="primary" [(ngModel)]="orderConfigService.activeJob.isRestapleOriginal" name="restapleOriginals">{{ 'CONFIG.restapleOriginals' | translate }}</mat-checkbox>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <mat-form-field appearance="outline" class="full-width" style="padding-top: 10px; padding-bottom: 10px">
+                          <mat-label>{{'FILEUPLOAD.notes' | translate}}</mat-label>
+                            <textarea matInput maxlength="200" matTextareaAutosize matAutosizeMinRows="0" matAutosizeMaxRows="5"
+                              #notesHardCopy [(ngModel)]="orderConfigService.activeJob.fileNotes"
+                              name="notesHardCopy">
+                            </textarea>
+                            <mat-hint align="end">{{notesHardCopy.value.length}} / 200</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button mat-flat-button color="primary" type="submit" class="float-right" [disabled]="proceedDisabled">{{ 'BUTTON.proceed' | translate}}</button>
+                <button mat-stroked-button class="float-right mr-1" (click)="onNoClick()" [disabled]="!allowCancel">{{ 'BUTTON.cancel' | translate}}</button>
+            </form>
+        </mat-tab>
+
+        <mat-tab [disabled]="data.isWesUpload">
+            <ng-template mat-tab-label>
+                <span id="noFile">
+                {{ 'FILEUPLOAD.options.noFile' | translate}}
+                </span>
+            </ng-template>
+            <form #form = "ngForm" (ngSubmit)="selectFileType(notesNoFile.value)">
+                <div class="row">
+                    <div class="col-md-12">
+                        <mat-form-field appearance="outline" class="full-width" style="padding-top: 10px; padding-bottom: 10px">
+                          <mat-label>{{ 'FILEUPLOAD.notes' | translate}}</mat-label>
+                          <textarea matInput maxlength="200" matTextareaAutosize matAutosizeMinRows="0" matAutosizeMaxRows="5" #notesNoFile
+                            [(ngModel)]="orderConfigService.activeJob.fileNotes" name="notesNoFile">
+                          </textarea>
+                          <mat-hint align="end">{{notesNoFile.value.length}} / 200</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button mat-flat-button #buttonNoFile color="primary" type="submit" class="float-right" [disabled]="proceedDisabled">{{ 'BUTTON.proceed' | translate}}</button>
+                <button mat-stroked-button class="float-right mr-1" (click)="onNoClick()" [disabled]="!allowCancel">{{ 'BUTTON.cancel' | translate}}</button>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>

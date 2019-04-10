@@ -1,0 +1,10 @@
+<h3 mat-dialog-title style="width:100%;">{{ data.title }}</h3>
+<hr>
+<mat-dialog-content>
+  <p *ngFor="let message of data.messages">
+    {{ message }}
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions class="float-right">
+  <button mat-stroked-button mat-dialog-close>{{ data.closeTitle }}</button>
+</mat-dialog-actions>

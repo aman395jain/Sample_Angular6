@@ -1,0 +1,7 @@
+<div style="height: 100%;overflow: hidden; display: initial;">
+  <div class="alert alert-warning" role="alert" *ngIf="showInvalidFileFormatWarning">
+    {{'FILEUPLOAD.unableToShowFilePreview' | translate}}
+  </div>
+  <mat-progress-spinner *ngIf="!fileLoaded" mode="indeterminate" style="margin: 0 auto" ></mat-progress-spinner>
+  <ng2-pdfjs-viewer #pdfViewer [pdfJsFolder]="pdfjsLoc" [showSpinner]="true"  *ngIf="!showInvalidFileFormatWarning" ></ng2-pdfjs-viewer>
+</div>

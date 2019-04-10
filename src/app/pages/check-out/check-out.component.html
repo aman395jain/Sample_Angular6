@@ -1,0 +1,15 @@
+<div class="container-full-screen">
+  <div class="row">
+    <div class="col-md-9 " [@grow]="reviewStep" >
+      <mat-card>
+	       <app-stepper></app-stepper>
+	    </mat-card>
+    </div>
+
+    <div class="col-md-3"  [@slideInOut]="reviewStep">
+	    <mat-card>
+	    	<app-buttons-total></app-buttons-total>
+	    </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<form #lostQuoteForm="ngForm" (ngSubmit)="onSubmit()">
+
+	<h3>{{ 'QUOTES.lostQuote' | translate}}</h3>
+	<hr>
+
+	<!-- Radio buttons need required validation added -->
+	<div class="col-xs-12 col-md-12 float-left">
+		<label for="reason" class="row">{{'QUOTES.selectReasonFor' | translate}}:</label>
+		<mat-radio-group name="reason" [(ngModel)]="reasonOption.description" required>
+			<div class="row">
+			 	<mat-radio-button checked value="{{'QUOTES.price' | translate}}" class="radio-button" color="primary" title="{{'QUOTES.price' | translate}}"
+			 	>{{'QUOTES.price' | translate}}</mat-radio-button>
+		 	</div>
+		 	<div class="row">
+			 	<mat-radio-button value="{{'QUOTES.complexity' | translate}}" class="radio-button" color="primary" title="{{'QUOTES.complexity' | translate}}"
+			 	>{{'QUOTES.complexity' | translate}}</mat-radio-button>
+		 	</div>
+		 	<div class="row">
+			 	<mat-radio-button value="{{'QUOTES.productionTurnTime' | translate}}" class="radio-button" color="primary" title="{{'QUOTES.productionTurnTime' | translate}}"
+			 	>{{'QUOTES.productionTurnTime' | translate}}</mat-radio-button>
+			</div>
+			<div class="row">
+			 	<mat-radio-button value="{{'QUOTES.storeTurnTime' | translate}}" class="radio-button" color="primary" title="{{'QUOTES.storeTurnTime' | translate}}"
+			 	>{{'QUOTES.storeTurnTime' | translate}}</mat-radio-button>
+		 	</div>
+		 	<div class="row">
+			 	<mat-radio-button value="{{'QUOTES.noResponseFromCustomer' | translate}}" class="radio-button" color="primary" title="{{'QUOTES.noResponseFromCustomer' | translate}}"
+			 	>{{'QUOTES.noResponseFromCustomer' | translate}}</mat-radio-button>
+		 	</div>
+		</mat-radio-group>
+	</div>
+
+	<mat-form-field class="mt-3 col-xs-12 col-md-12 float-left">
+		<textarea matInput id="reasonNotes" style="resize: vertical;" rows="4" name="reasonNotes" maxlength="3000"
+		title="{{'QUOTES.pleaseEnterLostReasonNotes' | translate}}" [(ngModel)]="statusReason.notes"
+		placeholder="{{'QUOTES.pleaseEnterLostReasonNotes' | translate}}:"></textarea>
+	</mat-form-field>
+
+	<div class="col-xs-6 col-md-6 float-left">
+		<label> </label>
+	</div>
+	<div class="mt-2 float-right">
+		<button mat-stroked-button color=primary type="button" (click)="onNoClick()">{{ 'BUTTON.cancel' | translate }}</button>
+    <div class="divider"></div>
+		<button mat-stroked-button color=primary type="submit" [disabled]="!lostQuoteForm.form.valid">{{ 'BUTTON.continue' | translate }}</button>
+	</div>
+</form>

@@ -1,0 +1,35 @@
+<h3><i class="fas fa-check-circle pr-2"></i>{{ 'DUPLICATE.productAddedToCart' | translate}}</h3>
+<hr>
+<div (click)="couponClicked($event)" *ngIf="showCoupon; else thumbsUpKid">
+<div class="coupon"><img *ngIf="addToCartCoupon && !addToCartCoupon.defaultImgFlag; else noCouponDisplay"
+	src="{{couponImg}}" alt="Promo" width='300px' height='150px'/></div>
+	<div>
+		<ng-template #noCouponDisplay>
+			<img src="{{couponImg}}" alt="Promo" width='300px' height='150px'/>
+		</ng-template>
+	</div>
+</div>
+<div (click)="couponClicked($event)">
+	<ng-template #thumbsUpKid><iframe src="https://i.imgflip.com/21gr1.gif" style="margin-left: 25px" width='300px' height='165px' frameBorder="0" scrolling="no" class="giphy-embed" allowFullScreen></iframe></ng-template>
+</div>
+<hr>
+<div *ngIf="!isStatusUpdate; else stayonpage">
+	<div class="row pb-2">
+		<button class="full-width mx-auto" mat-stroked-button type="button" (click)="sameFile()">{{ 'DUPLICATE.sameFile' | translate }}</button>
+	</div>
+	<div class="row pb-2">
+		<button class="full-width mx-auto" mat-stroked-button type="button" (click)="newFile()">{{ 'DUPLICATE.newFile' | translate }}</button>
+	</div>
+
+</div>
+<ng-template #stayonpage>
+	<div class="row pb-2">
+		<button class="full-width mx-auto" mat-stroked-button type="button" (click)="stayOnPage()">{{ 'BUTTON.stayOnPage' | translate }}</button>
+	</div>
+</ng-template>
+<div class="row pb-2">
+	<button class="full-width mx-auto"  mat-stroked-button type="button" (click)="addProduct()">{{ 'BUTTON.addAnotherProduct' | translate }}</button>
+</div>
+<div class="row">
+	<button class="full-width mx-auto checkout" mat-flat-button color=primary type="button" (click)="checkout()"><i class="fa fa-shopping-cart" aria-hidden="true"></i><small><span class="badge cart-badge mr-2">{{orderConfigService.cartCount()}}</span></small>{{ 'NAVBAR.checkOut' | translate }} | {{ orderConfigService.totalOrderPrice | currency:'USD':'symbol-narrow' }}</button>
+</div>

@@ -1,0 +1,14 @@
+<h4 mat-dialog-title>{{ 'CONFIG.saveForLaterTitle' | translate}}</h4>
+
+<mat-dialog-content>
+  <app-customerinformation [mode]="'modal'" #custInformationComponent
+                           (setCustInfoFormValid)="setCustInfoFormValid($event)">
+  </app-customerinformation>
+</mat-dialog-content>
+
+<mat-dialog-actions class="float-right">
+  <button mat-stroked-button (click)="onNoClick()">{{ 'BUTTON.cancel' | translate}}</button>
+  <button mat-stroked-button class="ml-1" color="primary" (click)="saveOrder()"
+          [disabled]="!orderConfigService.isOrderCustomerInfoValid" cdkFocusInitial>{{ 'BUTTON.saveOrder' | translate }}
+  </button>
+</mat-dialog-actions>

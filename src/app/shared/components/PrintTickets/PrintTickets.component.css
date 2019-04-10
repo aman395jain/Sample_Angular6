@@ -1,0 +1,70 @@
+.scale {
+	font-size: 160%;
+}
+
+.name {
+	font-size: 50px;
+}
+
+.due {
+	font-size: 30px;
+}
+
+.staplesLogo {
+	margin-left: 20px;
+}
+
+.custName {
+	float: right;
+	margin-left: auto;
+	margin-right: 20px;
+	text-align: right;
+}
+
+.boarderBottom {
+	padding-bottom: 5px;
+	border-bottom: black solid 5px;
+}
+
+.barCodes {
+	display: inline-block;
+}
+
+.contactInfo {
+	display: inline-block;
+	float: right;
+	text-align: right;
+	font-size: 1.25em;
+}
+
+td {
+	padding-right: 5px;
+}
+
+.jobHeader {
+	border-bottom: black solid 2px;
+	font-size: 1.5em;
+}
+.jobDetails {
+	font-size: 1.25em;
+}
+.width100 {
+	width: 100%;
+}
+
+.skuCol {
+	width: 15%;
+}
+
+.descCol {
+	width: 60%;
+}
+
+.qtyCol {
+	width: 10%;
+}
+.priceCol {
+	padding-right: 10px;
+	width: 15%;
+	text-align: right;
+}

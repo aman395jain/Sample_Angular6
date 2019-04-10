@@ -1,0 +1,31 @@
+ngx-gallery /deep/ .ngx-gallery-arrow {
+    color: #4b4b4b;
+    z-index: 100;
+}
+
+ngx-gallery /deep/ .ngx-gallery-bullet {
+    background: #4b4b4b;
+}
+
+ngx-gallery /deep/ .ngx-gallery-bullet.ngx-gallery-active {
+    background: #B50000;
+}
+
+ngx-gallery /deep/ .ngx-gallery-image-text {
+    background: none;
+    color: black;
+    font-size: 16px;
+    bottom: 20px;
+}
+
+ngx-gallery /deep/ .ngx-gallery-arrow-wrapper {
+    z-index: 100;
+}
+
+ngx-gallery /deep/ .ngx-gallery-image.ngx-gallery-active {
+    z-index: 99;
+}
+
+ngx-gallery /deep/ ngx-gallery-bullets {
+    z-index: 100;
+}

@@ -1,0 +1,193 @@
+<div class="alert alert-danger" role="alert" *ngIf="!selectedCustomer">{{'CUSTOMERSEARCH.pleaseSearchAndSelectCustomer'| translate}}</div>
+<div *ngIf="selectedCustomer">
+  <div class="inline">
+    <h2 class="inline">{{selectedCustomer.firstname}} {{ selectedCustomer.lastname}}</h2>
+    <div class="divider"></div>
+    <h2 class="inline"><small><span class="badge badge-success" *ngIf="selectedCustomer.isContractCustomer">{{'COMMON.badge.contract'| translate}}</span></small></h2>
+    <div class="divider"></div>
+    <h2 class="inline"><small><span class="badge badge-danger" *ngIf="selectedCustomer.rewardsNumber ">{{'COMMON.badge.rewards'| translate}}</span></small></h2>
+    <div class="divider"></div>
+    <h2 class="inline"><small><span class="badge badge-warning" *ngIf="selectedCustomer.bdpFeedData.rewardsNumber ">{{'COMMON.badge.bdp'| translate}}</span></small></h2>
+  </div>
+  <div class="float-right" style="margin-right: 5px;">
+    <button mat-flat-button color="primary" (click)="createOrder()">{{'BUTTON.createOrder'| translate}}</button>
+  </div>
+  <div class="float-right" style="margin-right: 5px;">
+    <button mat-stroked-button (click)="openNewWesLeadDialog(false)">{{'WES.newWesLead'| translate}}</button>
+  </div>
+  <div *ngIf="wesPricingIssueEnabled" class="float-right" style="margin-right: 5px;">
+    <button mat-stroked-button (click)="openNewWesLeadDialog(true)">{{'BUTTON.bdpLevelIssue'| translate}}</button>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 col-spacing">
+      <h4>{{'CUSTOMERSEARCH.customerInformation'| translate}}</h4>
+    </div>
+    <div class="col-sm-4 col-spacing">
+      <h4>{{'CUSTOMERSEARCH.accountInformation'| translate}}</h4>
+    </div>
+    <div class="col-sm-4 col-spacing" *ngIf="selectedCustomer.bdpFeedData.rewardsNumber ">
+      <h4>{{'CUSTOMERSEARCH.businessDiscountProgram'| translate}}</h4>
+    </div>
+    <div class="col-sm-4 col-spacing" *ngIf="selectedCustomer.bdpFeedData.rewardsNumber ">
+      <h4>{{'CUSTOMERSEARCH.businessDiscountProgram'| translate}}</h4>
+    </div>
+    <div class="col-sm-4 col-spacing" *ngIf="selectedCustomer.rewardsNumber ">
+      <h4>{{'CUSTOMERSEARCH.rewardsProgram'| translate}}</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 col-spacing">
+      <strong>{{'COMMON.phoneNumber'| translate}}:</strong>
+      <span *ngIf="selectedCustomer.phoneNumber"> {{selectedCustomer.phoneNumber | phone}}</span>
+      <span *ngIf="!selectedCustomer.phoneNumber"> {{'COMMON.none'| translate}}</span>
+    </div>
+    <div class="col-sm-4 col-spacing">
+      <strong>{{'CUSTOMERSEARCH.masterAccountNo'| translate}}:</strong>
+      <span *ngIf="selectedCustomer.contractMasterAccountNumber"> {{selectedCustomer.contractMasterAccountNumber}}</span>
+      <span *ngIf="!selectedCustomer.contractMasterAccountNumber"> {{'COMMON.none'| translate}}</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 col-spacing">
+      <strong>{{'COMMON.email'| translate}}:</strong>
+      <span *ngIf="selectedCustomer.email"> {{selectedCustomer.email}}</span>
+      <span *ngIf="!selectedCustomer.email"> {{'COMMON.none'| translate}}</span>
+    </div>
+    <div class="col-sm-4 col-spacing">
+      <strong>{{'CUSTOMERSEARCH.staplesRewardNo'| translate}}:</strong>
+      <span *ngIf="selectedCustomer.rewardsNumber"> {{selectedCustomer.rewardsNumber}}</span>
+      <span *ngIf="!selectedCustomer.rewardsNumber"> {{'COMMON.none'| translate}}</span>
+    </div>
+    <div class="col-sm-4 col-spacing"
+         *ngIf="selectedCustomer.rewardsNumber && selectedCustomer.bdpFeedData.enrollmentDate">
+      <span class="badge badge-warning" *ngIf="selectedCustomer.bdpFeedData.rewardsNumber">BDP</span>
+      <div class="divider"></div>
+      <strong>{{ 'CUSTOMERSEARCH.enrollmentDate' | translate }}:</strong>
+      <span *ngIf="selectedCustomer.bdpFeedData.enrollmentDate"> {{selectedCustomer.bdpFeedData.enrollmentDate}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 col-spacing">
+      <strong>{{ 'CUSTOMERSEARCH.columns.cityState' | translate }}:</strong>
+      <span *ngIf="selectedCustomer.city && selectedCustomer.state"> {{selectedCustomer.city}}, {{ selectedCustomer.state}}</span>
+      <span *ngIf="!selectedCustomer.city && !selectedCustomer.state"> {{'COMMON.none'| translate }}</span>
+    </div>
+    <div *ngIf="selectedCustomer.yearlySpend" class="col-sm-4 col-spacing">
+        <strong>{{ 'CUSTOMERSEARCH.columns.yearlySpend' | translate }}:</strong>
+        <span> {{selectedCustomer.yearlySpend | currency}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 col-spacing">
+      <strong>{{ 'COMMON.company' | translate }}:</strong>
+      <span *ngIf="selectedCustomer.company"> {{selectedCustomer.company}}</span>
+      <span *ngIf="!selectedCustomer.company"> {{ 'COMMON.none' | translate }}</span>
+    </div>
+    <div *ngIf="selectedCustomer.industryType" class="col-sm-4 col-spacing">
+        <strong>{{ 'CUSTOMERSEARCH.columns.industryType' | translate }}:</strong>
+        <span> {{selectedCustomer.industryType}}</span>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading == true"></mat-progress-bar>
+
+  <div class="row" *ngIf="showOrderHistoryTable">
+    <div class="col-md-6">
+      <h6><strong>{{ 'COMMON.filters'| translate}}:</strong></h6>
+      <mat-radio-group class="pl-3">
+        <mat-radio-button color="primary" value="active" (change)="filterByStatus('active')">
+          {{ 'CUSTOMERSEARCH.activeOrders'| translate }}
+        </mat-radio-button>
+        <mat-radio-button color="primary" value="saved" (change)="filterByStatus('saved')">
+          {{ 'CUSTOMERSEARCH.savedOrders' | translate }}
+        </mat-radio-button>
+        <mat-radio-button color="primary" value="all" (change)="filterByStatus('all')">{{ 'CUSTOMERSEARCH.allOrders'| translate }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="col-md-6 float-right">
+      <mat-form-field class="float-right">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ 'CUSTOMERSEARCH.search' | translate }}">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="row" [hidden]="!showOrderHistoryTable">
+    <div class="col-sm-12">
+      <!-- Angular Material Table -->
+      <table mat-table [dataSource]="dataSource" matSort matSortActive="dateCreated" matSortDirection="desc"
+             (matSortChange)="sortData($event)">
+        <ng-container matColumnDef="dateCreated">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CUSTOMERSEARCH.details.dateCreated'| translate}}
+          </th>
+          <td mat-cell *matCellDef="let order">{{ order?.createDate | date}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dueDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ORDER.summary.dueDate'| translate}}</th>
+          <td mat-cell *matCellDef="let order">{{ order?.dueDate| date}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="orderNum">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CUSTOMERSEARCH.details.orderNo'| translate}}</th>
+          <td mat-cell *matCellDef="let order">{{ order?.orderNmb}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="products">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CUSTOMERSEARCH.details.orderName'| translate}}</th>
+          <td mat-cell *matCellDef="let order">
+							<span *ngIf="storeInfo.getLanguageValue()=='en_US'">
+								<span *ngIf="order?.orderName">
+									{{ order?.orderName }}
+								</span>
+								<span *ngIf="!order?.orderName">
+									{{ order?.productUsEnglish}}
+								</span>
+							</span>
+            <span *ngIf="storeInfo.getLanguageValue()=='en_CA'">{{ order?.productCaEnglish}}</span>
+            <span *ngIf="storeInfo.getLanguageValue()=='fr_CA'">{{ order?.productCaFrench}}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CUSTOMERSEARCH.details.price' | translate }}</th>
+          <td mat-cell *matCellDef="let order">{{ order?.totalOrderPrice - order?.customerDiscount | currency }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tickets">
+          <th mat-header-cell *matHeaderCellDef style="width: 90px;"></th>
+          <td mat-cell *matCellDef="let order" style="width: 90px;overflow: hidden">
+            <div class="iconContainer">
+              <div (click)="print(order.orderNmb); $event.stopPropagation();" class="actionIcon"
+                   matTooltip="{{ 'BUTTON.print' | translate }}">
+                <i class="fas fa-print fa-2x"></i>
+              </div>
+              <div class="divider-10"></div>
+              <div *ngIf="order?.uiStatusMsgUsEnglish !== 'In Progress'"
+                   (click)="reorder(order.orderNmb, QuoteActions.Reorder); $event.stopPropagation();" class="actionIcon"
+                   matTooltip="{{ 'BUTTON.reorder' | translate }}">
+                <i class="far fa-copy fa-2x"></i>
+              </div>
+              <div *ngIf="order?.uiStatusMsgUsEnglish === 'In Progress'"
+                   (click)="reorder(order.orderNmb, QuoteActions.OrderEdit); $event.stopPropagation();"
+                   class="actionIcon" matTooltip="{{ 'NAVBAR.checkOut' | translate }}">
+                <i class="fa fa-shopping-cart fa-2x"></i>
+              </div>
+            </div>
+            <!--   <button mat-stroked-button color=primary (click)="print(order.orderNmb)">{{ 'BUTTON.print' | translate }}</button>-->
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cust-mat-row"
+            (click)="selectOrderForSummary(row)"></tr>
+      </table>
+
+      <mat-paginator #tablePaginator [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]
+                     style="margin: 6px 0"></mat-paginator>
+    </div>
+  </div>
+</div>
+

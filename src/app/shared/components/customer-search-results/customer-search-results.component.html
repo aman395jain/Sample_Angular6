@@ -1,0 +1,71 @@
+<div class="alert alert-danger" role="alert" *ngIf="customerSearchErrorMessage && displayMode !== 'modal'">
+  {{ customerSearchErrorMessage }} -
+  <a [routerLink]="['/']" (click)="openFileSelectionDialog()">{{'CUSTOMERSEARCH.proceedAsNewCustomer' | translate }}</a>
+</div>
+<div class="alert alert-danger" role="alert" *ngIf="customerSearchErrorMessage && displayMode === 'modal'">
+  {{ customerSearchErrorMessage }} -
+  <a [routerLink]="['/checkout']" (click)="orderConfigService.clearCustomer(); close();">{{'CUSTOMERSEARCH.proceedAsNewCustomer' | translate }}</a>
+</div>
+<div>
+  <div class="col-md-6 float-right">
+    <mat-form-field class="float-right">
+      <input matInput (keyup)="applyFilter($event.target.value)"
+             placeholder="{{ 'CUSTOMERSEARCH.search' | translate }}">
+    </mat-form-field>
+  </div>
+
+  <!-- Angular Material Table -->
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMMON.customerName' | translate }}</th>
+      <td mat-cell *matCellDef="let entry">{{ entry.firstname}} {{entry.lastname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="membershipLevel">
+      <th mat-header-cell *matHeaderCellDef>{{ 'CUSTOMERSEARCH.columns.membershipLevel' | translate }}</th>
+      <td mat-cell *matCellDef="let entry">
+        <small><span class="badge badge-success table-badge" id="contract" *ngIf="entry.isContractCustomer">{{ 'COMMON.badge.contract' | translate }}</span></small>
+        <small><span class="badge badge-danger table-badge" id="rewards" *ngIf="entry.rewardsNumber ">{{ 'COMMON.badge.rewards' | translate }}</span></small>
+        <small><span class="badge badge-warning table-badge" id="bdp" *ngIf="entry.bdpFeedData.rewardsNumber ">{{ 'COMMON.badge.bdp' | translate }}</span></small>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phoneNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMMON.phoneNumber' | translate }}</th>
+      <td mat-cell *matCellDef="let entry">
+        <span *ngIf="!storeInfo.isStoreFeature('maskCustomerInfo')">{{ entry.phoneNumber | phone }}</span>
+        <span *ngIf="storeInfo.isStoreFeature('maskCustomerInfo')">{{ entry.maskedPhone}}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rewardsNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMMON.rewardsNumber' | translate }}</th>
+      <td mat-cell *matCellDef="let entry">{{ entry.rewardsNumber}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMMON.email' | translate }}</th>
+      <td mat-cell *matCellDef="let entry">
+        <span *ngIf="!storeInfo.isStoreFeature('maskCustomerInfo')">{{ entry.email}}</span>
+        <span *ngIf="storeInfo.isStoreFeature('maskCustomerInfo')">{{ entry.maskedEmail}}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cityState">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CUSTOMERSEARCH.columns.cityState' | translate }}</th>
+      <td mat-cell *matCellDef="let entry">{{ entry.city}}, {{entry.state}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="company">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CUSTOMERSEARCH.columns.company' | translate }}</th>
+      <td mat-cell *matCellDef="let entry">{{ entry.company }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cust-mat-row" (click)="rowClicked(row)"></tr>
+  </table>
+
+  <mat-paginator #tablePaginator [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons] style="margin: 6px 0">
+  </mat-paginator>
+
+</div>

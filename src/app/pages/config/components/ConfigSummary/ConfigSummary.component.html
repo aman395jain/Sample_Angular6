@@ -1,0 +1,142 @@
+<div data-spy="scroll" data-target="#sidebar" data-offset="0">
+  <nav id="sidebar" >
+    <ul class="list-unstyled components accordion">
+        <li class="text-center click hoverBackgound" *ngIf="!orderConfigService.orderCustomer?.firstname" (click)="searchForCustomer()">
+          <i class="fas fa-user"></i> {{ 'COMMON.newCustomer' | translate }} <i class="fa fa-search" aria-hidden="true"></i>
+        </li>
+      <li class="text-center click hoverBackgound" *ngIf="orderConfigService.orderCustomer?.firstname" id="customerName" (click)="searchForCustomer()">
+        <i class="fas fa-user"></i> {{orderConfigService.orderCustomer?.firstname}} {{orderConfigService.orderCustomer?.lastname}} <i id="customerSearchIcon"  class="fa fa-search" aria-hidden="true"></i>
+        <br>
+        <small><span class="badge badge-success" id="contract" *ngIf="orderConfigService.orderCustomer?.isContractCustomer">{{'COMMON.badge.contract'| translate}}</span></small>
+          <div class="divider"></div>
+
+          <!-- todo add logic for ca -->
+        <small><span class="badge badge-danger" id="rewards" *ngIf="orderConfigService.orderCustomer?.rewardsNumber ">{{'COMMON.badge.rewards'| translate}}</span></small>
+          <div class="divider"></div>
+
+          <small><span class="badge badge-warning" id="bdp" *ngIf="orderConfigService.orderCustomer?.bdpFeedData?.rewardsNumber ">{{'COMMON.badge.bdp'| translate}}</span></small>
+      </li>
+      <li class="text-center click hoverBackgound" *ngIf="!orderConfigService.orderCustomer" (click)="searchForCustomer()">
+          <i class="fas fa-user"></i> {{ 'COMMON.newCustomer' | translate }} <a (click)="searchForCustomer()"><i id="customerSearchIcon" class="fa fa-search" aria-hidden="true"></i></a>
+        </li>
+      <li *ngIf="orderConfigService.activeJob.mediaType !== 3" class="text-center" style="text-align: center; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" (click)="openFileSelectionDialog()" class='click hoverBackgound'>
+        <span style="text-align: center" *ngIf="orderConfigService.activeJob.mediaType === 0 && orderConfigService.activeJob.printBrokerFiles">{{ 'CONFIG.rightSideBar.digital' | translate }}: {{orderConfigService.activeJob.printBrokerFiles.fileDescriptions[0].fileName}}</span>
+        <span style="text-align: center" *ngIf="orderConfigService.activeJob.mediaType === 0 && orderConfigService.activeJob.multipleFiles">{{ 'CONFIG.rightSideBar.digital' | translate }}: {{orderConfigService.activeJob.multipleFiles.length}} {{'FILEUPLOAD.fileSelected' | translate}}</span>
+        <span style="text-align: center" *ngIf="orderConfigService.activeJob.mediaType === 1">{{ 'CONFIG.rightSideBar.hardCopy' | translate }} <small>({{ 'CONFIG.rightSideBar.fileType' | translate }})</small></span>
+        <span style="text-align: center" *ngIf="orderConfigService.activeJob.mediaType === 2">{{ 'CONFIG.rightSideBar.noFile' | translate }} <small>({{ 'CONFIG.rightSideBar.fileType' | translate }})</small></span>
+      </li>
+      <li [@shake]="true" *ngIf="orderConfigService.activeJob.mediaType === 3" class="text-center" style="text-align: center" (click)="openFileSelectionDialog()" class='click hoverBackgound'>
+        <span style="text-align: center;" class="colorRed">{{ 'CONFIG.rightSideBar.selectFileType' | translate }}</span>
+      </li>
+
+      <li class="text-center accordion-item" *ngIf="orderConfigService?.activeJob.showImpressions">
+          <h6> {{ 'FOOTER.impressions' | translate }}: {{orderConfigService?.activeJob.impressions}}</h6>
+        <div class="row accordion-item-content">
+        <div class="input-group number-spinner">
+				<span class="input-group-btn">
+					<button mat-button class="buttonIncrement click actionIcon"  [disabled]="orderConfigService?.activeJob.impressions < 2" (click)="incrementImpression('minus')"  style="border-style:none;"><i class="fas fa-minus fa-lg"></i></button>
+        </span>
+            <input  type='number' name="impressions" class='numInput' min="1" max="6"
+                   maxlength="6"
+                  [(ngModel)]="orderConfigService?.activeJob.impressions" #ctrl="ngModel" (ngModelChange)="onImpressionChange()"/>
+        <span class="input-group-btn">
+					<button mat-button class="buttonIncrement click actionIcon" [disabled]="orderConfigService.activeJob.impressions > 999998" (click)="incrementImpression('plus')"  ><i class="fas fa-plus fa-lg"></i></button>
+				</span>
+              </div>
+
+              <div class="center">
+                  <small class="float-left ml-1" *ngIf="orderConfigService?.activeJob?.impressions > 1">({{orderConfigService?.activeJob?.sheets}} {{ 'FOOTER.sheets' | translate }})</small>
+                  <small class="float-left ml-1" *ngIf="orderConfigService?.activeJob?.impressions == 1">({{orderConfigService?.activeJob?.sheets}} {{ 'FOOTER.sheet' | translate }})</small>
+              </div>
+        </div>
+
+      </li>
+      <li class="text-center accordion-item">
+          <h6> {{ 'CONFIG.rightSideBar.quantity' | translate }}: {{orderConfigService?.activeJob.quantity}}</h6>
+          <div class="row accordion-item-content">
+              <div class="input-group number-spinner" *ngIf="isSelectQtys() && this.quantities && this.quantities.length == 0">
+				<span class="input-group-btn">
+					<button  mat-button class="buttonIncrement click actionIcon"  (click)="incrementQty('minus')" [disabled]="orderConfigService.activeJob.quantity < 2"><i class="fas fa-minus fa-lg"></i></button>
+				</span>
+                  <input type='number' name='quantity' id='quantity' class='numInput' min="1" max="6"
+                         [(ngModel)]="orderConfigService?.activeJob.quantity" #ctrl="ngModel" (ngModelChange)="onQuantityChange()"
+                         *ngIf="isSelectQtys() && this.quantities && this.quantities.length == 0" />
+                  <span class="input-group-btn">
+					<button  mat-button class="buttonIncrement click actionIcon" (click)="incrementQty('plus')" [disabled]="orderConfigService.activeJob.quantity > 999998"><i class="fas fa-plus fa-lg"></i></button>
+				</span>
+              </div>
+
+              <select value='0' name='quantity' id='quantity' class='qty float-left ml-5' *ngIf="isSelectQtys() && this.quantities && this.quantities.length > 0"
+              (change)="onQuantityChange()" [(ngModel)]="orderConfigService?.activeJob.quantity" #ctrl="ngModel">
+			        <option *ngFor="let quantity of this.quantities" value="{{quantity}}">{{quantity}}</option>
+			  </select>
+              <div class="center">
+                  <small *ngIf="orderConfigService?.activeJob?.quantity > 1">({{orderConfigService?.activeJob?.quantity}} {{ 'CONFIG.rightSideBar.sets' | translate }})</small>
+                  <small *ngIf="orderConfigService?.activeJob?.quantity == 1">({{orderConfigService?.activeJob?.quantity}} {{ 'CONFIG.rightSideBar.set' | translate }})</small>
+              </div>
+          </div>
+
+      </li>
+      <li class="text-right pad" style="font-size: .9em;" >
+        <h6 style="margin-bottom: 0px!important;" class="text-center">Job Pricing</h6>
+        <table class="float-center" width="100%">
+          <tr *ngIf="orderConfigService.activeJob.basePrice - orderConfigService.activeJob?.jobSubtotal !== 0" style="text-align: center;">
+            <td style="text-align: left;">Subtotal: </td>
+            <td style="text-align: right;">{{orderConfigService.activeJob.basePrice  | currency:'USD':'symbol-narrow' }}</td>
+          </tr>
+          <tr style="text-align: center;" *ngIf="orderConfigService.activeJob?.availabilityFee !== 0">
+            <td style="text-align: left;">{{ 'ORDER.summary.expressService' | translate }}:</td>
+            <td style="text-align: right;" class="additionalJobCharges">+{{orderConfigService.activeJob?.availabilityFee| currency:'USD':'symbol-narrow'}}</td>
+          </tr>
+          <tr style="text-align: center;" *ngIf="orderConfigService.activeJob?.jobLevelDiscount !== 0">
+            <td style="text-align: left;">Discount:</td>
+            <td style="text-align: right;" class="additionalJobCharges">-{{orderConfigService.activeJob?.jobLevelDiscount| currency:'USD':'symbol-narrow' }}</td>
+          </tr>
+          <tr style="text-align: center; border-top: 1px;" *ngIf="orderConfigService.activeJob?.jobSubtotal !== 0">
+            <td style="text-align: left;">Total:</td>
+            <td style="text-align: right;">{{orderConfigService.activeJob?.jobSubtotal| currency:'USD':'symbol-narrow' }}</td>
+          </tr>
+        </table>
+      </li>
+
+      <li class="row col-md-12 col-sm-12 pl-0 ml-0" *ngIf="!orderConfigService.activeJob.turnTimeOptions">
+      	  <h5 class="col-md-6 col-sm-6 text-center pr-0 pl-1" *ngIf="orderConfigService.activeJob.priceResponse?.baseList && orderConfigService.activeJob.priceResponse?.baseList[0] && orderConfigService.activeJob.savingsCatcher?.savings">
+      	  	{{ 'CONFIG.rightSideBar.savingsCatcher.totalPrice' | translate }}:</h5>
+          <h5 class="col-md-6 col-sm-6 pr-0 pl-1 text-center" *ngIf="!orderConfigService.activeJob.savingsCatcher?.savings">
+          	{{ 'COMMON.total' | translate }}:</h5>
+          <h5 class="col-md-6 col-sm-6 pl-0 text-center">{{orderConfigService.activeJob.totalDiscountedPrice | currency:'USD':'symbol-narrow' }}</h5>
+      </li>
+        <li class="pad" *ngIf="orderConfigService.activeJob.turnTimeOptions">
+            <h6 class="text-center">{{ 'CONFIG.rightSideBar.guaranteedAvailability' | translate }}</h6>
+            <mat-radio-group class="twoColumns" [(ngModel)]="orderConfigService.activeJob.selectedTurnTime" (ngModelChange)="calcSubtotal()">
+                <mat-radio-button value="{{key}}" id="{{key}}" *ngFor="let key of orderConfigService.activeJob.turnTimeOptions | keys"  color="primary">
+                <span style="font-size: .9em;">{{orderConfigService.activeJob.turnTimeOptions[key].displayString }}
+                   <br/>
+                  {{'COMMON.price' | translate}}: <strong>{{orderConfigService.activeJob.turnTimeOptions[key].displayPrice| currency:'USD':'symbol-narrow' }} </strong>
+                  <!-- Update if condition to check isDCS flag once added to turntimes from Victor PSB-637 <i *ngIf="true" class="fas fa-truck"></i>-->
+                </span>
+                </mat-radio-button>
+
+            </mat-radio-group>
+        </li>
+      <li class="pad" style="border-bottom: none;">
+        <div class=" fullWidth" role="group" id="cartActionButtons">
+            <button mat-flat-button class="fullWidth" color="primary" (click)="addToCart()" [disabled]="isSubmitted || addToCartDisabled() || !orderConfigService.canProceed">
+              <span *ngIf='orderConfigService.isEditJob'>
+                  {{ 'BUTTON.update' | translate }}
+              </span>
+              <span *ngIf='!orderConfigService.isEditJob'>
+                  {{ 'BUTTON.addToCart' | translate }}
+              </span>
+            </button>
+          <button mat-stroked-button class="fullWidth" [disabled]="saveForLaterDisabled || orderConfigService.hasWorkFrontJob" (click)="saveForLater()">{{ 'BUTTON.saveForLater' | translate }}</button>
+          <button mat-stroked-button class="halfWidth" style="float:left;" (click)="cancelJob()">{{ 'BUTTON.cancelJob' | translate }}</button>
+          <button mat-stroked-button class="halfWidth" style="float:right;" (click)="cancelOrder()">{{ isEditQuote ? ('BUTTON.cancelEdit' | translate) : ('BUTTON.cancelOrder' | translate) }}</button>
+          <div class="fullWidth">
+	        <label> </label>
+	      </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</div>

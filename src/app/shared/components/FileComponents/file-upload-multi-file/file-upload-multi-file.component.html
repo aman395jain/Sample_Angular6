@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="dropzone" DNDFileUpload (filesChangeEmiter)="fileSelected($event)" (filesInvalidEmiter)="onInvalidFiles($event)">
+      <div class="text-wrapper">
+        <div class="centered">
+          {{ 'FILEUPLOAD.dropZoneMsgMulti' | translate}}
+          <input type="file" name="file" id="file" class="inputfile fileSelector" (change)="fileSelected($event.target.files)"
+                 accept=".gif, .jpg, .jpeg, .tif, .tiff, .png, .bmp, .pdf, .docx, .xlsx,
+                 .pptx, .vsd, .doc, .xls, .ppt, .zip, .indd, .ai, .psd, .eps"  multiple/>
+        </div>
+        <div class="centered" style="padding: 8px 0;"> - {{ 'FILEUPLOAD.dropZoneMsgOr' | translate}} - </div>
+        <div class="centered">
+          <label for="file" class="fileLabel">{{ 'BUTTON.selectFileMulti' | translate}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table mat-table [dataSource]="fileList" class="fileTable">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- File Name Column -->
+      <ng-container matColumnDef="fileName">
+        <th mat-header-cell *matHeaderCellDef> {{'FILEUPLOAD.fileName' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Size Column -->
+      <ng-container matColumnDef="Size">
+        <th mat-header-cell *matHeaderCellDef> {{'FILEUPLOAD.size' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.size | fileSizeFormatter}} </td>
+      </ng-container>
+
+      <!-- Size Column -->
+      <ng-container matColumnDef="deleteFile">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element; let i = index"> <a (click)="removeFile(i)" class="actionIcon"><i class="fas fa-times actionIcon"></i></a></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+    </table>
+  </div>
+</div>
+

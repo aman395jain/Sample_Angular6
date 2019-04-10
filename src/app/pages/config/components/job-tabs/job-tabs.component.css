@@ -1,0 +1,83 @@
+.jobTabs{
+	margin-left: -15px;
+	margin-right: -15px;
+	margin-top: -15px;
+	margin-bottom: 15px;
+}
+
+.jobName {
+	margin-left: 0px;
+	margin-right: 8px;
+	padding: 3px;
+}
+
+#jobTabs-wrapper {
+    position: relative;
+     padding-left: 250px;
+  width:100%;
+}
+
+#jobTabs-wrapper.active {
+    margin-left: 250px;
+}
+
+
+.nav-tabs>li.active, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+	background-color: #ECECEC;
+	color: black;
+	border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+	
+}
+.nav-item{
+	margin-left: 5px;
+}
+
+.nav>li>a:hover{
+    color: black;
+}
+
+.nav-tabs {
+	overflow-x: auto;
+   overflow-y: hidden;
+   display: -webkit-box;  
+   display: -moz-box;   
+ }
+.nav-tabs>li {
+	 float:none;
+   }
+
+.nav-link.active {
+	background-color: #ECECEC;
+	color: black;
+	border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+
+.nav-link:hover {
+    border-color: #eee #eee;
+	color: black;
+	background-color: #ECECEC;
+}
+.nav-tabs .nav-link{
+	border: none;
+}
+.nav>li>a {
+	color: white;
+}
+
+/*
+.nav> li > a:hover{
+	background-color: #ECECEC;
+	color: black;
+	margin-bottom: -1px;
+}
+*/
+
+.nav-link {
+	 padding: .5rem .5rem; 
+	 display: inline-block;
+	 color: white;
+}

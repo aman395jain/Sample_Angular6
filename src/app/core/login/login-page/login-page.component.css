@@ -1,0 +1,62 @@
+.content {
+    margin-top: -65px;
+    height: calc(100% + 65px);
+}
+.loginBox {
+    width: 380px;
+    position: absolute;
+    margin-top: -200px;
+    margin-left: -190px;
+    top: 50%;
+    left: 50%;
+    padding: 34px;
+}
+.loginTitle {
+    text-align: center;
+}
+.loginFormField {
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.userIcon {
+    margin-bottom: 30px;
+    color:#4d4d4d;
+}
+
+.checkMarkSuccess {
+    width: 80px;
+    height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+
+.loginError {
+    color: #b50000;
+    text-align: center;
+}
+
+.wrapper {
+    width: 100px;
+    margin: 4em auto 0;
+}
+
+.checkmark {
+    stroke: #28a745;
+    stroke-dashoffset: 745.74853515625;
+    stroke-dasharray: 745.74853515625;
+    animation: dash 2s ease-out forwards 1;
+}
+
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 745.74853515625;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}

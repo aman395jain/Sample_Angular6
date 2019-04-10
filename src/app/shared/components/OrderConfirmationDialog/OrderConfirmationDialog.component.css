@@ -1,0 +1,22 @@
+.red {
+	background-color: #B50000;
+	border-color: #B50000;
+	color: #ffffff;
+}
+
+.fullWidth {
+    margin-bottom: 3px;
+    margin-left: 0px !important;
+    display:inline-block;
+    width: 100%;
+}
+
+.checkWrapper {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.failureWrapper{
+  font-size: 100px;
+  color: #B50000;
+}

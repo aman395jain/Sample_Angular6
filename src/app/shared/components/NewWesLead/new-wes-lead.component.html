@@ -1,0 +1,163 @@
+<form #newWesLeadForm="ngForm" (ngSubmit)="onSubmit()">
+
+	<h3 *ngIf="!model.pricingIssue" class="mb-0">{{ 'WES.newWesLead' | translate}}</h3>
+	<h3 *ngIf="!!model.pricingIssue" class="mb-0">{{ 'BUTTON.bdpLevelIssue' | translate}}</h3>
+	<hr class="mt-1 mb-1">
+
+	<mat-form-field class="col-xs-6 col-md-6 float-left">
+		<input matInput type="text" id="rewardsNumber" pattern="[0-9]{10}" maxlength="10" name="rewardsNumber"
+		title="{{'COMMON.title.rewardsNumber' | translate}}"
+		placeholder="{{'COMMON.rewardsNumber' | translate}}"
+		[(ngModel)]="model.rewardsNumber"
+		[disabled]="orderConfigService.orderCustomerSelected">
+		<mat-error *ngIf="rewardsNumber.invalid">{{'COMMON.error.rewardsNumber' | translate}}</mat-error>
+	</mat-form-field>
+	<mat-form-field class="col-xs-6 col-md-6 float-right">
+		<input matInput id="company" type="text" name="company"
+		title="{{'WES.title.company' | translate}}"
+		placeholder="{{'COMMON.company' | translate}}"
+		[(ngModel)]="model.company"
+		[disabled]="orderConfigService.orderCustomerSelected">
+	</mat-form-field>
+
+	<mat-form-field class="col-xs-6 col-md-6 float-left">
+		<input matInput id="firstName" maxlength="50" type="text" pattern="^[A-Za-z\'\'_.-\s]{1,50}$" name="firstName"
+		title="{{'COMMON.title.firstName' | translate}}"
+		placeholder="{{'COMMON.firstName' | translate}}"
+		[(ngModel)]="model.firstName" required
+		[disabled]="orderConfigService.orderCustomerSelected">
+		<mat-error *ngIf="firstName.invalid">{{'COMMON.error.firstName' | translate}}</mat-error>
+	</mat-form-field>
+	<mat-form-field class="col-xs-6 col-md-6 float-right">
+		<input matInput id="lastName" maxlength="50" type="text" pattern="^[A-Za-z\'\'_.-\s]{1,50}$" name="lastName"
+		title="{{'COMMON.title.lastName' | translate}}"
+		placeholder="{{'COMMON.lastName' | translate}}"
+		[(ngModel)]="model.lastName" required
+		[disabled]="orderConfigService.orderCustomerSelected">
+		<mat-error *ngIf="lastName.invalid">{{'COMMON.error.lastName' | translate}}</mat-error>
+	</mat-form-field>
+
+	<mat-form-field class="col-xs-6 col-md-6 float-left">
+		<input matInput id="phoneNumber" name="phoneNumber" type="tel"
+		title="{{'COMMON.title.phoneNumber' | translate}}"
+		placeholder="{{'WES.phoneNumber' | translate}}"
+		[textMask]="{mask: phoneMask}"
+		[(ngModel)]="model.phoneNumber" required>
+		<mat-error *ngIf="phoneNumber.invalid">{{'COMMON.error.phoneNumber' | translate}}</mat-error>
+	</mat-form-field>
+	<mat-form-field class="col-xs-6 col-md-6 float-right">
+		<input matInput id="email" name="email" type="email" maxlength="50" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+		title="{{'COMMON.title.email' | translate}}"
+		placeholder="{{'COMMON.email' | translate}}"
+		[(ngModel)]="model.email" #email="ngModel" required>
+		<mat-error *ngIf="email.invalid && email.dirty || email.touched">{{'COMMON.error.email' | translate}}</mat-error>
+	</mat-form-field>
+
+	<mat-form-field class="col-xs-6 col-md-6 float-left">
+		<input matInput id="address1" name="address1" type="text" maxlength="60" pattern="^[a-zA-Z0-9\s,'#-]*$"
+		title="{{'WES.title.address1' | translate}}"
+		placeholder="{{'WES.address1' | translate}}"
+		[(ngModel)]="model.address1" required
+		[disabled]="orderConfigService.orderCustomerSelected">
+		<mat-error *ngIf="address1.invalid">{{'COMMON.error.address' | translate}}</mat-error>
+	</mat-form-field>
+	<mat-form-field class="col-xs-6 col-md-6 float-right">
+		<input matInput id="address2" name="address2" type="text" maxlength="60" pattern="^[a-zA-Z0-9\s,'#-]*$"
+		title="{{'WES.title.address2' | translate}}"
+		placeholder="{{'WES.address2' | translate}}"
+		[(ngModel)]="model.address2"
+		[disabled]="orderConfigService.orderCustomerSelected">
+		<mat-error *ngIf="address2.invalid">{{'COMMON.error.address' | translate}}</mat-error>
+	</mat-form-field>
+
+	<mat-form-field class="col-xs-6 col-md-6 float-left">
+		<input matInput id="city" name="city" type="text" maxlength="50" pattern="^[a-zA-Z0-9\s,'-]*$"
+		title="{{'WES.title.city' | translate}}"
+		placeholder="{{'COMMON.city' | translate}}"
+		[(ngModel)]="model.city" required
+		[disabled]="orderConfigService.orderCustomerSelected">
+		<mat-error *ngIf="city.invalid">{{'COMMON.error.city' | translate}}</mat-error>
+	</mat-form-field>
+	<mat-form-field class="col-xs-6 col-md-6 float-right">
+		<mat-select name="state" id="state"
+		title="{{'COMMON.state' | translate}}"
+		placeholder="{{'COMMON.state' | translate}}"
+		[(ngModel)]="model.state" required
+		[disabled]="orderConfigService.orderCustomerSelected">
+			<mat-option *ngFor="let state of commonConstants.STATES" value="{{state.shortName}}">{{state.fullName}}</mat-option>
+		</mat-select>
+		<mat-error *ngIf="state.invalid">{{'COMMON.error.state' | translate}}</mat-error>
+	</mat-form-field>
+
+	<mat-form-field class="col-xs-6 col-md-6 float-left">
+		<input matInput id="zipCode"  name="zipCode" type="text" maxlength="10" pattern="^\d{5}(?:[-\s]\d{4})?$"
+		title="{{'WES.title.zipCode' | translate}}"
+		placeholder="{{'COMMON.zipCode' | translate}}"
+		[(ngModel)]="model.zipCode" required
+		[disabled]="orderConfigService.orderCustomerSelected">
+		<mat-error *ngIf="zipCode.invalid">{{'COMMON.error.zipCode' | translate}}</mat-error>
+	</mat-form-field>
+	<mat-form-field class="col-xs-6 col-md-6 float-right">
+		<input matInput id="bestTimeToCall" name="bestTimeToCall" maxlength="20" type="text"
+		title="{{'WES.bestTimeToCall' | translate}}"
+		placeholder="{{'WES.bestTimeToCall' | translate}}"
+		[(ngModel)]="model.bestTimeToCall" required>
+		<mat-error *ngIf="bestTimeToCall.invalid">{{'COMMON.error.required' | translate}}</mat-error>
+	</mat-form-field>
+
+	<!-- Radio buttons need required validation added -->
+	<div class="col-xs-6 col-md-6 float-left radio">
+		<label for="preferredContact" class="no-left-pad pr-3">{{'WES.preferredContact' | translate}}: *</label>
+		<mat-radio-group id="preferredContact" name="preferredContact" [(ngModel)]="model.preferredContact" required >
+		 	<mat-radio-button checked value="Phone" class="radio-button" color="primary" title="{{'COMMON.phone' | translate}}"
+		 	>{{'COMMON.phone' | translate}}</mat-radio-button>
+		 	<mat-radio-button value="Email" class="radio-button" color="primary" title="{{'COMMON.email' | translate}}"
+		 	>{{'COMMON.email' | translate}}</mat-radio-button>
+		</mat-radio-group>
+	</div>
+	<mat-form-field *ngIf="!model.pricingIssue" class="col-xs-6 col-md-6 float-right">
+		<input matInput id="projectDueDate" name="projectDueDate" type="text" maxlength="20"
+		title="{{'WES.projectDueDate' | translate}}"
+		placeholder="{{'WES.projectDueDate' | translate}}"
+		[(ngModel)]="model.projectDueDate" required>
+		<mat-error *ngIf="projectDueDate.invalid">{{'COMMON.error.required' | translate}}</mat-error>
+	</mat-form-field>
+
+	<div *ngIf="!model.pricingIssue" id="sfDiv_newLeadSubmit">
+		<mat-form-field class="col-xs-12 col-md-12 float-left">
+			<textarea matInput id="sfNotes_orderSubmit" style="resize: vertical;" rows="1" name="sfNotes" maxlength="3000"
+			title="{{'WES.projectDetails' | translate}}"
+			placeholder="{{'WES.projectDetails' | translate}}"
+			[(ngModel)]="model.projectDetails" required></textarea>
+			<mat-error *ngIf="projectDetails.invalid">{{'COMMON.error.required' | translate}}</mat-error>
+		</mat-form-field>
+	</div>
+
+	<div *ngIf="!!model.pricingIssue" id="sfDiv_newLeadSubmit">
+		<mat-form-field class="col-xs-12 col-md-12 float-left">
+			<textarea matInput id="sfNotes_orderSubmit" style="resize: vertical;" rows="1" name="sfNotes" maxlength="3000"
+			title="{{'WES.issueDetails' | translate}}"
+			placeholder="{{'WES.issueDetails' | translate}}"
+			[(ngModel)]="model.projectDetails" required></textarea>
+			<mat-error *ngIf="projectDetails.invalid">{{'COMMON.error.required' | translate}}</mat-error>
+		</mat-form-field>
+	</div>
+
+	<div *ngIf="!model.pricingIssue" class="col-xs-12 col-md-12 float-left">
+		<button mat-stroked-button class="float-left" type="button" (click)="fileUpload()">{{'BUTTON.uploadFile' | translate}}</button>
+		<div class=" float-left pl-2 pt-2" *ngIf="sharedDataService.wesFileName">{{sharedDataService.wesFileName}}</div>
+	</div>
+
+	<mat-form-field class="col-xs-6 col-md-6 float-left">
+		<input matInput type="text" id="associateName" name="associateName" maxlength="100"
+		title="{{'WES.associateName' | translate}}"
+		 placeholder="{{'WES.associateName' | translate}}"
+		[(ngModel)]="model.associateName" required>
+		<mat-error *ngIf="associateName.invalid">{{'COMMON.error.required' | translate}}</mat-error>
+	</mat-form-field>
+	<div class="float-right mt-2">
+		<button mat-stroked-button type="button" (click)="onNoClick()">{{ 'BUTTON.cancel' | translate }}</button>
+    <div class="divider"></div>
+		<button mat-flat-button color="primary" type="submit" [disabled]="!newWesLeadForm.form.valid || !send">{{ 'BUTTON.sendToWes' | translate }}</button>
+	</div>
+</form>

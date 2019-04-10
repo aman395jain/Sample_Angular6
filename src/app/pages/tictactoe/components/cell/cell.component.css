@@ -1,0 +1,9 @@
+div {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    border: solid 1px black;
+    font-weight: bold;
+    display: inline-block;
+}

@@ -1,0 +1,34 @@
+<div class="jobTabs bg-gray" *ngIf='orderConfigService.cartCount() > 0 || isNewJob'>
+  <ul class="nav nav-tabs">
+
+    <!--Cart Jobs-->
+    <li role="presentation" class="pointer nav-item" *ngFor="let key of (jobkeyList | async)" [ngClass]="{ 'active': templateId !== key, 'active': templateId === key  }">
+      <div class="nav-link" [ngClass]="{ 'active': templateId !== key, 'active': templateId === key  }">
+        <a (click)="changeActiveJob(key)" matTooltip="{{ 'BUTTON.clickToEdit' | translate }}" [matTooltipDisabled]="templateId != key"
+          [ngClass]="{ 'active': templateId !== key, 'active': templateId === key  }">
+          {{key}}. <span class="jobName" [attr.contenteditable]="templateId === key" [textContent]="orderConfigService.cart[key].configProduct.name"
+            (input)="changeJobName($event, key)"></span>
+        </a>
+        <a (click)="deleteJobFromCart(key)"><i class="fa fa-times click" aria-hidden="true"></i></a>
+      </div>
+    </li>
+
+    <!--Active Job-->
+    <li *ngIf="isNewJob" role="presentation" class="pointer nav-item active">
+      <div class="nav-link active">
+        <a class="active" matTooltip="{{ 'BUTTON.clickToEdit' | translate }}">
+          <span class="jobName" contenteditable="true" [textContent]="orderConfigService.activeConfigProduct.name"
+            (input)="changeJobNameActive($event)" onkeypress="return (this.innerText.length < 50)"></span>
+        </a>
+        <a (click)="deleteActiveJob()"><i class="fa fa-times click" aria-hidden="true"></i></a>
+      </div>
+    </li>
+
+    <!--New Tab-->
+    <li role="presentation" class="pointer nav-item">
+      <a (click)="addTabToCartAndProceed()" class="nav-link">
+        <i class="fas fa-plus"></i>
+      </a>
+    </li>
+  </ul>
+</div>

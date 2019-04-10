@@ -1,0 +1,186 @@
+<div style="margin-top: -50px;">
+<header class="row boarderBottom">
+	<div class="staplesLogo">
+		<img src="assets/img/StaplesLogo_200x72.png" width="300" height="108" />
+	</div>
+	<div class="custName">
+		<h1 class="name">{{orderData.customerLastName}}, {{orderData.customerFirstName}}</h1>
+		<h1 class="due">{{'PRINT.orderDue'| translate}}: {{orderData.dueDate}}</h1>
+	</div>
+	<div class="col-xs-9 col-md-9 float-right text-right">
+ 		<img *ngIf="orderData.contractCustomer" src="assets/img/contract_flag.png" class="pr-1" width="110" height="20"/>
+		<img *ngIf="orderData.customerRewardNumber" src="assets/img/rewards_flag.png" class="pr-1" width="100" height="20"/>
+		<img *ngIf="orderData.bdpPriceCallSuccess" src="assets/img/BDP_flag.png" class="pr-1" width="60" height="20"/>
+	</div>
+
+</header>
+<section class="">
+	<div class="barCodes">
+		<div class="" *ngIf="!orderData.printBarcodeOff">
+			<!-- Order Number printBean.orderNo -->
+			<h5>{{'COMMON.orderNumber'| translate}} </h5>
+			<img src="/barCode/{{orderData.orderNo}}?country={{storeInfo.getStoreDetails()!.country!.shortName}}" alt="" width="250" height="60" />
+		</div>
+		<div class="" *ngIf="orderData.customerRewardNumber != null">
+			<!-- Rewards Number printBean.customerRewardNumber -->
+			<h5>{{'COMMON.rewardsNumber'| translate}} </h5>
+			<img src="/barCode/{{orderData.customerRewardNumber}}?country={{storeInfo.getStoreDetails()!.country!.shortName}}" alt="" width="250" height="60" />
+		</div>
+	</div>
+	<div class="contactInfo">
+		<table>
+			<tr>
+				<td>{{'PRINT.orderReceived'| translate}}:</td>
+				<td>{{orderData.orderCreationDate}}</td>
+			</tr>
+			<tr>
+				<td>{{'PRINT.contactPhone'| translate}}:</td>
+				<td *ngIf="orderData.customerPreferredContactNo !== null">{{orderData?.customerPreferredContactNo}}</td>
+				<td *ngIf="orderData.customerPreferredContactNo === null ">{{orderData.customerPhoneNumber}}</td>
+			</tr>
+			<tr *ngIf="orderData.preferredEmail != null">
+				<td>{{'PRINT.contactEmail'| translate}}:</td>
+				<td>{{orderData.preferredEmail}}</td>
+			</tr>
+			<tr *ngIf="orderData.customerCompany != null">
+				<td>{{'COMMON.companyName'| translate}}:</td>
+				<td>{{orderData.customerCompany}}</td>
+			</tr>
+			<tr *ngIf="orderData.preferredContactMode == 'phone'">
+				<td>{{'PRINT.callWhenReadyForPickup'| translate}}:</td>
+				<td>{{'PRINT.yes'| translate}}</td>
+			</tr>
+			<tr *ngIf="orderData.preferredContactMode == 'mail'">
+				<td>{{'PRINT.emailWhenReadyForPickup'| translate}}:</td>
+				<td>{{'PRINT.yes'| translate}}</td>
+			</tr>
+			<tr *ngIf="orderData.bdpEnrolled == 'Y'">
+				<td colspan="2">{{'PRINT.newBdpEnrollMsg'| translate}} - {{orderData.bdpTier}}</td>
+			</tr>
+			<tr *ngIf="orderData.rewardsEnrolled == 'Y'">
+				<td colspan="2">{{'PRINT.newRewardsEnrollMsg'| translate}} - {{orderData.bdpTier}}</td>
+			</tr>
+			<tr *ngIf="orderData.customerRewardNumber != null && !orderData.bdpPriceCallSuccess && orderData.totalDiscountOnOrder == 0">
+				<td colspan="2">{{'PRINT.priceCallFailureMsg'| translate}}</td>
+			</tr>
+		</table>
+	</div>
+</section>
+<br>
+<div class="col-xs-12 col-md-12 float-left" *ngIf="orderData.formattedContractTotal != null && orderData.isDiscounted">
+	<h3 style="color:red; text-align:center">{{'PRINT.priceOverrideRequired'| translate}}</h3>
+</div>
+<br>
+<!-- LOOP THROUGH JOBS AND DISPLAY DETAILS FOR EACH -->
+<section>
+		<!-- printBean.jobBeanList -->
+
+		<div *ngFor="let job of orderData.jobs; let i = index" class="width100">
+			<table class="width100" *ngIf="job.isActive == 'Y'">
+				<tr class="jobHeader">
+					<td colspan="4">
+						<div class="float-left">
+							{{'PRINT.job'| translate}} {{i + 1}} {{'PRINT.of'| translate}} {{orderData.jobs.length}} - {{job.productName}}
+						</div>
+						<div class="float-right">
+							{{'PRINT.jobDue'| translate}}: {{this.formattedDateTime}}
+						</div>
+					</td>
+				</tr>
+				<tr class="jobDetails">
+					<td class="skuCol">{{'PRINT.sku'| translate}}</td>
+					<td class="descCol">{{'PRINT.description'| translate}}</td>
+					<td class="qtyCol">{{'PRINT.qty'| translate}}</td>
+					<td class="priceCol">{{'PRINT.subtotal'| translate}}</td>
+				</tr>
+				<tr *ngIf="job.productName != null && 'job.productSKU != null || job.preConfProductSKU != null'" class="jobDetails">
+					<td *ngIf="job.productSKUType == 'PRODUCT_SKU'">{{job.productSKU}}</td>
+					<td *ngIf="job.productSKUType == 'PRODUCT_SKU'">{{job.productName}}</td>
+					<td *ngIf="job.productSKUType == 'PRECONFIG_PRODUCT_SKU' || 'NO_PRODUCT_SKU'">{{job.preConfProductSKU}}</td>
+					<td *ngIf="job.productSKUType == 'PRECONFIG_PRODUCT_SKU' || 'NO_PRODUCT_SKU'">{{job.productName}} - {{job.preConfProductName}}</td>
+					<td  class="qtyCol">{{job.quantity}}</td>
+					<td class="priceCol" *ngIf="job.price != null && orderData.formattedContractTotal == null">{{job.formattedPrice}}</td>
+					<td class="priceCol" *ngIf="job.price != null && orderData.formattedContractTotal != null && orderData.isDiscounted">
+						<span style="text-decoration: line-through">{{job.formattedPrice}}</span><br>
+						{{job.formattedPrice}}
+					</td>
+					<td *ngIf="job.price == null">{{'PRINT.quote'| translate}}</td>
+				</tr>
+				<tr *ngFor="let attrOption of job.attributeOptionSelectedBean">
+					<td colspan="4" style="color:red;">{{attrOption.optionMessage}} </td>
+				</tr>
+			</table>
+		</div>
+</section>
+<br>
+<footer class="col-xs-12 col-md-12 float-left scale">
+	<div>
+		<b>{{'ORDER.summary.orderSummary'| translate}}:</b>
+		<hr>
+	</div>
+		
+	<div class="row" *ngIf="orderData.totalDiscountOnOrder != null && orderData.totalDiscountOnOrder > 0">
+		<div class="col-xs-8 col-md-8 float-right text-right">
+			{{'PRINT.originalPrice'| translate}}
+		</div>
+		<div class="col-xs-2 col-md-2 float-right text-right">
+			{{orderData.unitPrice}} x {{orderData.totalQuantity}} &#8771;
+		</div>
+		<div class="col-xs-2 col-md-2 float-right text-right">
+			{{orderData.totalOrderPrice | currency}}
+		</div>
+	</div>
+	<div class="row" *ngIf="orderData.totalDiscountOnOrder != null && orderData.totalDiscountOnOrder > 0">
+		<div class="col-xs-8 col-md-8 float-right text-right">
+			{{'PRINT.customerDiscount'| translate}}
+		</div>
+		<div class="col-xs-2 col-md-2 float-right text-right">
+			{{orderData.discountPrice}} x {{orderData.totalQuantity}} &#8771;
+		</div>
+		<div class="col-xs-2 col-md-2 float-right text-right">
+			{{orderData.totalDiscountOnOrder | currency}}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-8 col-md-8 float-right text-right">
+			{{'PRINT.totalPrice'| translate}}
+		</div>
+		<div class="col-xs-4 col-md-4 float-right text-right" *ngIf="orderData.totalOrderDiscountedPrice != null && orderData.formattedContractTotal == null">
+			{{orderData.totalOrderDiscountedPrice | currency}}
+		</div>
+		<div class="col-xs-4 col-md-4 float-right text-right" *ngIf="orderData.totalOrderDiscountedPrice != null && orderData.formattedContractTotal != null && !orderData.isDiscounted">
+			<span style="text-decoration: line-through;">{{orderData.totalOrderDiscountedPrice | currency}}</span><br>
+			{{orderData.formattedContractTotal}}
+		</div>
+	</div>
+	<div class="row" *ngIf="orderData.totalDiscountOnOrder != null && orderData.totalDiscountOnOrder > 0">
+		<div class="col-xs-8 col-md-8 float-right text-right">
+			{{'PRINT.yourSavings'| translate}}
+		</div>
+		<div class="col-xs-4 col-md-4 float-right text-right">
+			{{this?.totalDiscountOnOrder | currency}}
+		</div>
+		<div class="col-xs-4 col-md-4 float-right text-right" *ngIf="orderData.totalDiscountOnOrder == null">
+			{{'PRINT.quote'| translate}}
+		</div>
+	</div>
+	<br><br>
+	<div class="row">
+		<div class="col-xs-12 col-md-12">
+			<img width="100%" src="/assets/img/satisfaction-guide_highres.jpg"/>
+		</div>
+	</div>
+	<br><br>
+	<div class="row">
+		<div class="col-xs-12 col-md-12 float-center text-center">
+			<h2 class="float-center">{{'PRINT.printPromotion'| translate}}</h2>
+		</div>
+		<br>
+		<div class="col-xs-12 col-md-12 text-center float-center">
+			<div *ngFor="let coupon of orderData.coupons">
+				<img style="width: 300px;" src="file/{{coupon.couponCode}}" alt="{{coupon.couponCode}}" />
+			</div>
+		</div>
+	</div>
+</footer>
+</div>

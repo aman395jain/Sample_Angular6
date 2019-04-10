@@ -1,0 +1,10 @@
+<div class="hack-for-double-header">
+	<app-configoptions></app-configoptions>
+	<div class="jobtab-content-wrapper" [class.active]="!showSideBar">
+		<app-job-tabs #JobTabs></app-job-tabs>
+	</div>
+	<div class="preview-content-wrapper" [class.active]="!showSideBar">
+		<app-product-preview></app-product-preview>
+	</div>
+	<app-config-summary></app-config-summary>
+</div>

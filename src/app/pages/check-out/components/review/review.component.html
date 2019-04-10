@@ -1,0 +1,128 @@
+<h4>{{'CHECKOUT.pleaseReview'| translate}}</h4>
+<hr>
+<div class="row">
+  <div class="card-group contentPadding">
+		<!-- ALL DATA COMES FROM CUSTOMER INFORMATION STEP -->
+    <mat-card class="mat-elevation-z2 addressInformationCard">
+      <mat-card-header>
+        <mat-card-title><h4>{{'CHECKOUT.customerInformation'| translate}}</h4></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+		  <div *ngIf="orderConfigService.orderCustomerPreferredContact.preferredFirstName; else nonPrefFirstName">{{orderConfigService.orderCustomerPreferredContact?.preferredFirstName}} {{orderConfigService.orderCustomerPreferredContact?.preferredLastName}}</div> <!-- Preferred FirstName LastName -->
+		  <ng-template #nonPrefFirstName>
+		    <div *ngIf="orderConfigService.orderCustomer.firstname">{{orderConfigService.orderCustomer?.firstname}} {{orderConfigService.orderCustomer?.lastname}}</div> <!-- FirstName LastName -->
+		  </ng-template>
+		  <div *ngIf="orderConfigService.orderCustomerPreferredContact.preferredCompany; else nonPrefCompany">{{orderConfigService.orderCustomerPreferredContact?.preferredCompany}}</div> <!-- Preferred Company -->
+		  <ng-template #nonPrefCompany>
+			<div *ngIf="orderConfigService.orderCustomer.company">{{orderConfigService.orderCustomer.company}}</div> <!-- Company -->
+		  </ng-template>
+          <div *ngIf="orderConfigService.orderCustomer.address1">{{orderConfigService.orderCustomer.address1}}</div> <!-- Address1 -->
+          <div *ngIf="orderConfigService.orderCustomer.address2">{{orderConfigService.orderCustomer.address2}}</div> <!-- Address2 -->
+		  <div *ngIf="orderConfigService.orderCustomer.city">{{orderConfigService.orderCustomer.city}}, {{orderConfigService.orderCustomer.state}} {{orderConfigService.orderCustomer.zip}}</div> <!-- City, State ZipCode -->
+		  <div *ngIf="orderConfigService.orderCustomerPreferredContact.preferredEmail; else nonPrefEmail">{{orderConfigService.orderCustomerPreferredContact?.preferredEmail}}</div> <!-- Preferred Email -->
+		  <ng-template #nonPrefEmail>
+		    <div *ngIf="orderConfigService.orderCustomer.email">{{orderConfigService.orderCustomer.email}}</div> <!-- Email -->
+		  </ng-template>
+		  <div *ngIf="orderConfigService.orderCustomerPreferredContact.preferredPhoneNumber; else nonPrefPhoneNumber">{{orderConfigService.orderCustomerPreferredContact?.preferredPhoneNumber}}</div> <!-- Preferred PhoneNumber -->
+		  <ng-template #nonPrefPhoneNumber>
+		    <div *ngIf="orderConfigService.orderCustomer.phoneNumber">{{orderConfigService.orderCustomer.phoneNumber | phone}}</div> <!-- PhoneNumber -->
+		  </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="mat-elevation-z2 addressInformationCard" *ngIf="this.orderConfigService.getDeliveryMethod() == 'Shipping'">
+        <mat-card-header>
+            <mat-card-title><h4>{{'CHECKOUT.deliveryOptions'| translate}} <i style="color:lightgray; size: 0.8em;" class="fas fa-shipping-fast"></i></h4></mat-card-title>
+        </mat-card-header>
+        <mat-card-content class>
+            <div >
+                <div class="" *ngIf="orderConfigService.shippingInfoJ.addressType">{{this.orderConfigService.getDeliveryMethod()}} to a {{orderConfigService.shippingInfoJ.addressType}} address.</div> <!-- AddressType -->
+                <div class="" *ngIf="orderConfigService.shippingInfoJ.firstName">{{orderConfigService.shippingInfoJ.firstName}} {{orderConfigService.shippingInfoJ.lastName}}</div> <!-- FirstName LastName -->
+                <div class="" *ngIf="orderConfigService.shippingInfoJ.address1">{{orderConfigService.shippingInfoJ.address1}}</div> <!-- Address1 -->
+                <div class="" *ngIf="orderConfigService.shippingInfoJ.address2">{{orderConfigService.shippingInfoJ.address2}}</div> <!-- Address2 -->
+                <div class="" *ngIf="orderConfigService.shippingInfoJ.city">{{orderConfigService.shippingInfoJ.city}}, {{orderConfigService.shippingInfoJ.state}} {{orderConfigService.shippingInfoJ.zip}}</div> <!-- City, State ZipCode -->
+              </div>
+        </mat-card-content>
+    </mat-card>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 20px;">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+		<!-- ALL DATA COMES FROM JOBS STEP -->
+		<table class="float-right table table-striped">
+			<thead>
+				<tr>
+					<th >{{'CHECKOUT.item' | translate}}</th>
+					<th style="width:15%" class="text-center">{{'CHECKOUT.files' | translate}}</th>
+					<th  class="text-center">{{'CHECKOUT.deliveryDate' | translate}}</th>
+					<th class="text-center">{{'CHECKOUT.quantity' | translate}}</th>
+					<th  class="text-right" style="width: 15%">{{'COMMON.price' | translate}}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let key of (jobkeyList | async)">
+					<td> {{key}}. {{ orderConfigService.cart[key].configProduct.name }}</td>
+					<td  class="text-center" >
+            <div  *ngIf="orderConfigService?.cart[key].mediaType === 0 && orderConfigService?.cart[key].printBrokerFiles">{{orderConfigService?.cart[key].printBrokerFiles.fileDescriptions[0].fileName}}</div>
+            <div  *ngIf="orderConfigService?.cart[key].mediaType === 0 && orderConfigService?.cart[key].multipleFiles">{{orderConfigService?.cart[key].multipleFiles.length}} {{'FILEUPLOAD.fileSelected' | translate}}</div>
+            <div  *ngIf="orderConfigService?.cart[key].mediaType === 1">{{ 'CONFIG.rightSideBar.hardCopy' | translate }}</div>
+            <div  *ngIf="orderConfigService?.cart[key].mediaType === 2">{{ 'CONFIG.rightSideBar.noFile' | translate }}</div>
+					</td>
+					<td class="text-center" *ngIf="!orderConfigService.shippingSelected && !orderConfigService.isEmpty(orderConfigService?.cart[key].turnTimeOptions)"><p *ngIf="orderConfigService.cart[key].selectedTurnTime != null">{{ orderConfigService.cart[key]?.turnTimeOptions[orderConfigService?.cart[key]?.selectedTurnTime].dueDate }}</p></td>
+					<td class="text-center" *ngIf="!orderConfigService.shippingSelected  && orderConfigService.isEmpty(orderConfigService?.cart[key].turnTimeOptions)"><p>{{ orderConfigService.cart[key]?.dueDate }}</p></td>
+					<td class="text-center" *ngIf="orderConfigService.shippingSelected"></td>
+					<td class="text-center">{{orderConfigService?.cart[key].quantity}}</td>
+					<td align="right" *ngIf="!orderConfigService.shippingSelected && !orderConfigService.isEmpty(orderConfigService?.cart[key].turnTimeOptions) && orderConfigService?.cart[key]?.selectedTurnTime != null">
+						{{ orderConfigService.cart[key].turnTimeOptions[orderConfigService?.cart[key]?.selectedTurnTime].displayPrice | currency:'USD':'symbol-narrow' }}
+					</td>
+					<td align="right" *ngIf="!orderConfigService.shippingSelected && orderConfigService.isEmpty(orderConfigService?.cart[key].turnTimeOptions)">
+							{{ orderConfigService.cart[key].totalDiscountedPrice | currency:'USD':'symbol-narrow' }}
+						</td>
+						<td align="right" *ngIf="orderConfigService.shippingSelected">
+							{{ orderConfigService.cart[key].totalDiscountedPrice | currency:'USD':'symbol-narrow' }}
+						</td>
+					<td></td>
+				</tr>
+				<tr *ngIf="orderConfigService.shippingEnabled.value">
+					<td>Delivery: {{ orderConfigService.shippingOption.serviceName }}</td>
+					<td></td>
+					<td class="text-center">{{ orderConfigService.shippingOption.deliveryDate }}</td>
+					<td class="text-center"></td>
+          <td align="right">{{ orderConfigService.shippingOption.total | currency:'USD':'symbol-narrow' }}</td>
+          <td align="right"></td>
+        </tr>
+			</tbody>
+			<tfoot align="right">
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td align="right"><h4>{{'COMMON.total'| translate}}: {{ orderConfigService.totalOrderPrice | currency:'USD':'symbol-narrow' }}</h4></td>
+					<td></td>
+				</tr>
+				<tr>
+
+					<td colspan="5" align="right">
+						<button  mat-stroked-button  type="button"  (click)="submit(SubmitType.Quote)" [disabled]="isSubmitted || orderConfigService.hasWorkFrontJob" >{{isEditQuote ? ('BUTTON.saveQuote' | translate) : ('BUTTON.submitQuote' | translate) }}</button>
+						<div class="divider-10"></div>
+
+						<button  mat-stroked-button type="button" (click)="submit(SubmitType.SaveForLater)" [disabled]="!orderConfigService.isOrderCustomerInfoValid || isSubmitted || orderConfigService.hasWorkFrontJob">{{ 'BUTTON.saveForLater' | translate }}</button>
+						<div class="divider-10"></div>
+
+						<button  mat-stroked-button type="button" [disabled]="isSubmitted" (click)="cancelOrder()">{{isEditQuote ? ('BUTTON.cancelEdit' | translate) : ('BUTTON.cancelOrder' | translate) }}</button>
+						<div class="divider-10"></div>
+
+						<button #tooltip [matTooltip]="tooltipText" [matTooltipClass]="'my-tooltip'" [matTooltipPosition]="left" [matTooltipDisabled]="!addressValidationSuggestion || isEditQuote"
+						     [disabled]="isSubmitted || (orderConfigService.shippingSelected && !orderConfigService.allJobsAreDigital())" mat-flat-button type="button"  (click)="submit(SubmitType.Order)">{{ 'BUTTON.submitOrder' | translate }}</button>
+					</td>
+					<td></td>
+				</tr>
+
+			</tfoot>
+		</table>
+	</div>
+</div>

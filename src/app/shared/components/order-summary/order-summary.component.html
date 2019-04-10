@@ -1,0 +1,84 @@
+<h3 class="inline">{{ 'ORDER.summary.orderSummary' | translate}}</h3>
+  <div class="float-right" *ngIf="orders != null && orders.length > 0">
+    <button mat-stroked-button color=primary *ngIf="orders[0]!.uiStatusMsg !== 'In Progress' && orders[0].canReorder" (click)="reorder(orderNmb, QuoteActions.Reorder)" [disabled]="!orderNmb">{{ 'BUTTON.reorder' | translate }}</button>
+    <button mat-stroked-button color=primary *ngIf="orders[0]!.uiStatusMsg === 'In Progress'" (click)="reorder(orderNmb, QuoteActions.OrderEdit)" [disabled]="!orderNmb">{{ 'NAVBAR.checkOut' | translate }}</button>
+    <div class="divider"></div>
+    <button mat-stroked-button color=primary (click)="print(orderNmb)" [disabled]="!orderNmb">{{ 'BUTTON.print' | translate }}</button>
+  </div>
+<hr>
+<div class="row" *ngIf="orders != null && orders.length > 0">
+  <div class="col-md-6">
+    <strong>{{ 'ORDER.summary.orderSummaryFor' | translate}}: </strong><span>{{ orders[0]!.orderNo}}</span>
+  </div>
+  <p class='align-center'>
+    <strong>{{ 'ORDER.summary.customer' | translate }}: </strong><span >{{ orders[0]!.customerFirstName}} {{ orders[0]!.customerLastName}}</span>
+  </p>
+
+  <div class="col-md-6">
+    <strong>{{ 'ORDER.summary.orderName' | translate}}: </strong><span>{{ orders[0]!.orderName}}</span>
+  </div>
+  <p class='align-center'>
+    <strong>{{ 'COMMON.company' | translate }}: </strong><span>{{ orders[0]!.companyName}}</span>
+  </p>
+  <div class="col-md-6">
+    <strong>{{ 'ORDER.summary.datePlaced' | translate }}: </strong><span>{{ orders[0]!.createDate | date}}</span>
+  </div>
+  <p class='align-center'>
+    <strong>{{ 'COMMON.phone' | translate }}: </strong><span>{{ orders[0]!.phoneNumber}}</span>
+  </p>
+  <div class="col-md-6">
+    <strong>{{ 'ORDER.summary.dueDate' | translate }}: </strong><span> {{ orders[0]!.dueDate | date}}</span>
+  </div>
+  <p class='align-center'>
+    <strong>{{ 'COMMON.email' | translate }}: </strong><span> {{ orders[0]!.email}}</span>
+  </p>
+  <div class="col-md-6">
+    <strong>{{ 'COMMON.status' | translate }}: </strong><span>{{ orders[0]!.uiStatusMsg}} </span>
+  </div>
+</div>
+
+<div class="row orderSummaryTableDiv" *ngIf="orders != null && orders.length > 0">
+	<table class="table table-striped">
+	 <thead>
+		 <tr>
+       <th>{{ 'ORDER.summary.productType' | translate}}</th>
+       <th>Job Name</th>
+		   <th>{{ 'ORDER.summary.skuDescription' | translate }}</th>
+		   <th>{{ 'ORDER.summary.file' | translate }} </th>
+		   <th>{{ 'ORDER.summary.quantity' | translate }}</th>
+		   <th>{{ 'ORDER.summary.price' | translate }}</th>
+		 </tr>
+		</thead>
+		<tbody>
+		  <tr *ngFor="let order of orders; trackBy: trackByFn">
+        <td>{{ order.productType}}</td>
+        <td>{{ order.jobName }}</td>
+		    <td *ngIf="order.skuDescription != null && order.skuDescription.indexOf(',') != -1 && (order.skuDescription.split(',').length - 1) < 7"><div  [innerHTML]="order.skuDescription | skuDescription" class="minimize"></div>
+        </td>
+        <td *ngIf="order.skuDescription != null && order.skuDescription.indexOf(',') != -1 && (order.skuDescription.split(',').length - 1) >= 7"><read-more><div  [innerHTML]="order.skuDescription | skuDescription" class="minimize"></div></read-more>
+        </td>
+        <td *ngIf="order.skuDescription == null || order.skuDescription.indexOf(',') == -1"></td>
+		    <td><div matTooltip="{{order.fileName}}" [matTooltipPosition]="toolTipPosition" (click)="openFilePreview(order.jobId)" class="pointer"><i *ngIf="order.fileFullName"  class="far fa-file fa-3x" ></i></div></td>
+		    <td>{{ order.quantity}}</td>
+		    <td class="float-right lineWithTotals">{{ order.price | currency}}</td>
+		  </tr>
+		</tbody>
+	</table>
+<hr>
+	<div class="float-right orderSummaryTotal">
+	  <div class="row">
+	    <div class="col-md-6"><strong>{{ 'COMMON.subtotal' | translate }}:</strong></div>
+	    <div class="col-md-6">{{orderTotal | currency}}</div>
+	  </div>
+	  <div class="row" *ngIf="orderDiscountTotal > 0">
+      <div class="col-md-6"><strong>{{ 'COMMON.savings' | translate }}:</strong></div>
+      <div class="col-md-6">{{orderDiscountTotal |currency}}</div>
+    </div>
+    <div class="row totalRow">
+      <div class="col-md-6"><strong>{{ 'COMMON.total' | translate }}:</strong></div>
+      <div class="col-md-6">{{orderTotalAfterSavings | currency}}</div>
+    </div>
+    <div class="row"><small class="disclaimer">{{ 'COMMON.totalDisclaimer' | translate }}</small></div>
+	</div>
+
+</div>

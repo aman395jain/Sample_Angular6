@@ -1,0 +1,98 @@
+<div class="container-full-screen">
+  <div class="row">
+
+    <div class="sidebar-sticky-left col-sm-3 col-md-2 col-lg-3">
+      <mat-card>
+        <mat-card-title>Filters</mat-card-title>
+        <hr>
+
+        <div class="form-group">
+          <mat-form-field class="full-width">
+            <input matInput type="search" #focusElement id="filters-search-input" placeholder="Search" (keyup)="onKey($event)">
+          </mat-form-field>
+        </div>
+
+        <mat-card-content class="scroll">
+          <tree-root [nodes]="navNodes" [options]="options">
+            <ng-template #treeNodeTemplate let-node let-index="index">
+              <span [ngClass]="node.data.classes">{{ node.data.name }}</span>
+            </ng-template>
+          </tree-root>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="content col-sm-9 col-md-10 col-lg-9">
+      <mat-card *ngIf="showFavorites" style="margin-bottom: 20px; height: 150px">
+        <mat-card-header>
+          Favorites:
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngFor="let key of favKeys" class="favorite">
+            {{favorites.get(key).name}}
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <div class="page-header">
+          <h2> Products:
+            <small>{{selectedFilter}}</small>
+          </h2>
+        </div>
+        <div id="my-shuffle-container" (domChange)="onDomChange($event)">
+          <mat-card class="item shuffle-item  hover-highlight pointer" *ngFor="let product of products; let i=index;"
+                    style="width: 220px; height: 280px; margin-bottom: 20px; padding: 0"
+                    [attr.data-groups]="product.groups" data-title="{{product.name}}"
+                    [attr.code]="product.code"
+                    [attr.id]="product.productId"
+                    [attr.preconfiguredProductId]="product.preconfiguredProductId"
+                    [attr.displaySequence]="product.displaySequence">
+            <div *ngIf="product.isFavorite && showFavorites" (click)="favorite(product, i)" class="star"><i class="fas fa-star"></i></div>
+            <div *ngIf="!product.isFavorite && showFavorites" (click)="favorite(product, i)" class="star"><i class="far fa-star"></i></div>
+
+            <mat-card-content class="productDetails" (click)="selectProduct(product)">
+              <img src="{{product.imgUrl}}" width="220px" height="220px">
+
+              <div class="productTitle productShortTitle">
+                {{product.name}}
+              </div>
+
+              <div class="productDetailsHover" >
+                <div class="productTitle">
+                  {{product.name}}
+                </div>
+                <div [innerHTML]="product.description" class="productDescription"></div>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+          <div class="my-sizer-element"></div>
+        </div>
+        <mat-card class="item shuffle-item  hover-highlight pointer"
+                  style="width: 220px; height: 280px; margin-bottom: 20px; padding: 0"
+                  [attr.data-groups]="'TicTacToe'" title="TicTacToe'"
+                  *ngIf="selectedFilter.toLowerCase().includes('tic')"
+                  [routerLink]="['/tictactoe']">
+
+
+          <mat-card-content class="productDetails">
+            <img src="assets/images/tic-tac-toe-150614_640.png" width="220px" height="220px">
+
+            <div class="productTitle productShortTitle">
+              {{'TICTACTOE.title' | translate}}
+            </div>
+
+            <div class="productDetailsHover" >
+              <div class="productTitle">
+                {{'TICTACTOE.title' | translate}}
+              </div>
+              <div class="productDescription"> <p style="padding-left: 5px;">{{'TICTACTOE.productDescription' | translate}}</p></div>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

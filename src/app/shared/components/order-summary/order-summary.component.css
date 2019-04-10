@@ -1,0 +1,32 @@
+.orderSummaryTableDiv {
+  margin-top:10px;
+}
+
+.minimize{
+	
+	overflow: hidden;
+   
+}
+
+.lineWithTotals {
+	margin-right: 8px;
+}
+
+.orderSummaryTotal {
+	font-size: 1.3rem;
+	line-height: 1.5;
+	margin-right: 10px;
+	margin-left: auto;
+}
+
+.totalRow {
+  border-top: 2px solid #4d4d4d;
+}
+
+.disclaimer{ 
+	font-size: .9rem;
+}
+
+.inline{
+	  display: inline;
+}

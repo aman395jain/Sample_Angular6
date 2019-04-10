@@ -1,0 +1,103 @@
+<div class="container">
+
+  <mat-card>
+    <div class="page-header">
+      <h3>
+        {{ 'CUSTOMERSEARCH.findAReturningCustomer' | translate }}
+        <small class="text-secondary">{{'CUSTOMERSEARCH.useOneOfTheMethodsBelow' | translate }}</small>
+      </h3>
+    </div>
+    <p *ngIf="storeInfo.getStoreDetails() != null && storeInfo.getStoreDetails()!.country!.shortName =='USA'">
+      <span class="red">{{ 'CUSTOMERSEARCH.important' | translate }}:</span>
+      {{ 'CUSTOMERSEARCH.contractSearch1' | translate }}
+      <span class="badge badge-success">{{ 'COMMON.contract' | translate }}</span>
+      {{ 'CUSTOMERSEARCH.contractSearch2' | translate }}
+    </p>
+  </mat-card>
+
+  <mat-accordion class="example-headers-align">
+
+    <!-- CUSTOMER SEARCH PANEL -->
+    <mat-expansion-panel [expanded]="currentAccordionTab === 0"
+                         (opened)="setAccordionTab(0)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ 'CUSTOMERSEARCH.search' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-customer-search #customerSearchViewChild [displayMode]="DISPLAY_MODE"
+                           (nextAccordionTab)="nextAccordionTab()"
+                           (setAccordionTab)="setAccordionTab($event)"
+                           (setCustomerSearchErrorMessage)="setCustomerSearchErrorMessage($event)"
+                           (setCustomerSearchResultList)="setCustomerSearchResultList($event)"
+                           (setSearchResultsTabEnabled)="setSearchResultsTabEnabled($event)">
+      </app-customer-search>
+      <mat-action-row>
+        <button mat-button type="reset" (click)="customerSearchViewChild.resetForm()">
+          {{ 'BUTTON.reset' | translate }}
+        </button>
+        <div class="divider"></div>
+        <button type="button" mat-stroked-button (click)="customerSearchViewChild.newCustomer()">
+          {{ 'BUTTON.newCustomer' | translate }}
+        </button>
+        <div class="divider"></div>
+        <button type="submit" mat-flat-button color="primary" (click)="customerSearchViewChild.checkAndSubmit()"
+                [disabled]="!customerSearchViewChild.custSearchForm.form.valid || !customerSearchViewChild.input">
+          {{ 'BUTTON.search' | translate }}
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <!-- SEARCH RESULTS PANEL -->
+    <mat-expansion-panel [expanded]="currentAccordionTab === 1"
+                         (opened)="setAccordionTab(1)"
+                         [disabled]="!searchResultsTabEnabled">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ 'CUSTOMERSEARCH.searchResults' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-customer-search-results #searchResultsViewChild
+                                   [displayMode]="DISPLAY_MODE"
+                                   [customerSearchErrorMessage]="customerSearchErrorMessage"
+                                   [customerSearchResultList]="customerSearchResultList"
+                                   (prevAccordionTab)="prevAccordionTab()"
+                                   (nextAccordionTab)="nextAccordionTab()"
+                                   (setCustomerSearchResultList)="setCustomerSearchResultList($event)"
+                                   (setSearchResultsTabEnabled)="setSearchResultsTabEnabled($event)">
+      </app-customer-search-results>
+      <mat-action-row>
+        <button mat-stroked-button (click)="searchResultsViewChild.newSearch()"> {{ 'BUTTON.newSearch' | translate }}</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <!-- CUSTOMER DETAIL PANEL -->
+    <mat-expansion-panel [expanded]="currentAccordionTab === 2"
+                         (opened)="setAccordionTab(2)"
+                         [disabled]="selectedCustomer === null">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ 'CUSTOMERSEARCH.customerDetails' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-customer-detail #custDetailsViewChild
+                           (nextAccordionTab)="nextAccordionTab()"
+                           (prevAccordionTab)="prevAccordionTab()">
+      </app-customer-detail>
+      <mat-action-row>
+        <button mat-stroked-button (click)="custDetailsViewChild.back()">{{'BUTTON.back'| translate}}</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <!-- ORDER SUMMARY PANEL -->
+    <mat-expansion-panel [expanded]="currentAccordionTab === 3"
+                         (opened)="setAccordionTab(3)"
+                         [disabled]="selectedOrder === null">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ 'ORDER.summary.orderSummary' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-order-summary #orderSummaryViewChild
+                         (prevAccordionTab)="prevAccordionTab()">
+      </app-order-summary>
+      <mat-action-row>
+        <button mat-stroked-button (click)="orderSummaryViewChild.submitBackButton()">{{ 'BUTTON.back' | translate }}</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
+</div>

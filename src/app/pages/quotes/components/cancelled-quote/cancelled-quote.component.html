@@ -1,0 +1,14 @@
+<form #cancelledQuoteForm="ngForm" (ngSubmit)="onSubmit()">
+
+	<h3>{{ 'QUOTES.cancelQuote' | translate}}</h3>
+	<hr>
+	<div class="col-xs-12 col-md-12">
+		<h5>{{'QUOTES.areYouSureCancelQuote' | translate}}</h5>
+	</div>
+	<hr>
+	<div class="float-right">
+		<button mat-stroked-button color=primary type="button" (click)="onNoClick()">{{ 'BUTTON.noKeepWorking' | translate }}</button>
+    <div class="divider"></div>
+		<button mat-stroked-button color=primary type="submit">{{ 'BUTTON.yesCancelQuote' | translate }}</button>
+	</div>
+</form>

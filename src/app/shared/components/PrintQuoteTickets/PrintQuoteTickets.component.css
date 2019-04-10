@@ -1,0 +1,15 @@
+.scale {
+	font-size: 160%;
+}
+
+.name {
+	font-size: 70px;
+}
+
+.due {
+	font-size: 45px;
+}
+
+body {background-color:#fff; color:#4b4b4b; font-size:13px; line-height:18px; text-align:justify; margin:0; padding:0;}
+p{margin:0; font-weight:normal;}
+a{color:#46b2e1;}

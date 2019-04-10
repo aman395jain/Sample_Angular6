@@ -1,0 +1,12 @@
+<div mat-dialog-title>
+  <h3>{{'PRINT.printTicketDialogHeader' | translate}}</h3>
+  <div>{{'COMMON.orderNum' | translate}} {{data.orderNumber}}</div>
+</div>
+
+<div mat-dialog-content style="height: 100%; overflow: hidden;">
+  <app-FilePreview [pdfSrc]='src' style="height: 95%"></app-FilePreview>
+</div>
+
+<div mat-dialog-actions class="mt-auto" >
+    <button mat-flat-button color="primary" mat-dialog-close class="float-right ml-auto" >{{'BUTTON.close' | translate}}</button>
+</div>

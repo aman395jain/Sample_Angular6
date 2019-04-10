@@ -1,0 +1,12 @@
+.file-upload {
+	top: -10px;
+	position: relative;
+}
+
+.radio {
+	padding-top: 15px;
+}
+
+.no-left-pad {
+	padding-left: 0px;
+}

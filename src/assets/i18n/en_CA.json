@@ -1,0 +1,198 @@
+{
+    "BUTTON": {
+    	"back": "Back",
+		"cancel": "Cancel",
+		"close": "Close",
+		"createOrder": "Create Order",
+		"print": "Print",
+		"reorder": "Reorder",
+		"reset": "Reset",
+		"save": "Save",
+		"search": "Search",
+		"select": "Select",
+		"sendToWes": "Send to WES",
+		"startANewOrder": "Start a New Order",
+		"submit": "Submit"
+    },
+    
+    "COMMON": {
+    	"address": "Address",
+		"city": "City",
+		"company": "Company",
+		"companyName": "Company Name",
+		"contract": "CONTRACT",
+		"copyCenterEmail": "Copy Center Email",
+		"customerName": "Customer Name",
+		"email": "Email",
+		"enterStoreNumber": "Enter Store Number",
+		"faxNumber": "Fax Number",
+		"filters": "Filters",
+		"firstName": "First Name",
+		"lastName": "Last Name",
+		"name": "Name",
+		"none": "None",
+		"phone": "Phone",
+		"phoneNumber": "Phone Number",
+		"rewardsNumber": "Rewards Number",
+		"savings" : "Savings",
+		"state": "State",
+		"status": "Status",
+		"store": "Store",
+		"storeHours": "Store Hours",
+		"subtotal": "Subtotal",
+		"total": "Total",
+		"totalDisclaimer": "*Final price at POS",
+    "zipCode": "Zip Code",
+    "orderNumber": "Order Number",
+		
+		"badge": {
+			"bdp": "BDP",
+			"contract": "CONTRACT",
+			"rewards": "REWARDS"
+		},
+		"error": {
+			"address": "Please enter a valid address",
+			"city": "Please enter a valid city",
+			"companyName": "Please enter a valid company name",
+			"email": "Please enter a valid email",
+			"firstName": "Please enter a valid first name",
+			"lastName": "Please enter a valid last name",
+			"masterAccountNo": "Please enter a valid master account number",
+			"phoneNumber": "Please enter a valid phone number",
+			"required": "Please enter a value",
+			"rewardsNumber": "Please enter a valid rewards number",
+			"state": "Please select a state",
+			"zipCode": "Please enter a valid zip code"
+		},
+		"title":{
+			"companyName": "Company Name (Staples Inc)",
+			"email": "Email (example@gmail.com)",
+			"firstName":  "First Name (John)",
+			"lastName": "Last Name (Smith)",
+			"masterAccountNo": "Master Account # (10-Digit Number (##########))",
+        	"phoneNumber": "Phone Number (###-###-####)",
+        	"rewardsNumber": "Rewards Number (10-Digit Number (##########))"
+		}
+    },
+    
+    "CUSTOMERSEARCH": {
+		"accountInformation": "Account Information",
+		"activeOrders": "Active Orders",
+		"allOrders": "All Orders",
+		"businessAdvantageCustomer": "Business Advantage Customer",
+		"businessDiscountProgram": "Business Discount Program",
+		"contractCompany": "Contract Company",
+		"contractSearch1": "Contract customers will not receive their pricing at POS unless the green",
+		"contractSearch2": "badge shows on the record in this search.",
+		"customerDetails": "Customer Details",
+		"customerInformation": "Customer Information",
+		"enrollmentDate": "Enrollment Date",
+		"findAReturningCustomer": "Find a Returning Customer",
+		"important": "Important",
+		"managedAccount": "Managed Account",
+		"masterAccountNo": "Master Account #",
+		"newCustomer": "New Customer",
+		"retailCustomer": "Retail Customer",
+		"retailCustomerText": "Customers searchable by Rewards Number.",
+		"rewardsProgram": "Rewards Program",
+		"savedOrders": "Saved Orders",
+		"search": "Search ",
+		"searchResults": "Search Results",
+		"staplesRewardNo": "Staples Rewards #",
+		"useOneOfTheMethodsBelow": "Use one of the methods below to locate a customer.",
+		
+		"columns":{
+			"cityState": "City/State",
+			"company": "Company",
+			"membershipLevel": "Membership Level"
+		},
+		"details":{
+			"dateCreated": "Date Created",
+			"orderNo": "Order #",
+			"price": "Price",
+			"products": "Products",
+			"reorder": "Reorder",
+			"statusId": "Status Id",
+			"tickets": "Tickets"
+		},
+		"error": {
+			"email": "Please Enter Valid Email",
+			"name": "Please Enter Valid First and Last Name",
+			"noResults": "No search results, Please try again",
+			"specialCharacters": "Please Remove Any Special Characters."
+		}
+    },
+    
+    "NAVBAR": {
+    	"checkOut": "Check Out",
+		"logout": "Logout",
+		"manageQuotes": "Manage Quotes",
+		"michelleClark": "Michelle Clark",
+		"solutionBuilder": "Solution Builder",
+		"wesLeads": "Wes Leads"
+    },
+    
+    "ORDER": {
+        "summary":{
+        	"customer": "Customer",
+            "datePlaced": "Date Placed",
+            "dueDate": "Due Date",
+            "orderSummary": "Order Summary",
+            "orderSummaryFor": "Order Summary for",
+            "productionLocation": "Production Location"
+         }
+    },
+    
+  	"TEXTNOTIFICATION": {
+    	"customerName": "Customer Name",
+		"orderDueDate": "Order Due Date",
+		"orderNo": "Order #",
+		"orderTotal": "Order Total",
+		"pickedUp": "Picked Up",
+		"readyForPickupTextNotification": "Ready for Pickup Text Notification",
+		"sendText": "Send Text",
+		"startANewOrder": "Start a New Order"
+    },
+    
+    "WES": {
+        "address1": "Address 1",
+		"address2": "Address 2",
+		"allDataUpdatedNightly": "All data on this page is updated nightly",
+		"associateName": "Associate Name",
+		"bestTimeToCall": "Best Time To Call",
+		"comment": "Comment",
+		"comments": "Comments",
+		"contactWes": "Contact Wes",
+		"customerName": "Customer Name",
+		"customerPhoneNumber": "Customer Phone Number",
+		"dollarValue": "Dollar Value",
+		"enterComments": "Enter Comments...",
+		"escalateComment": "Escalate/Comment",
+		"escalation": "Escalation",
+		"fileUpload": "File Upload",
+		"leadID": "Lead ID",
+		"more": "More Info",
+		"newWesLead": "New Wes Lead",
+		"phoneNumber": "Phone Number",
+		"preferredContact": "Preferred Contact",
+		"printSpecialistEmail": "Print Specialist Email",
+		"printSpecialistName": "Print Specialist Name",
+		"printSpecialistPhone": "Print Specialist Phone",
+		"projectDetails": "Project Details",
+		"projectDueDate": "Project Due Date",
+		"request": "Request",
+		"storeComments": "Store Comments",
+		"submissionDate": "Submission Date",
+		"wesLeadDetails": "Wes Lead Details",
+		"wesLeadManagement": "Wes Lead Management",
+		"wesLeadSummary": "Wes Lead Summary",
+		
+		"title":{
+			"address1": "Address 1 (123 xxxx)",
+			"address2": "Address 2 (123 xxxx)",
+			"city": "City (Boston)",
+			"company": "Company (Staples)",
+			"zipCode": "Zip Code (5-Digit Number (#####))"
+		}
+    }
+}

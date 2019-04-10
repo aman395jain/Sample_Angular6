@@ -1,0 +1,58 @@
+table {
+    width: 100%;
+  }
+
+.mat-header-cell {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.mat-column-customerName{
+    width: 180px;
+}
+
+.mat-column-submissionDate{
+    width: 150px;
+}
+
+.mat-column-status{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+td.mat-cell:last-child,
+td.mat-footer-cell:last-child,
+th.mat-header-cell:last-child {
+  padding-right: 10px;
+}
+
+td.mat-cell:first-child,
+td.mat-footer-cell:first-child,
+th.mat-header-cell:first-child {
+  padding-left: 10px;
+}
+
+.cust-mat-row {
+  cursor: pointer;
+  background: none;
+}
+
+.cust-mat-row:hover {
+  box-shadow:
+    inset 1px 0 0 #dadce0,
+    inset -1px 0 0 #dadce0,
+    0 1px 2px 0 rgba(60, 64, 67, .3),
+    0 1px 3px 1px rgba(60, 64, 67, .15);
+  -webkit-box-shadow:
+    inset 1px 0 0 #dadce0,
+    inset -1px 0 0 #dadce0,
+    0 1px 2px 0 rgba(60,64,67,.3),
+    0 1px 3px 1px rgba(60,64,67,.15);
+  background-color: rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 1;
+}
+
+.standardPadding{
+  margin-bottom: 1.0rem;
+}

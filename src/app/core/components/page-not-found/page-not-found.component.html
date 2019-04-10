@@ -1,0 +1,9 @@
+<div id="errorPage" class="container"> 
+  <div class="mx-auto">    
+    <img id="sadstapler" class="mx-auto" src="{{src}}">
+    <div>
+      <h2 id="errorMsg" class="text-center" *ngIf="routeParams.error">Oops! <br>{{ routeParams?.error }}</h2>
+      <h2 id="errorMsg" class="text-center" *ngIf="!routeParams.error">Oops! Page Not Found</h2>
+    </div>
+  </div>
+</div>

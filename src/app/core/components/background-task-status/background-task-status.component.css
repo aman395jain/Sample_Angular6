@@ -1,0 +1,52 @@
+.progressContainer {
+  width: 300px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+.mat-card-title {
+  margin-bottom: 0px;
+}
+.mat-card {
+  padding: 5px;
+}
+.mat-list, .mat-nav-list, .mat-selection-list {
+  margin: 0 -20px;
+}
+.hideButton {
+  position: relative;
+  float: right;
+}
+
+.hideButton:hover {
+  color: #B50000;
+  cursor: pointer;
+}
+
+.taskContainer {
+  padding: 0;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+
+
+.cancelItem {
+  margin-left: auto;
+  float: right;
+}
+
+.cancelItem:hover {
+  color: #B50000;
+  cursor: pointer;
+}
+
+h5 {
+  margin-bottom: 0px;
+}
+
+.mat-expansion-panel-body {
+  margin-left: 3px;
+  margin-right: 3px;
+}

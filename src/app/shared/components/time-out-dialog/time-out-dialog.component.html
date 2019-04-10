@@ -1,0 +1,6 @@
+<h1 mat-dialog-title><i class="fas fa-exclamation-triangle "></i> {{'TIMEOUT.title' | translate}}</h1>
+<p>{{'TIMEOUT.description1' | translate}} <span style="color: #b50000">{{countdown}}</span> {{'TIMEOUT.description2' | translate}}</p>
+<div mat-dialog-actions class="full-width">
+  <button mat-flat-button color="primary" class="full-width mb-1" (click)="logout()" cdkFocusInitial>{{'BUTTON.logout' | translate}}</button>
+  <button mat-stroked-button (click)="stayConnected()" class="full-width" >{{'TIMEOUT.stayConnected' | translate}}</button>
+</div>

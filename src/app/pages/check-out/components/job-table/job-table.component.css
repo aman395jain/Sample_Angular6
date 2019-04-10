@@ -1,0 +1,59 @@
+.jobName {
+    padding: 3px;
+}
+
+.orderName {
+    padding: 3px;
+}
+
+.buttonIncrement {
+    padding-right: 0;
+    padding-left: 0;
+    width: 40px;
+    min-width: 40px;
+}
+
+.numInput {
+    width: 60px;
+    border: 1px solid currentColor;
+    height: 36px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1500px) {
+  .numInput {
+      width: 40px;
+  }
+}
+
+/*Disable input number spinner*/
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+
+.no-wrap-block {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.media-select-icon {
+  vertical-align: middle;
+  font-size: 1.5em !important;
+}
+
+.fileWarn {
+  color:   #B50000;
+  border: 1px solid #B50000;
+}
+
+.fileNormal {
+  background-color: white;
+}

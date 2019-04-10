@@ -1,0 +1,138 @@
+<div class="container">
+  <mat-card>
+    <div class="page-header">
+      <h3>{{ 'REWARDSENROLLMENT.rewardsTitle' | translate}}
+        <span><small class="text-secondary">{{ 'REWARDSENROLLMENT.rewardsSubTitle' | translate}}</small></span>
+      </h3>
+    </div>
+  </mat-card>
+
+    <mat-card class="card-margin">
+          <mat-panel-title>
+            {{ 'REWARDSENROLLMENT.rewardsInfoTitle' | translate }}
+          </mat-panel-title>
+
+        <div class="row">
+          <div class="col-sm-6 pad center-div">
+              <div class="center-div2">
+                <img src="{{ enrollRewardsImg }}" height="75%" style="max-height: 100%" />
+              </div>
+          </div>
+          <div class="col-sm-6 pad">
+              <h5>{{ 'REWARDSENROLLMENT.rewardsMembersGet' | translate }}</h5>
+              <ul>
+                <li>
+                  <span class="bold">{{ 'REWARDSENROLLMENT.moneyBack.title' | translate }}</span>
+                  {{ 'REWARDSENROLLMENT.moneyBack.info' | translate }}
+                </li>
+                <li>
+                  <span class="bold">{{ 'REWARDSENROLLMENT.shipping.title' | translate }}</span>
+                  {{ 'REWARDSENROLLMENT.shipping.info' | translate }}
+                </li>
+                <li>
+                  <span class="bold">{{ 'REWARDSENROLLMENT.bonusEvents.title' | translate }}</span>
+                  {{ 'REWARDSENROLLMENT.bonusEvents.info' | translate }}
+                </li>
+                <li>
+                  <span class="bold">{{ 'REWARDSENROLLMENT.inkRecyclingAwards.title' | translate }}</span>
+                  {{ 'REWARDSENROLLMENT.inkRecyclingAwards.info' | translate }}
+                </li>
+              </ul>
+            </div>
+        </div>
+        <div class="row" *ngIf="showEnrollButton">
+            <div class="col-xs-6 col-md-6 float-right">
+                <label></label>
+            </div>
+            <div class="col-xs-6 col-md-6 float-right">
+                <button mat-stroked-button class="float-right" color="primary" (click)="enrollNewCustomer()">{{ 'BUTTON.enrollNew' | translate}}</button>
+            </div>
+        </div>
+
+    </mat-card>
+
+    <mat-card *ngIf="!rewardsSuccess">
+          <mat-panel-title>
+            {{ 'REWARDSENROLLMENT.enrollToday' | translate }}
+          </mat-panel-title>
+
+        <div class="form-container">
+        <form #rewardsEnrollmentForm="ngForm" (ngSubmit)="onSubmit()">
+
+            <mat-form-field class="col-xs-6 col-md-6 float-left">
+              <input matInput id="firstName" maxlength="15" type="text" pattern="^[A-Za-z\'\'_.-]{1,50}$" name="firstName"
+              title="{{'COMMON.title.firstName' | translate}}"
+              placeholder="{{'COMMON.firstName' | translate}}"
+              [(ngModel)]="model.firstname" required>
+              <mat-error *ngIf="firstName.invalid">{{'COMMON.error.firstName' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-xs-6 col-md-6 float-right">
+              <input matInput id="lastName" maxlength="20" type="text" pattern="^[A-Za-z\'\'_.-]{1,50}$" name="lastName"
+              title="{{'COMMON.title.lastName' | translate}}"
+              placeholder="{{'COMMON.lastName' | translate}}"
+              [(ngModel)]="model.lastname" required>
+              <mat-error *ngIf="lastName.invalid">{{'COMMON.error.lastName' | translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-xs-6 col-md-6 float-left">
+              <input matInput id="phoneNumber" name="phoneNo" type="tel"
+              title="{{'COMMON.title.phoneNumber' | translate}}"
+              placeholder="{{'WES.phoneNumber' | translate}}"
+              [textMask]="{mask: phoneMask}"
+              [(ngModel)]="model.phoneNumber" required>
+              <mat-error *ngIf="phoneNumber.invalid">{{'COMMON.error.phoneNumber' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-xs-6 col-md-6 float-right">
+              <input matInput id="email" name="email" type="email" maxlength="100" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+              title="{{'COMMON.title.email' | translate}}"
+              placeholder="{{'COMMON.email' | translate}}"
+              [(ngModel)]="model.email" #email="ngModel" required>
+              <mat-error *ngIf="email.invalid && email.dirty">{{'COMMON.error.email' | translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-xs-6 col-md-6 float-left">
+              <input matInput id="zipCode"  name="zipCode" type="text" maxlength="10" pattern="^\d{5}(?:[-\s]\d{4})?$"
+              title="{{'WES.title.zipCode' | translate}}"
+              placeholder="{{'COMMON.zipCode' | translate}}"
+              [(ngModel)]="model.zip" required>
+              <mat-error *ngIf="zipCode.invalid">{{'COMMON.error.zipCode' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-xs-6 col-md-6 float-right">
+              <input matInput id="company" name="company" type="text" maxlength="30"
+              title="{{'COMMON.company' | translate}}"
+              placeholder="{{'COMMON.company' | translate}}"
+              [(ngModel)]="model.company"
+              [required]="model.account === 'Business'">
+              <mat-error *ngIf="company.invalid">{{'COMMON.error.companyName' | translate}}</mat-error>
+            </mat-form-field>
+
+            <div class="col-xs-6 col-md-6 float-left">
+              <h6>{{ 'REWARDSENROLLMENT.accountTitle' | translate}}</h6>
+              <mat-radio-group [(ngModel)]="model.account" name="account" id="account" required>
+                <mat-radio-button color="primary"
+                  value="{{ 'REWARDSENROLLMENT.accountCategories.business' | translate}}">
+                  {{ 'REWARDSENROLLMENT.accountCategories.business' | translate}}
+                </mat-radio-button>
+                <mat-radio-button color="primary"
+                  value="{{ 'REWARDSENROLLMENT.accountCategories.personal' | translate}}">
+                  {{ 'REWARDSENROLLMENT.accountCategories.personal' | translate}}
+                </mat-radio-button>
+                <mat-radio-button color="primary"
+                  value="{{ 'REWARDSENROLLMENT.accountCategories.teacher' | translate}}">
+                  {{ 'REWARDSENROLLMENT.accountCategories.teacher' | translate}}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <div class="col-xs-6 col-md-6 float-left">
+              <label></label>
+            </div>
+
+            <div class="float-right">
+              <button mat-button type="reset" (click)="rewardsEnrollmentForm.reset()">{{'BUTTON.reset' | translate}}</button>
+              <button mat-stroked-button color=primary type="submit" [disabled]="!rewardsEnrollmentForm.form.valid">{{'BUTTON.submit' | translate}}</button>
+            </div>
+          </form>
+        </div>
+    </mat-card>
+</div>

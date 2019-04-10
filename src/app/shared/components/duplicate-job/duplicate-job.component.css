@@ -1,0 +1,32 @@
+.full-width {
+	width: 90%;
+	font-size: 18px;
+}
+
+.checkout {
+	font-size: 24px;
+	height: 50px;
+}
+
+.cart-badge{
+	position: relative;
+	top: -13px;
+	margin-left: -5px;
+	background-color: #4d4d4d;
+	color:white;
+	border: 1px solid white;
+}
+
+.coupon{
+  border: 1px;
+  border-radius: 2px;
+  border-style: solid;
+  min-width: 100%;
+  border-color: black;
+  min-height: 160px;
+}
+
+.greenBkg {
+	/*background-color: #28a745!important;*/
+	color: #006600;
+}

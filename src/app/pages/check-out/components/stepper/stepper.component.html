@@ -1,0 +1,56 @@
+<mat-vertical-stepper [linear]="true" #stepper (selectionChange)="stepChanged($event)" (animationDone)="animationDone()">
+
+  <!-- JOBS STEP -->
+  <mat-step [completed]="orderConfigService.cartCount() > 0" [stepControl]="orderConfigService.cartCount() > 0">
+    <ng-template matStepLabel>{{'CHECKOUT.jobs'| translate}}</ng-template>
+    <app-job-table [shakeLinks]="shakeLinks"></app-job-table>
+    <div class="float-right">
+      <button mat-flat-button color="primary" class="ml-1" (click)="jobTabNext(stepper)" [disabled]="orderConfigService.cartCount() == 0">
+        {{'BUTTON.next'| translate}}
+      </button>
+    </div>
+  </mat-step>
+
+  <!-- CUSTOMER INFORMATION STEP-->
+  <mat-step [completed]="orderConfigService.isOrderCustomerInfoValid"
+            [stepControl]="orderConfigService.isOrderCustomerInfoValid">
+    <ng-template matStepLabel>{{'CHECKOUT.customerInformation'| translate}}</ng-template>
+    <app-customerinformation #customerSearchStepperViewChild [mode]="'page'" #validateCustInfoForm
+                             (setCustInfoFormValid)="setCustInfoFormValid($event)">
+    </app-customerinformation>
+    <div class="float-right">
+      <button mat-stroked-button (click)="customerSearchStepperViewChild.clearCustomer()">Reset</button>
+      <button mat-stroked-button matStepperPrevious class="ml-1">{{'BUTTON.back'| translate}}</button>
+      <button mat-flat-button color="primary" class="ml-1" (click)="custInfoNext(stepper)"
+              [disabled]="!orderConfigService.isOrderCustomerInfoValid">
+        {{'BUTTON.next'| translate}}
+      </button>
+    </div>
+  </mat-step>
+
+  <!-- DELIVERY OPTIONS STEP DUE DATE IS NOT BEING SET CORRECTLY -->
+  <mat-step
+      [completed]="((orderConfigService.isShippingInfoValid && orderConfigService.shippingSelected) || orderConfigService.isPickUpInfoValid)
+        && orderConfigService.isOrderCustomerInfoValid"
+      [stepControl]="(orderConfigService.isShippingInfoValid && orderConfigService.shippingSelected) || orderConfigService.isPickUpInfoValid">
+    <ng-template matStepLabel>{{'CHECKOUT.deliveryOptions'| translate}}</ng-template>
+    <app-delivery [mode]="'page'" (openStep)="openStep($event)"></app-delivery>
+    <div class="float-right">
+      <button mat-stroked-button matStepperPrevious>{{'BUTTON.back'| translate}}</button>
+      <button mat-flat-button color="primary" class="ml-1" (click)="deliveryNext(stepper)"
+      [disabled]="!((orderConfigService.isShippingInfoValid && orderConfigService.shippingSelected && orderConfigService.allJobsAreDigital()) || orderConfigService.isPickUpInfoValid)">
+        {{'BUTTON.next'| translate}}
+      </button>
+    </div>
+  </mat-step>
+
+  <!-- REVIEW & SUBMIT STEP -->
+  <mat-step>
+    <ng-template matStepLabel>{{'CHECKOUT.reviewSubmit'| translate}}</ng-template>
+    <app-review></app-review>
+    <div class="float-right">
+      <button mat-stroked-button matStepperPrevious>{{'BUTTON.back'| translate}}</button>
+    </div>
+  </mat-step>
+
+</mat-vertical-stepper>

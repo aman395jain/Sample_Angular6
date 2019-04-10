@@ -1,0 +1,27 @@
+<div class="progressContainer">
+  <mat-expansion-panel [expanded]="statusService.expanded">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'COMMON.backgroundTasks' | translate}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-list>
+      <mat-list-item *ngFor="let key of (tasksKeyList | async)" class="taskContainer" style="padding: 0 5px;">
+       <!-- <mat-spinner [diameter]="25" style=" margin-left: -10px;"></mat-spinner>
+        <div class="divider"></div>-->
+        <div style="display: block; width: 100%">
+          <div>{{statusService.tasks[key].taskName}}
+            <div class="cancelItem"  matTooltip="Hide Status"(click)="cancelTask(key)"><i class="far fa-times-circle"></i></div>
+
+          </div>
+          <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+
+    </mat-list>
+
+  </mat-expansion-panel>
+</div>
+

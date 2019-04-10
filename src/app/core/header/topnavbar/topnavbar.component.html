@@ -1,0 +1,111 @@
+<nav class="navbar navbar-expand-lg fixed-top bg-staples-red font-white" role="navigation">
+  <a class="navbar-brand font-white" [routerLink]="['/']"> <img src="assets/images/naso-logo.png" alt="Staples�" class="block"> {{ 'NAVBAR.solutionBuilder' | translate }}</a>
+  <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon font-white"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item " [routerLinkActive]="['active']" >
+        <a class="nav-link font-white" [routerLink]="['/manageQuotes']">{{ 'NAVBAR.manageQuotes' | translate }}</a>
+      </li>
+      <li class="nav-item  dropdown" id="wesleads" [routerLinkActive]="['active']">
+          <a class="nav-link dropdown-toggle font-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" [routerLink]="['/wesleads']">{{ 'NAVBAR.wesLeads' | translate }} </a>
+        <div class="dropdown-menu dropdown-menu">
+          <a class="dropdown-item" [routerLink]="['/wesleads']">{{ 'NAVBAR.manageWesLeads' | translate }}</a>
+          <a class="dropdown-item pointer hoverWhite"  (click)="openNewWesLeadDialog(false)">{{ 'BUTTON.newLead' | translate }}</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown" id="rewards" [routerLinkActive]="['active']">
+          <a class="nav-link dropdown-toggle font-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" [routerLink]="['/staplesrewards']">{{ 'NAVBAR.rewards' | translate }} </a>
+        <div class="dropdown-menu dropdown-menu">
+          <a class="dropdown-item" [routerLink]="['/staplesrewards']">{{ 'NAVBAR.enrollment' | translate }}</a>
+          <div *ngIf="wesPricingIssueEnabled">
+            <a class="dropdown-item pointer hoverWhite" (click)="openNewWesLeadDialog(true)">{{ 'BUTTON.bdpLevelIssue' | translate }}</a>
+          </div>
+        </div>
+      </li>
+      <li *ngIf="!couponLinkSuppressed && couponLookupURL" class="nav-item">
+        <a class="nav-link font-white pointer" (click)="couponFunction()">{{ 'NAVBAR.couponTool' | translate }}</a>
+      </li>
+    </ul>
+    <!--  -->
+    <ul class="navbar-nav pull-right my-2 my-lg-0">
+	    <li class="nav-item  dropdown" *ngIf="(this.storeInfoService.isStoreFeature('showLanguageSelector')) && (storeInfoService.getLanguages().length > 1)">
+	      <a class="nav-link dropdown-toggle font-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+	        <img src="assets/flags/blank.gif" class="flag" ngClass="{{storeInfoService.getLanguageObj().icon}}" alt="United States" /> {{ storeInfoService.getLanguageObj().name }}<span class="caret"></span>
+	      </a>
+	      <div class="dropdown-menu">
+	        <a  class="dropdown-item"  *ngFor='let language of storeInfoService.getLanguages()' (click)="setLanguage(language)"><img src="assets/flags/blank.gif" class="flag" ngClass="{{language.icon}}" alt="United States" /> {{ language.name }}</a>
+	      </div>
+	    </li>
+	    <li class="nav-item  dropdown">
+        <a class="nav-link dropdown-toggle font-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+           {{ 'COMMON.store' | translate }}: {{ storeInfoService.getStoreNumber()}}<span class="caret"></span>
+        </a>
+        <div class="dropdown-menu" style="width: 250px;">
+            <div style="margin:10px;">
+               <app-store-info [storeDetails]="storeInfoService.getStoreDetails()"></app-store-info>
+            </div>
+        </div>
+      </li>
+      <li class="nav-item" id="checkout"><a class="nav-link font-white" routerLink="checkout" [routerLinkActive]="['active']">{{ 'NAVBAR.checkOut' | translate }} <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        <span *ngIf="orderConfigService.cartCount() > 0" class="badge cart-badge">{{orderConfigService.cartCount()}}</span></a>
+      </li>
+      <li class="nav-item" id="feedback">
+      <a class="nav-link font-white" (click)="openSendEmailDialog()">
+          {{ 'NAVBAR.feedback' | translate }}  <i class="fas fa-envelope"></i>
+      </a>
+      </li>
+      <li class="nav-item dropdown" id="associateName" [routerLinkActive]="['active']">
+          <a class="nav-link dropdown-toggle font-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleFullStorySessionId()">{{ userService.user?.name}}</a>
+          <div class="dropdown-menu dropdown-menu">
+              <a class="dropdown-item pointer hoverWhite" (click)="logout()">{{ 'NAVBAR.logout' | translate }}  <i class="fa fa-sign-out-alt" aria-hidden="true"></i></a>
+          </div>
+      </li>
+      <li class="nav-item  dropdown" id="help">
+        <a class="nav-link dropdown-toggle font-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <button class="dropdown-item pointer" type="button" (click)="WikiFunction()">
+              {{ 'NAVBAR.showHelp' | translate}}  <i class="fas fa-info-circle"></i></button>
+          <mat-divider class="dropdown-divider"></mat-divider>
+          <div *ngIf="releaseNotes" class="btn-group dropleft">
+              <button class="dropdown-item pointer dropdown-toggle" type="button" data-toggle="dropdown" id="navbarDropdownMenuLink">
+                  {{ 'NAVBAR.releaseNotes' | translate }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <table>
+                  <tbody>
+                    <tr *ngFor="let release of releaseNotes" class="dropdown-item" (click)="releaseNotesFunction(release.file)">
+                      <td>{{release.id}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+          </div>
+
+          <div class="btn-group dropleft">
+            <button class="dropdown-item pointer dropdown-toggle" type="button" data-toggle="dropdown" id="buildInfo">
+                {{'NAVBAR.buildInfo' | translate}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="buildInfo">
+              <span class="infoItem">
+                <strong>{{'NAVBAR.backendBuildInfo' | translate}}</strong>
+                <ul>
+                  <li class="buildInfoList" *ngFor="let info of backendAppInfo.value | async"> {{info}}</li>
+                </ul>
+                <hr>
+                <strong>{{'NAVBAR.uiBuildInfo' | translate}}</strong>
+                <ul>
+                  <li class="buildInfoList"> {{'NAVBAR.uiBuildVersion' | translate}}: {{uiBuildVersion}}</li>
+                  <li class="buildInfoList"> {{'NAVBAR.uiBuildDate' | translate}}: {{uiBuildDate | date:'medium'}}</li>
+                </ul>
+              </span>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

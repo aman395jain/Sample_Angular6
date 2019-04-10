@@ -1,0 +1,214 @@
+    <form class="row col-lg-12 col-md-12 col-sm-12 col-12 contentMargin" #customerInfoForm="ngForm">
+	  <div class="row col-lg-12 col-md-12 col-sm-12 col-12 ">
+	    <h5 *ngIf="orderConfigService.orderCustomer.firstname" class="col-lg-7 col-md-7 col-sm-7 col-12"
+	        id="existingCustomerName"><i class="fas fa-user"></i>
+	      {{orderConfigService.orderCustomer?.firstname}} {{orderConfigService.orderCustomer?.lastname}}
+	      <br>
+	      <small *ngIf="orderConfigService.orderCustomer?.isContractCustomer">
+          <span class="badge badge-success" id="contract" >{{'COMMON.badge.contract'| translate}}</span>
+	      </small>
+	      <div *ngIf="orderConfigService.orderCustomer?.rewardsNumber" class="divider"></div>
+	      <small *ngIf="orderConfigService.orderCustomer?.rewardsNumber">
+          <span class="badge badge-danger" id="rewards">{{'COMMON.badge.rewards'| translate}}</span>
+	      </small>
+			  <div class="divider" *ngIf="orderConfigService.orderCustomer?.bdpFeedData?.rewardsNumber"></div>
+	      <small *ngIf="orderConfigService.orderCustomer?.bdpFeedData?.rewardsNumber">
+          <span class="badge badge-warning" id="bdp">{{'COMMON.badge.bdp'| translate}}</span>
+	      </small>
+	    </h5>
+	    <h5 *ngIf="!orderConfigService.orderCustomer.firstname" class="col-lg-7 col-md-7 col-sm-7 col-12"><i class="fas fa-user"></i>{{'COMMON.newCustomer'| translate}}</h5>
+      <div class="col-lg-5 col-md-5 col-sm-5 col-12 float-right" style="text-align: right;">
+	      <button mat-stroked-button class="ml-1" color="primary" (click)="searchForCustomer()">
+	        {{'CHECKOUT.findCustomer'| translate}}<i class="fa fa-search ml-1" aria-hidden="true"></i>
+	      </button>
+	    </div>
+	  </div>
+
+	  <div *ngIf="orderConfigService.showEmailPhoneRequired" class="col-lg-5 col-md-5 col-sm-5 col-12 float-right">
+	  	<h6 style="color: red;">{{'CHECKOUT.emailOrPhoneRequired' | translate}}</h6>
+	  </div>
+
+	  <div *ngIf="!orderConfigService.orderCustomerSelected" class="row ml-1 mt-1 cust-toggle col-lg-12 col-md-12 col-sm-12 col-12">
+	    <mat-checkbox [checked]="saveCustomer" color="primary" name="saveCustToggle" (change)="updateSaveCustomer($event.checked); validateCustomerInfoForm()">
+	      {{'CHECKOUT.saveCustomer' | translate}}
+	    </mat-checkbox>
+	  </div>
+	<div class="col-lg-6 col-md-6 col-sm-6 col-12 width49">
+
+	  <div class="row mt-1">
+	    <mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+	      <input matInput placeholder="{{'COMMON.firstName'| translate}}"
+	             [(ngModel)]="orderConfigService.orderCustomer.firstname"
+	             name="firstname" pattern="^[A-Za-z\'\'_.-]{1,50}$" maxlength="50" id="firstName"
+	             title="{{'COMMON.title.firstName' | translate}}" required
+	             [disabled]="orderConfigService.orderCustomerSelected"
+	             (ngModelChange)="checkFormValid(); populatePreferred('firstName', $event)">
+	      <mat-error *ngIf="firstName.invalid">{{'COMMON.error.firstName' | translate}}</mat-error>
+	    </mat-form-field>
+
+	    <mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+	      <input matInput placeholder="{{'COMMON.lastName'| translate}}"
+	             [(ngModel)]="orderConfigService.orderCustomer.lastname"
+	             name="lastname" pattern="^[A-Za-z\'\'_.-]{1,50}$" maxlength="50" id="lastName"
+	             title="{{'COMMON.title.lastName' | translate}}" [required]="saveCustomer"
+	             [disabled]="orderConfigService.orderCustomerSelected"
+	             (ngModelChange)="checkFormValid(); populatePreferred('lastName', $event)">
+	      <mat-error *ngIf="lastName.invalid">{{'COMMON.error.lastName' | translate}}</mat-error>
+	    </mat-form-field>
+	  </div>
+
+	  <div class="row">
+	    <mat-form-field [ngClass]="emailClasses">
+	      <input matInput placeholder="{{'COMMON.email'| translate}}" type="email"
+	             [(ngModel)]="orderConfigService.orderCustomer.email" [required]="emailReq"
+	             name="email" maxlength="50" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" id="email"
+	             title="{{'COMMON.title.email' | translate}}" #email="ngModel"
+	             (ngModelChange)="checkEmailOrPhone(); checkFormValid(); populatePreferred('email', $event);">
+	      <mat-error *ngIf="email.invalid && email.dirty">{{'COMMON.error.email' | translate}}</mat-error>
+	    </mat-form-field>
+
+	    <div [ngClass]="optInClasses">
+	      <mat-slide-toggle color="primary" [checked]="optIn" name="optIn" (change)="updateOptIn($event.checked)">
+					{{'CHECKOUT.emailOptIn'| translate}}
+				</mat-slide-toggle>
+	    </div>
+	  </div>
+
+		<div class="row">
+			<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+				<input matInput type="tel" name="phoneNumber" id="phoneNumber" placeholder="{{ 'COMMON.phoneNumber' | translate }}"
+				 title="{{ 'COMMON.title.phoneNumber' | translate}}" #phoneNumber="ngModel" [textMask]="{mask: phoneMask}"
+				 [ngModel]="orderConfigService.orderCustomer.phoneNumber" [required]="phoneReq" pattern="\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}"
+				 (ngModelChange)="removeFormatting($event); checkEmailOrPhone(); populatePreferred('phoneNumber', $event); validateFormAlt();">
+				<mat-error *ngIf="phoneNumber.invalid && phoneNumber.dirty">{{'COMMON.error.phoneNumber' | translate}}</mat-error>
+			</mat-form-field>
+
+			<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+				<input matInput placeholder="{{'COMMON.company'| translate}}" [(ngModel)]="orderConfigService.orderCustomer.company"
+				 name="company" id="company" title="{{'WES.title.company' | translate}}" [disabled]="orderConfigService.orderCustomerSelected"
+				 (ngModelChange)="checkFormValid(); populatePreferred('company', $event)">
+			</mat-form-field>
+		</div>
+
+	  <div class="row">
+	    <mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+	      <input matInput placeholder="{{'CHECKOUT.address1'| translate}}"
+	             [(ngModel)]="orderConfigService.orderCustomer.address1" name="address1"
+	             maxlength="60" pattern="^[a-zA-Z0-9\s,'#-]*$" id="address1" title="{{'WES.title.address1' | translate}}"
+	             [required]="saveCustomer" [disabled]="orderConfigService.orderCustomerSelected && !this.orderConfigService.isNewRewardsEnroll"
+	             (ngModelChange)="checkFormValid()">
+	      <mat-error *ngIf="address1.invalid">{{'COMMON.error.address' | translate}}</mat-error>
+	    </mat-form-field>
+
+	    <mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+	      <input matInput placeholder="{{'CHECKOUT.address2'| translate}}"
+	             [(ngModel)]="orderConfigService.orderCustomer.address2" name="address2"
+	             maxlength="60" pattern="^[a-zA-Z0-9\s,'#-]*$" id="address2" title="{{'WES.title.address2' | translate}}"
+	             [disabled]="orderConfigService.orderCustomerSelected && !this.orderConfigService.isNewRewardsEnroll"
+	             (ngModelChange)="checkFormValid()">
+	      <mat-error *ngIf="address2.invalid">{{'COMMON.error.address' | translate}}</mat-error>
+	    </mat-form-field>
+	  </div>
+
+	  <div class="row">
+	    <mat-form-field class="col-lg-4 col-md-4 col-sm-4 col-12">
+	      <input matInput placeholder="{{'COMMON.city'| translate}}" [(ngModel)]="orderConfigService.orderCustomer.city"
+	             name="city" [required]="saveCustomer"
+	             maxlength="50" pattern="^[a-zA-Z0-9\s,'-]*$" id="city" title="{{'WES.title.city' | translate}}"
+	             [disabled]="orderConfigService.orderCustomerSelected && !this.orderConfigService.isNewRewardsEnroll"
+	             (ngModelChange)="checkFormValid()">
+	      <mat-error *ngIf="city.invalid">{{'COMMON.error.city' | translate}}</mat-error>
+	    </mat-form-field>
+
+	    <mat-form-field class="col-lg-4 col-md-4 col-sm-4 col-12">
+	      <mat-select placeholder="{{'COMMON.state'| translate}}" [(ngModel)]="orderConfigService.orderCustomer.state"
+	                  name="state" id="state" title="{{'COMMON.state' | translate}}" [required]="saveCustomer"
+	                  [disabled]="orderConfigService.orderCustomerSelected && !this.orderConfigService.isNewRewardsEnroll"
+	                  (ngModelChange)="checkFormValid()">
+	        <mat-option *ngFor="let state of commonConstants.STATES" value="{{state.shortName}}">{{state.fullName}}
+	        </mat-option>
+	      </mat-select>
+	      <mat-error *ngIf="state.invalid">{{'COMMON.error.state' | translate}}</mat-error>
+	    </mat-form-field>
+
+	    <mat-form-field class="col-lg-4 col-md-4 col-sm-4 col-12">
+	      <input matInput placeholder="{{'COMMON.zipCode'| translate}}" type="text" pattern="^\d{5}(-\d{4})?$"
+	             [(ngModel)]="orderConfigService.orderCustomer.zip" name="zipCode" (change)="orderConfigService.setZip($event.srcElement.value)"
+	             maxlength="5" id="zipCode" title="{{'WES.title.zipCode' | translate}}" [required]="saveCustomer"
+	             [disabled]="orderConfigService.orderCustomerSelected"
+	             (ngModelChange)="checkFormValid()">
+	      <mat-error *ngIf="zipCode.invalid">{{'COMMON.error.zipCode' | translate}}</mat-error>
+	    </mat-form-field>
+	  </div>
+	 </div>
+
+	<mat-divider [vertical]="true" style="margin-right: 5px"></mat-divider>
+
+	<div class="col-lg-6 col-md-6 col-sm-6 col-12 width49">
+		<h5>{{'CHECKOUT.preferredOrderContactMethod'| translate}}</h5>
+		<p>{{'CHECKOUT.thisInfo'| translate}}</p>
+
+		<div class="row">
+			<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+				<input matInput placeholder="{{'COMMON.firstName'| translate}}" maxlength="50"
+							[(ngModel)]="orderConfigService.orderCustomerPreferredContact.preferredFirstName"
+							title="{{'COMMON.title.firstName' | translate}}" name="preferredFirstName" id="preferredFirstName"
+							(ngModelChange)="checkFormValid(); preferredEdited = true;">
+				<mat-error *ngIf="preferredFirstName.invalid">{{'COMMON.error.firstName' | translate}}</mat-error>
+			</mat-form-field>
+
+			<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+				<input matInput placeholder="{{'COMMON.lastName'| translate}}" maxlength="50"
+							[(ngModel)]="orderConfigService.orderCustomerPreferredContact.preferredLastName"
+							title="{{'COMMON.title.lastName' | translate}}" name="preferredLastName" id="preferredLastName"
+							(ngModelChange)="checkFormValid(); preferredEdited = true;">
+				<mat-error *ngIf="preferredLastName.invalid">{{'COMMON.error.lastName' | translate}}</mat-error>
+			</mat-form-field>
+		</div>
+
+		<div class="row">
+			<mat-radio-group class="col-lg-12 col-md-12 col-sm-12 col-12"
+											(change)="preferredPhoneNumber.focus()"
+											[(ngModel)]="orderConfigService.orderCustomerPreferredContact.preferredContactMode"
+											name="preferredPhoneNumberSelect">
+				<mat-radio-button color="primary" value="phone" class="no-rt-pad full-width">
+					<mat-form-field class="full-width">
+						<input matInput type="tel" placeholder="{{'CHECKOUT.preferredPhoneNumber'| translate}}" #preferredPhoneNumber
+									[(ngModel)]="orderConfigService.orderCustomerPreferredContact.preferredPhoneNumber"
+									title="{{'COMMON.title.phoneNumber' | translate}}" id="preferredPhoneNumber" name="preferredPhoneNumber"
+									[textMask]="{mask: phoneMask}" class="full-width" #preferredPhoneNumber="ngModel" pattern="\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}"
+									(ngModelChange)="checkFormValid(); preferredEdited = true; togglePreferred('phone');">
+						<mat-error *ngIf="preferredPhoneNumber.invalid && preferredPhoneNumber.dirty">{{'COMMON.error.phoneNumber' | translate}}</mat-error>
+					</mat-form-field>
+				</mat-radio-button>
+			</mat-radio-group>
+	</div>
+
+		<div class="row">
+			<mat-radio-group class="col-lg-12 col-md-12 col-sm-12 col-12"
+											(change)="preferredEmail.focus()"
+											[(ngModel)]="orderConfigService.orderCustomerPreferredContact.preferredContactMode"
+											name="preferredEmailSelect">
+				<mat-radio-button color="primary" value="email" class="no-rt-pad full-width">
+					<mat-form-field class="full-width">
+						<input matInput placeholder="{{'CHECKOUT.preferredEmail'| translate}}" maxlength="50"
+									pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" class="full-width"
+									[(ngModel)]="orderConfigService.orderCustomerPreferredContact.preferredEmail"
+									title="{{'COMMON.title.email' | translate}}" id="preferredEmail" name="preferredEmail" #preferredEmail
+									(ngModelChange)="checkFormValid(); preferredEdited = true; togglePreferred('email');">
+						<mat-error *ngIf="preferredEmail.invalid">{{'COMMON.error.email' | translate}}</mat-error>
+					</mat-form-field>
+				</mat-radio-button>
+			</mat-radio-group>
+		</div>
+
+		<div class="row">
+			<mat-form-field class="col-lg-12 col-md-12 col-sm-12 col-12">
+				<input matInput placeholder="{{'COMMON.company'| translate}}" name="preferredCompany" id="preferredCompany"
+							[(ngModel)]="orderConfigService.orderCustomerPreferredContact.preferredCompany"
+							title="{{'WES.title.company' | translate}}" (ngModelChange)="checkFormValid(); preferredEdited = true;">
+			</mat-form-field>
+		</div>
+	 </div>
+  </form>
+

@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{ 'NAVBAR.feedback' | translate }}</h1>
+<hr>
+<form #sendEmailForm="ngForm" >
+	{{ 'NAVBAR.provideDetail' | translate }}
+	<mat-form-field class="col-xs-12 col-md-12 float-right">
+		<textarea matInput style="resize: vertical;" rows="6" name="userMessage"
+			title="Description" placeholder="Description"
+			[(ngModel)]="this.userMessage" required></textarea>
+	</mat-form-field>
+	<div class="float-right mt-2">
+		<button mat-stroked-button type="button" (click)="onNoClick()">{{ 'BUTTON.cancel' | translate }}</button>
+    <div class="divider"></div>
+		<button mat-flat-button color="primary" type="button" (click)="onSubmit(); onNoClick()" [disabled]="!sendEmailForm.form.valid || sent">{{ 'BUTTON.send' | translate }}</button>
+	</div>
+</form>

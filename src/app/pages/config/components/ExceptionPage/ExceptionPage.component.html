@@ -1,0 +1,64 @@
+<div id="exceptionPageDialog">
+<h2 mat-dialog-title> {{ 'CONFIG.exceptionPages.configurations' | translate}}</h2>
+<mat-dialog-content [style.max-height.px]="innerHeight">
+    <div *ngFor="let options of orderConfigService.activeExceptionPage?.keyVO">
+        <div *ngIf="count(options?.optionVO.groupingVO) > 0" class="options-group">
+            <h5 class="list-group-item-heading">{{options.key}}</h5>
+            <div class=" flex-container wrap">
+                <div *ngFor="let key of options.optionVO.groupingVOKeyList">
+                    <!--normal option -->
+                    <button *ngIf="options.optionVO.groupingVO[key].length == 1 && !hasCustomOptions(options.optionVO.groupingVO[key][0])"
+                        (click)="optionSelected(options.optionVO.groupingVO[key][0])" class="btn btn-default option optionFullSquare"
+                        [ngClass]="{ 'optionAdded': options.optionVO.groupingVO[key][0]?.isSelected=='N', 'optionAdded': options.optionVO.groupingVO[key][0]?.isSelected=='Y'  }"
+                        [disabled]="options.optionVO.groupingVO[key][0]?.isDisabled"
+                        [attr.code]="options.optionVO.groupingVO[key][0].code"
+                        [attr.id]="options.optionVO.groupingVO[key][0].id"
+                        matTooltip="{{options.optionVO.groupingVO[key][0].description}}"
+                        [matTooltipPosition]="position" matTooltipShowDelay="1000">
+                        <img *ngIf="orderConfigService.getActiveProductDetails()?.hasOwnProperty(options.optionVO.groupingVO[key][0].id)"
+                            class=" button-option option-image" src="{{orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id).content.smallImageURL}}{{orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id)?.content.smallImageName}}">
+                        <span class="option-text">{{options.optionVO.groupingVO[key][0].value }} </span>
+                    </button>
+
+                    <!--option with grouping and popup ie media type-->
+                    <button *ngIf="options.optionVO.groupingVO[key].length > 1" class="btn btn-default option optionFullSquare" (click)="openAttributeOptionDialog(options.optionVO.groupingVO[key], key);"
+                        [ngClass]="{ 'optionAdded': options.optionVO.selectedGroup != key, 'optionAdded': options.optionVO.selectedGroup == key  }"
+                        matTooltip="{{ 'CONFIG.selectForAdditionalOptions' | translate }}"
+                        [matTooltipPosition]="position" matTooltipShowDelay="1000"
+                        [disabled]="checkIfGroupIsDisabled(options.optionVO.groupingVO[key])">
+                        <img *ngIf="orderConfigService.getActiveProductDetails()?.hasOwnProperty(options.optionVO.groupingVO[key][0].id)"
+                            class="option-image" src="{{orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id).content.smallImageURL}}{{orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id)?.content.smallImageName}}">
+                        <span class="option-text">{{key}}</span>
+                    </button>
+
+                    <!--Button with custom options-->
+                    <button *ngIf="options.optionVO.groupingVO[key].length == 1 && hasCustomOptions(options.optionVO.groupingVO[key][0])" class="btn btn-default option optionFullSquare" (click)="openCustomInputDialog(options.optionVO.groupingVO[key][0], key);"
+                        [ngClass]="{ 'optionAdded': options.optionVO.selectedGroup != key, 'optionAdded': options.optionVO.selectedGroup == key  }"
+                        matTooltip="{{ 'CONFIG.selectForCustomOptions' | translate }}"
+                        [matTooltipPosition]="position" matTooltipShowDelay="1000">
+                        <img *ngIf="orderConfigService.getActiveProductDetails()?.hasOwnProperty(options.optionVO.groupingVO[key][0].id)"
+                            class="option-image" src="{{orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id).content.smallImageURL}}{{orderConfigService.getActiveProductDetailsByKey(options.optionVO.groupingVO[key][0].id)?.content.smallImageName}}">
+                        <span class="option-text">{{options.optionVO.groupingVO[key][0].value }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="center" >
+    <form [formGroup]="pageRangeForm" name="pageRangeForm">
+        <mat-form-field>
+            <input matInput placeholder="Page Range"  formControlName="pageRangeInput" name="pageRangeInput" #pageRangeInput>
+            <i matSuffix *ngIf="pageRangeValidating" class="fa fa-spinner fa-spin" style="font-size:18px"></i>
+            <mat-error *ngIf="pageRangeForm.get('pageRangeInput').hasError('error')">{{pageRangeForm.get('pageRangeInput').getError('msg')}}</mat-error>
+            <mat-error *ngIf="pageRangeForm.get('pageRangeInput').hasError('pattern')">{{ 'CONFIG.exceptionPages.invalidInput' | translate }}</mat-error>
+        </mat-form-field>
+
+        <button mat-stroked-button color="primary" [disabled]="!pageRangeForm.valid" (click)="addExceptionPage()" *ngIf="!data.edit" >{{ 'BUTTON.add' | translate }}</button>
+        <button mat-stroked-button color="primary" [disabled]="!pageRangeForm.valid" (click)="updateExceptionPage()" *ngIf="data.edit" >{{ 'BUTTON.update' | translate }}</button>
+        <button mat-stroked-button mat-dialog-close (click)="clearActiveExceptionPage()"	>{{ 'BUTTON.cancel' | translate }}</button>
+    </form>
+  </div>
+</mat-dialog-actions>
+</div>

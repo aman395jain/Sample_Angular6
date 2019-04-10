@@ -1,0 +1,60 @@
+<h1 mat-dialog-title>{{ 'WES.wesLeadSummary' | translate }}</h1>
+<hr>
+<form #wesCommentForm="ngForm" >
+	<div mat-dialog-content>
+		<div class="row">
+			<div class="col-md-6"><strong>{{ 'COMMON.name' | translate }}: </strong>{{ wesData.first_NAME__C}} {{ wesData.last_NAME__C}} </div>
+			<div class="col-md-6"><strong>{{ 'WES.leadID' | translate }} </strong>{{ wesData.peid__C}} </div>
+		</div>
+		<div class="row">
+			<div class="col-md-6"><strong>{{ 'WES.dollarValue' | translate }} </strong>{{ wesData.amount | currency }}</div>
+			<div class="col-md-6"><strong>{{ 'WES.customerPhoneNumber' | translate }} </strong>{{ wesData.customer_PHONE_NUMBER__C }} </div>
+		</div>
+		<div class="row">
+			<div class="col-md-6"><strong>{{ 'COMMON.status' | translate }}: </strong>{{ wesData.stagename}}</div>
+			<div class="col-md-6"><strong>{{ 'WES.submissionDate' | translate }}: </strong>{{ leadData.created_DATE_CALC__C}}</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6"><strong>{{ 'WES.request' | translate }}: </strong>{{ leadData.description}}</div>
+		</div>
+
+	  <hr>
+	  <div class="row">
+	  	<div class="col-md-6"><strong>{{ 'WES.printSpecialistName' | translate }} </strong>{{ wesData.owner_FULL_NAME__C }} </div>
+	  	<div class="col-md-6"> <strong>{{ 'WES.printSpecialistPhone' | translate }} </strong>{{ wesData.owner_PHONE }} </div>
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-6"><strong>{{ 'WES.printSpecialistEmail' | translate }} </strong>{{ wesData.owner_EMAIL }} </div>
+	  	<div class="col-md-6"></div>
+	  </div>
+
+
+	  <hr>
+	  <h4 align="center">{{'WES.comments' | translate}}</h4>
+	  <div [innerHTML]="wesData.comments | replaceLineBreaks " class="commentsSection"></div>
+	   <hr>
+	  <h4 align="center">{{'WES.storeComments' | translate}}</h4>
+	  <div [innerHTML]="wesData.store_Comments_c | replaceLineBreaks " class="commentsSection"></div>
+	  <hr>
+	  <div>
+	    <mat-radio-group [(ngModel)]="wesComment.escalationFlag" name="escalationFlag" required >
+	    	<mat-radio-button [value]="false"  color="primary">{{'WES.comment' | translate}}</mat-radio-button>
+	    	<mat-radio-button [value]="true" color="primary">{{'WES.escalation' | translate}}</mat-radio-button>
+	    </mat-radio-group>
+
+
+	  </div>
+	  <div>
+
+		<textarea id="comments" style="resize: vertical;" class="form-control" placeholder="{{'WES.enterComments' | translate}}" maxlength="3000"
+		[(ngModel)]="wesComment.comments" name="comments" required></textarea>
+	  </div>
+
+	</div>
+	<div mat-dialog-actions style="float:right;">
+	  <button mat-button type="submit" cdkFocusInitial (click)="onSubmit()" [disabled]="!wesCommentForm.form.valid">{{'BUTTON.submit' | translate}}</button>
+	  <div class="divider"></div>
+    <button mat-button type="button" (click)="onNoClick()">{{'BUTTON.close' | translate}}</button>
+
+	</div>
+</form>

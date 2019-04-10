@@ -1,0 +1,8 @@
+<h3 mat-dialog-title>{{ 'CONFIG.warning' | translate}}</h3>
+<mat-dialog-content>
+  {{ data.message }}
+</mat-dialog-content>
+
+<mat-dialog-actions class="action-row">
+    <button mat-stroked-button (click)="onOk()">{{ 'BUTTON.ok' | translate }}</button>
+</mat-dialog-actions>

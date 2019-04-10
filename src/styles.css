@@ -1,0 +1,279 @@
+@import '~angular-tree-component/dist/angular-tree-component.css';
+
+/* You can add global styles to this file, and also import other style files */
+body{
+    margin:0;
+    padding-top: 65px;
+}
+
+html, body {
+	background-color: #ECECEC;
+	 height: 100%;
+
+}
+
+.divider{
+  width:5px;
+  height:auto;
+  display:inline-block;
+}
+.divider-10{
+  width:10px;
+  height:auto;
+  display:inline-block;
+}
+
+.filler{
+	 height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.bg-staples-red{
+	background-color: #B50000;
+	border:0;
+}
+
+.bg-white{
+	background-color: #ffffff;
+	border:0;
+}
+
+.bg-gray{
+	background-color: #4d4d4d;
+	border:0;
+}
+
+/*navbar overrides*/
+.navbar{
+	padding: 0em;
+}
+
+.nav-link{
+	padding: 1.2rem 1rem;
+}
+
+.nav-link:focus, .nav-link:hover {
+	background-color: #4d4d4d;
+}
+
+/*end navbar overrides*/
+
+.navbar2{
+	margin-top:54px;
+	clear:both;
+}
+
+.breadcrumb{
+	padding:0;
+	margin:0;
+	background-color:#ffffff;
+}
+
+.font-white{
+	color:white;
+}
+
+.card-header{
+		background-color: #B50000;
+		color: white;
+}
+
+.centerTextVert {
+	margin: auto;
+    padding: 14px;
+}
+
+.container {
+	margin-top: 10px;
+}
+.shadow{
+	box-shadow: 5px 5px 5px #888888;
+}
+
+.canvas{
+	    border: 1px solid black;
+	    pointer-events: none;
+}
+
+.center-div{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.center-div2{
+
+  width: 50%;
+  margin: 0 auto;
+
+}
+
+/*Add padding around col divs to make table like appearence */
+.col-spacing {
+	margin-top: 4px;
+	margin-bottom:4px;
+}
+
+.inline{
+    display: inline;
+}
+
+.list-group-item-title {
+	color: #ffffff;
+	background-color: #B50000;
+	font-weight:bold;
+
+}
+
+.configOptions{
+	padding-left:0px;
+	padding-right:0px;
+}
+
+/* Custom Bootstrap button colors */
+.btn-primary-red{
+	background-color: #B50000;
+	border-color: #B50000;
+	color: #ffffff;
+}
+
+.btn-primary-red.active, .btn-primary-red:active, .btn-primary:hover, .btn-primary.focus, .btn-primary:focus, .btn-primary:active:hover{
+	background-color: #4d4d4d;
+}
+
+.btn-warning {
+	color: #FFF !important;
+}
+
+.badge-warning {
+	color: #FFF !important;
+}
+
+/* changed focus boarder color to match styling. */
+.form-control:focus {
+    border-color: #4d4d4d;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(58, 58, 58, 0.2), 0 0 8px rgba(58, 58, 58, 0.8);;
+    box-shadow: inset 0 1px 1px rgba(58, 58, 58, 0.2), 0 0 8px rgba(58, 58, 58, 0.8);;
+}
+
+.disabled{
+	pointer-events: none;
+}
+
+@media ( max-width :240px) {
+    #toast-container>div {
+        padding: 8px 8px 8px 50px;
+        width: 11em
+    }
+    #toast-container .toast-close-button {
+        right: -.2em;
+        top: -.2em
+    }
+}
+
+@media ( min-width :241px) and (max-width:480px) {
+    #toast-container>div {
+        padding: 8px 8px 8px 50px;
+        width: 18em
+    }
+    #toast-container .toast-close-button {
+        right: -.2em;
+        top: -.2em
+    }
+}
+
+@media ( min-width :481px) and (max-width:768px) {
+    #toast-container>div {
+        padding: 15px 15px 15px 50px;
+        width: 25em
+    }
+}
+
+
+.popover-title {
+	background-color: white;
+	color:black;
+}
+
+.popover {
+	padding: 0px;
+}
+
+label {
+    font-weight: normal !important;
+}
+
+mat-radio-label {
+	font-weight: normal !important;
+}
+
+mat-radio-button {
+    padding-right: 10px;
+}
+
+.pointer{
+	cursor: pointer
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.snackBarError {
+	background: #B50000;
+}
+
+td.mat-cell:last-child,
+td.mat-footer-cell:last-child,
+th.mat-header-cell:last-child {
+  padding-right: 10px;
+}
+
+td.mat-cell:first-child,
+td.mat-footer-cell:first-child,
+th.mat-header-cell:first-child {
+  padding-left: 10px;
+}
+
+.cust-mat-row {
+  cursor: pointer;
+  background: none;
+}
+
+.cust-mat-row:hover {
+  box-shadow:
+    inset 1px 0 0 #dadce0,
+    inset -1px 0 0 #dadce0,
+    0 1px 2px 0 rgba(60, 64, 67, .3),
+    0 1px 3px 1px rgba(60, 64, 67, .15);
+  -webkit-box-shadow:
+    inset 1px 0 0 #dadce0,
+    inset -1px 0 0 #dadce0,
+    0 1px 2px 0 rgba(60,64,67,.3),
+    0 1px 3px 1px rgba(60,64,67,.15);
+  background-color: rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 1;
+}
+
+
+.actionIcon {
+    color: #4d4d4d;
+    display: inline-block;
+}
+
+.actionIcon:hover {
+    color: #B50000;
+    cursor: pointer;
+}
+
+button:focus {
+    outline: 1px dotted;
+    outline: none;
+}
+
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: none;
+}

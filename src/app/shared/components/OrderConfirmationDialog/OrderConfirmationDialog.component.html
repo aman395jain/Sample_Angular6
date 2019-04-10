@@ -1,0 +1,40 @@
+<h3 mat-dialog-title style="text-align: center">
+  {{confirmationTitle}}
+</h3>
+<div *ngIf="success && fdSuccess && fdSubmitFinished" class="checkWrapper">
+  <app-progress-check></app-progress-check>
+</div>
+<div *ngIf="(!fdSuccess && fdSubmitFinished) || (!workFrontSuccess && workFrontSubmitted)" class="failureWrapper" style="text-align: center">
+  <i class="fas fa-exclamation-triangle"></i>
+</div>
+<mat-dialog-content>
+  <br>
+  <p style="text-align: center">
+    {{orderType}} {{'COMMON.number' | translate}}: <span id="orderNumber"><b>{{orderNumber}}</b></span>
+  </p>
+  <p *ngIf="!fdSuccess && fdSubmitFinished" style="text-align: center">
+    {{ 'ORDER.checkout.orderFailedToSubmitToFd' | translate }}
+  </p>
+  <div *ngIf="success && workFrontSubmitted && workFrontSuccess" style="text-align: center; padding-bottom: 5px;">{{ workFrontSuccessMsg }}</div>
+  <div *ngIf="success && workFrontSubmitted && !workFrontSuccess" style="text-align: center; padding-bottom: 5px;">{{ workFrontFailedMsg }}
+    
+  </div>
+  <div *ngIf="success && fdSuccess && fdSubmitFinished" style="text-align: center; padding-bottom: 5px;">{{ flightDeckStatusMessage }}</div>
+  <mat-progress-bar *ngIf='showProgressBar' mode="indeterminate"></mat-progress-bar>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div *ngIf="!collectPaymentMessageEnabled" class="fullWidth" role="group">
+    <button mat-stroked-button class="fullWidth" [mat-dialog-close]="true">{{ 'BUTTON.home' | translate }}</button>
+    <button [disabled]="!success" mat-flat-button class="fullWidth" color="primary" (click)="printOrder()">{{ 'BUTTON.print' | translate }}</button>
+  </div>
+  <div *ngIf="collectPaymentMessageEnabled" class="fullWidth" role="group">
+    <button *ngIf="printClicked" mat-stroked-button class="fullWidth" [mat-dialog-close]="true">{{ 'BUTTON.home' | translate }}</button>
+    <div>
+        <br />
+      <mat-checkbox [disabled]="printClicked" color="primary" #checkered [checked]='false'></mat-checkbox>
+      <span>  {{ 'ORDER.checkout.requirePaymentAck' | translate }}</span>
+    </div>
+    <br />
+    <button [disabled]="!success || !checkered.checked" mat-flat-button class="fullWidth" color="primary" (click)="printOrder()">{{ 'BUTTON.print' | translate }}</button>
+  </div>
+</mat-dialog-actions>

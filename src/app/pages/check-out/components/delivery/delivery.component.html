@@ -1,0 +1,221 @@
+<div class="row">
+	<div class="col-lg-12">
+	<mat-tab-group   mat-tabs #tabGroup [dynamicHeight]="true" [selectedIndex]="selectedTab">
+		<mat-tab>
+			<ng-template mat-tab-label>
+                <span id="pickUp">
+                {{'CHECKOUT.pickUp' | translate}}  <i class="fas fa-male"></i>
+                </span>
+      </ng-template>
+      <!-- <div style="font-size: 1.2rem; font-style: italic;">Select pickup dates for jobs</div> -->
+			<div class="row contentMargin">
+				<form  class="container-fluid" #pickUpForm="ngForm">
+					<div class="row card-group">
+						<div class="turnTimeCard" *ngFor="let key of (jobkeyList | async)">
+							<mat-card class="mat-elevation-z2 cardHeight">
+								<mat-card-header>
+									<mat-card-title><h5>{{key}}. {{ orderConfigService.cart[key].configProduct.name }}</h5></mat-card-title>
+								</mat-card-header>
+								<mat-card-content>
+									<mat-radio-group [(ngModel)]="orderConfigService.cart[key].selectedTurnTime"
+													 [required]="orderConfigService.deliveryMethod === 'Pick Up'"
+													 (ngModelChange)="orderConfigService.checkTurnTimeSelectionCompleted(); updateTurnTime()" name="turnTime{{key}}"
+													 *ngIf="orderConfigService.cart[key].turnTimeOptions">
+										<mat-radio-button style="font-size: .9em;" value="{{turnTimeKey}}" id="{{generateTurnTimeId(turnTimeKey,key)}}"
+											color="primary" *ngFor="let turnTimeKey of orderConfigService.cart[key].turnTimeOptions | keys">
+                      {{ orderConfigService.cart[key].turnTimeOptions[turnTimeKey].displayString }}:
+											<strong>{{ orderConfigService.cart[key].turnTimeOptions[turnTimeKey].displayPrice | currency:'USD':'symbol-narrow' }} </strong>
+											<span *ngIf="orderConfigService.cart[key].turnTimeOptions[turnTimeKey].showImage === 'inline'"
+												  class="truck" matTooltip="{{ 'CHECKOUT.truckInfo' | translate }}">
+					                          <i class="fas fa-truck"></i>
+					                        </span>
+										</mat-radio-button>
+									</mat-radio-group>
+									  <span *ngIf="orderConfigService.isEmpty(orderConfigService.cart[key].turnTimeOptions)">
+							          <h5  class="col-md-12 col-sm-12 text-left">{{orderConfigService.cart[key].totalDiscountedPrice | currency:'USD':'symbol-narrow' }}</h5>
+									<div class="col-md-12 col-sm-12 pl-0 pr-0">
+										<ng-template [ngIf]="orderConfigService.cart[key].dueDate !== ''" [ngIfElse]="dueDateNotSelected">
+											<button mat-button (click)="selectDueDate(key)">
+												{{orderConfigService.cart[key].dueDate}}
+												<div class="divider"></div>
+												<i class="far fa-calendar-alt  pl-0 pr-0"></i>
+											</button>
+										</ng-template>
+										<ng-template #dueDateNotSelected>
+											<button color=primary mat-button (click)="selectDueDate(key)">
+												Select a Due Date
+												<div class="divider"></div>
+												<i class="far fa-calendar-alt  pl-0 pr-0"></i>
+											</button>
+											</ng-template>
+									  </div>
+									</span>
+								</mat-card-content>
+							</mat-card>
+						</div>
+					</div>
+				</form>
+			</div>
+		</mat-tab>
+		<mat-tab *ngIf="shippingFeatureEnabled">
+			<ng-template mat-tab-label >
+                <span id="shipping" (click)="checkShowEmailPhoneRequired()">
+                {{'CHECKOUT.shipping' | translate}}  <i class="fas fa-shipping-fast"></i>
+                </span>
+			</ng-template>
+			<div class="float-center alert alert-warning" *ngIf="!orderConfigService.validShipOrder">{{'CHECKOUT.shipUnavailable' | translate}}</div>
+			<div class="row contentMargin" *ngIf="orderConfigService.validShipOrder">
+			<form class="col-lg-6 col-md-6 col-sm-6 col-12" #deliveryForm="ngForm">
+				<div class="row" style="margin: 14px 0">
+          <mat-slide-toggle class="pl-3" color="primary" [checked]="sameAddress" name="sameAddressToggle"
+            (change)="updateShippingInfo($event.checked)">
+              {{'CHECKOUT.shippingAddressSame' | translate}}
+          </mat-slide-toggle>
+				</div>
+
+				<div class="row">
+					<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+						<input matInput placeholder="{{'COMMON.firstName'| translate}}"
+							   [(ngModel)]="orderConfigService.shippingInfoJ.firstName"
+							   name="firstname" pattern="^[A-Za-z\'\'_.-]{1,50}$" maxlength="50" id="firstName"
+							   title="{{'COMMON.title.firstName' | translate}}" required
+							   (ngModelChange)="checkShippingFormValid()" [disabled]="sameAddress">
+						<mat-error *ngIf="firstName.invalid">{{'COMMON.error.firstName' | translate}}</mat-error>
+					</mat-form-field>
+
+					<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+						<input matInput placeholder="{{'COMMON.lastName'| translate}}"
+							   [(ngModel)]="orderConfigService.shippingInfoJ.lastName"
+							   name="lastname" pattern="^[A-Za-z\'\'_.-]{1,50}$" maxlength="50" id="lastName"
+							   title="{{'COMMON.title.lastName' | translate}}" required
+							   (ngModelChange)="checkShippingFormValid()" [disabled]="sameAddress">
+						<mat-error *ngIf="lastName.invalid">{{'COMMON.error.lastName' | translate}}</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="row">
+					<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+						<input matInput placeholder="{{'CHECKOUT.address1'| translate}}"
+							   [(ngModel)]="orderConfigService.shippingInfoJ.address1" name="address1"
+							   maxlength="60" pattern="^[a-zA-Z0-9\s,'#-]*$" id="address1" title="{{'WES.title.address1' | translate}}"
+							   (ngModelChange)="checkShippingFormValid()" [disabled]="sameAddress" required>
+						<mat-error *ngIf="address1.invalid">{{'COMMON.error.address' | translate}}</mat-error>
+					</mat-form-field>
+
+					<mat-form-field class="col-lg-6 col-md-6 col-sm-6 col-12">
+						<input matInput placeholder="{{'CHECKOUT.address2'| translate}}"
+							   [(ngModel)]="orderConfigService.shippingInfoJ.address2" name="address2"
+							   maxlength="60" pattern="^[a-zA-Z0-9\s,'#-]*$" id="address2" title="{{'WES.title.address2' | translate}}"
+							   (ngModelChange)="checkShippingFormValid()" [disabled]="sameAddress">
+						<mat-error *ngIf="address2.invalid">{{'COMMON.error.address' | translate}}</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="row">
+					<mat-form-field class="col-lg-4 col-md-4 col-sm-4 col-12">
+						<input matInput placeholder="{{'COMMON.city'| translate}}" [(ngModel)]="orderConfigService.shippingInfoJ.city"
+							   name="city" [disabled]="sameAddress" required (ngModelChange)="checkShippingFormValid()"
+							   maxlength="50" pattern="^[a-zA-Z0-9\s,'-]*$" id="city" title="{{'WES.title.city' | translate}}">
+						<mat-error *ngIf="city.invalid">{{'COMMON.error.city' | translate}}</mat-error>
+					</mat-form-field>
+
+					<mat-form-field class="col-lg-4 col-md-4 col-sm-4 col-12">
+						<mat-select placeholder="{{'COMMON.state'| translate}}" [(ngModel)]="orderConfigService.shippingInfoJ.state"
+									name="state" id="state" title="{{'COMMON.state' | translate}}" [disabled]="sameAddress"
+									(ngModelChange)="checkShippingFormValid()" required>
+							<mat-option *ngFor="let state of commonConstants.STATES" value="{{state.shortName}}">{{state.fullName}}
+							</mat-option>
+						</mat-select>
+						<mat-error *ngIf="state.invalid">{{'COMMON.error.state' | translate}}</mat-error>
+					</mat-form-field>
+
+					<mat-form-field class="col-lg-4 col-md-4 col-sm-4 col-12">
+						<input matInput placeholder="{{'COMMON.zipCode'| translate}}" type="text" pattern="^\d{5}(-\d{4})?$"
+							   [(ngModel)]="orderConfigService.shippingInfoJ.zip" name="zipCode" [disabled]="sameAddress"
+							   (ngModelChange)="checkShippingFormValid()" required maxlength="5" id="zipCode" title="{{'WES.title.zipCode' | translate}}">
+						<mat-error *ngIf="zipCode.invalid">{{'COMMON.error.zipCode' | translate}}</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="row pt-2">
+					<div class="col-lg-9 col-md-9 col-sm-9 col-12">
+						{{'CHECKOUT.addressType' | translate}}:
+						<mat-radio-group class="pl-2" name="addressType" required [(ngModel)]="orderConfigService.shippingInfoJ.addressType"
+							(ngModelChange)="updateIsResidentialFlag(); checkShippingFormValid();" id="addressType">
+							<mat-radio-button color="primary" value="Commercial">
+								{{'CHECKOUT.commercial' | translate}}
+							</mat-radio-button>
+							<mat-radio-button color="primary" value="Residential">
+								{{'CHECKOUT.residential' | translate}}
+							</mat-radio-button>
+							<mat-error *ngIf="orderConfigService.shippingInfoJ.addressType === null">{{'COMMON.error.addressType' | translate}}</mat-error>
+						</mat-radio-group>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-12">
+						<button mat-stroked-button color="primary" [disabled]="!deliveryForm.form.valid" (click)="validateAddressAndGetRates()">{{'BUTTON.getRates'| translate}}</button>
+					</div>
+				</div>
+			</form>
+
+			<!--Used as a spacer to center the Shipping Options on the right side of page-->
+			<div class="col-lg-1 col-md-1 col-sm-1 col-12"></div>
+
+			<div class="col-lg-4 col-md-4 col-sm-4 col-12">
+				<div *ngIf="!orderConfigService.shippingIsLoaded">
+					<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <table class="table table-striped">
+					<tr>
+						<th style="width:100%">{{'CHECKOUT.shippingOptions' | translate}}</th>
+          </tr>
+					<tr *ngIf="!showRateSkeleton">
+						<td style="width:100%">
+							<mat-radio-group name="shipping" [(ngModel)]="shipping">
+								<mat-radio-button color="primary" value="UPS Ground" *ngFor="let key of returnedRates | keys"
+								(click)="selectShippingOption(key)" id="{{key}}" value="{{key}}">
+									{{returnedRates[key].serviceName}} <strong>{{returnedRates[key].total | currency:'USD':'symbol-narrow'}}</strong> <br>
+									{{returnedRates[key].deliveryDate}}
+								</mat-radio-button>
+							</mat-radio-group>
+            </td>
+          </tr>
+            <tr *ngIf="showRateSkeleton">
+                <td>
+                    <span class="radioSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+                    <span class="rateSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+                  </td>
+            </tr>
+            <tr *ngIf="showRateSkeleton">
+                <td>
+                    <span class="radioSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+                    <span class="rateSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+                  </td>
+            </tr>
+            <tr *ngIf="showRateSkeleton">
+                <td>
+                    <span class="radioSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+                    <span class="rateSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+                  </td>
+            </tr>
+            <tr *ngIf="showRateSkeleton">
+              <td>
+                <span class="radioSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+                <span class="rateSkeleton" [ngClass]="{'gradient': !orderConfigService.shippingIsLoaded}"></span>
+              </td>
+            </tr>
+        </table>
+        <div *ngIf="!orderConfigService.allJobsAreDigital(order) && delivery === 'Shipping'">
+          <div class="alert alert-warning">
+            {{ ('CHECKOUT.shipRequired' | translate) }}
+          </div>
+          <button mat-stroked-button class="fixFiles" (click)="fixJobs()">Fix files</button>
+        </div>
+			</div>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
+	</div>
+</div>
+<div class="row mt-2" *ngIf="displayDcs">
+	<font color="#B50000"><i class="fas fa-hourglass-half"></i><span> {{'ORDER.checkout.ttDisclaimer'| translate}}</span></font>
+</div>

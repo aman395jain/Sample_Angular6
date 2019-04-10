@@ -1,0 +1,67 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'FILEUPLOAD.uploadTitle' | translate}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="dropzone" DNDFileUpload (filesChangeEmiter)="onFilesChange($event)" (filesInvalidEmiter)="onInvalidFiles($event)">
+          <div class="text-wrapper">
+            <div class="centered">
+              {{ 'FILEUPLOAD.dropZoneMsg' | translate}}
+              <input type="file" name="file" id="file" class="inputfile fileSelector" (change)="fileSelected($event.target.files[0])"
+                     accept=".gif, .jpg, .jpeg, .tif, .tiff, .png, .bmp, .pdf, .docx, .xlsx, .pptx, .vsd, .doc, .xls, .ppt" />
+            </div>
+            <div class="centered" style="padding: 8px 0;"> - {{ 'FILEUPLOAD.dropZoneMsgOr' | translate}} - </div>
+            <div class="centered">
+              <label for="file" class="fileLabel">{{ 'BUTTON.selectFile' | translate}}</label>
+            </div>
+            <div *ngIf="fileTypeNotSupported" class="centered warning" style="padding: 14px 0;">
+              {{ 'FILEUPLOAD.fileTypeNotSupported' | translate}}
+            </div>
+            <div *ngIf="file" class="centered pt-2" id="file">
+              {{ 'ORDER.summary.file' | translate}}: {{file.name}} 
+            </div>
+            <div *ngIf="file" class="centered" id="size">
+              {{ 'FILEUPLOAD.size' | translate}}: {{file.size | fileSizeFormatter}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="storeInfoService.isStoreFeature('showPrintBrokerOriginalFileOption') && storeInfoService.getStoreFeatureValue('showPrintBrokerOriginalFileOption') !== false">
+      <div class="col-md-12">
+        <div class="right-justified" style="margin: 12px 0">
+          <span style="padding-right: 12px;">{{ 'FILEUPLOAD.originalFileMsg' | translate}}?</span>
+          <mat-checkbox color="primary" name="origFileCB" (change)="updateUploadType($event)" [(ngModel)]="origFileCB" [disabled]="nativeChecked"></mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+  <mat-progress-bar mode="indeterminate" *ngIf="fileUploading"></mat-progress-bar>
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" [disabled]="!fileUploaded" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'FILEUPLOAD.expandTitle' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div style="height: 50vh;padding-bottom:40px;">
+      <button mat-flat-button color="primary" type="submit" class="float-right inline" style="margin-bottom: 5px;" [disabled]="proceedDisabled">{{ 'BUTTON.proceed' | translate}}</button>
+      <!-- <app-FilePreview [pdfSrc]='previewUrl'></app-FilePreview>-->
+      <div class="previewWrapper" id="imagePreviewWrapper">
+        <app-file-preview-images [files]="pbResults" [configScreen]="false"></app-file-preview-images>
+      </div>
+    </div>
+    <div *ngIf="file" class="fileSize col-md-12 px-0" id="fileSize">
+      {{file.size | fileSizeFormatter}}
+    </div>
+    <mat-action-row>
+      <button mat-button color="primary" type="button" (click)="prevStep()">{{ 'FILEUPLOAD.uploadTitle' | translate}}</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

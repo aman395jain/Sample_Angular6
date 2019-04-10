@@ -1,0 +1,17 @@
+<h3 mat-dialog-title>{{ 'COMMON.addressRecommended' | translate}}</h3>
+<mat-dialog-content style="padding-bottom: 10px;">
+{{ data.address.addressLine1 }}
+<span *ngIf="data.address.addressLine2 !== '' && data.address.addressLine2 !== null && data.address.addressLine2 !== undefined">
+  <br>
+  {{ data.address.addressLine2 }}
+</span>
+<br>
+{{ data.address.city }}, {{ data.address.state }}
+<br>
+{{ data.address.zip }}
+<br>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button style="margin-right: 5px;" mat-flat-button color="primary" (click)="suggestedAddress()">{{ 'BUTTON.changeAddress' | translate}}</button>
+    <button mat-stroked-button (click)="inputtedAddress()">{{ 'BUTTON.skip' | translate }}</button>
+</mat-dialog-actions>

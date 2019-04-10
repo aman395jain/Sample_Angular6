@@ -1,0 +1,109 @@
+<form #quoteSearchForm="ngForm" (ngSubmit)="onSearch()">
+
+    <div>
+      <h4 class="{{isQuoteDeskViewUser ? 'col-xs-6 col-md-6 float-left' : ''}}">{{ 'QUOTES.searchByQuoteNum' | translate }}</h4>
+      <h4 class="col-xs-6 col-md-6 float-left" *ngIf="isQuoteDeskViewUser">{{ 'QUOTES.searchByStoreNum' | translate }}</h4>
+      <hr>
+
+      <mat-form-field class="col-xs-6 col-md-6 float-left">
+          <input matInput type="text" id="quoteNumber" pattern="[0-9]{10}" maxLength="10"
+            placeholder="{{ 'COMMON.quoteNumber' | translate }}"
+            title="{{ 'COMMON.quoteNumber' | translate}}"
+            [(ngModel)]="model.quoteNumber" name="quoteNumber"
+            (ngModelChange)="disableSearchFields($event,'retail')"
+            [disabled]="disableField.quoteNumber">
+          <mat-error *ngIf="quoteNumber.invalid">{{'COMMON.error.quoteNumber' | translate}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="isQuoteDeskViewUser" class="col-xs-6 col-md-6 float-left">
+        <input matInput type="text" id="storeNumber" pattern="[0-9]" maxLength="4"
+          placeholder="{{ 'COMMON.storeNumber' | translate }}"
+          title="{{ 'COMMON.storeNumber' | translate}}"
+          [(ngModel)]="storeNumber" name="storeNumber"
+          (ngModelChange)="disableSearchFields($event,'retail')"
+          [disabled]="disableField.quoteNumber">
+    </mat-form-field>
+
+      <div class="col-xs-6 col-md-6 float-right" *ngIf="!isQuoteDeskViewUser">             
+          <label> </label>
+      </div>
+      <div class="col-xs-6 col-md-6 float-right" *ngIf="!isQuoteDeskViewUser">             
+          <label> </label>
+      </div>
+      <div class="col-xs-6 col-md-6 float-right" *ngIf="!isQuoteDeskViewUser">             
+            <label> </label>
+      </div>
+      <div class="col-xs-6 col-md-6 float-right">
+          <label> </label>
+      </div>
+      <div class="col-xs-6 col-md-6 float-right">
+          <label> </label>
+      </div>
+      <div class="col-xs-6 col-md-6 float-right">
+          <label> </label>
+      </div>
+      <div class="col-xs-6 col-md-6 float-right">
+          <label> </label>
+      </div>
+    </div>
+
+    <div>
+      <h4>{{ 'QUOTES.retailCustomer' | translate }}</h4>
+      <hr>
+
+      <mat-form-field class="col-xs-6 col-md-6 float-left">
+        <input matInput type="text" id="lastName" pattern="^[A-Za-z\'\'_.-]{1,50}$" maxLength="50"
+          placeholder="{{ 'COMMON.lastName' | translate }}"
+          title="{{ 'COMMON.title.lastName' | translate}}"
+          [(ngModel)]="model.lastName" name="lastName"
+          (ngModelChange)="disableSearchFields($event,'quoteNumber')"
+          [disabled]="disableField.retail">
+        <mat-error *ngIf="lastName.invalid">{{'COMMON.error.lastName' | translate}}</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field class="col-xs-6 col-md-6 float-right">
+        <input matInput type="text" id="company" 
+          placeholder="{{ 'COMMON.company' | translate }}"
+          title="{{ 'COMMON.title.companyName' | translate}}"
+          [(ngModel)]="model.company" name="company"
+          (ngModelChange)="disableSearchFields($event,'quoteNumber')"
+          [disabled]="disableField.retail">
+        <mat-error *ngIf="company.invalid">{{'COMMON.error.companyName' | translate}}</mat-error>
+      </mat-form-field>
+
+      <div class="col-xs-6 col-md-6 float-right">
+          <label> </label>
+      </div>
+      <div class="col-xs-6 col-md-6 float-right">
+          <label> </label>
+      </div>
+    </div>
+
+    <mat-form-field class="col-xs-6 col-md-6 float-left">
+        <mat-select placeholder="{{ 'QUOTES.status' | translate }}" name="statusOptions" [(ngModel)]="statusOptionsChosen" multiple>
+            <mat-option *ngFor="let status of statusOptionsList" [value]="status">{{status}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="col-xs-6 col-md-6 float-right">
+            <label> </label>
+    </div>
+
+    <div class="col-xs-6 col-md-6 float-right">
+            <label> </label>
+    </div>
+
+    <div class="col-xs-6 col-md-6 float-right">
+            <label> </label>
+    </div>
+
+    <div class="col-xs-6 col-md-6 float-right">
+            <label> </label>
+    </div>
+
+
+      <mat-action-row>
+          <button mat-button type="button"  (click)="quoteSearchForm.reset(); emptyStatusOptions();">{{'BUTTON.reset' | translate}}</button> 
+          <button type="submit" mat-stroked-button color="primary">{{ 'BUTTON.search' | translate}}</button>
+      </mat-action-row>
+</form>

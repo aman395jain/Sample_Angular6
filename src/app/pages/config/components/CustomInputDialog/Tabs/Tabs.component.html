@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>{{ data.customOption.description}}</h1>
+<form [formGroup]="customOptionsForm" name="customOptionsForm" (ngSubmit)="onSubmit(1)">
+<mat-dialog-content>
+    <table class="width100">
+      <tr>
+        <td colspan="2">
+            <div class="inner-div">
+            <mat-form-field>
+              <input matInput placeholder="{{qtyOption.customPrompt}}" (keyup)="updateTabQty(GetTabQty.value)" #GetTabQty
+                     [formControlName]="qtyOption.customKey" #focusElement>
+              <mat-error *ngIf="customOptionsForm.get(qtyOption.customKey).hasError('error')">{{customOptionsForm.get(qtyOption.customKey).getError('msg')}}</mat-error>
+            </mat-form-field>
+            </div>
+        </td>
+      </tr>
+      <tr *ngFor="let i of tabArr; let i = index">
+        <td>
+          <mat-form-field >
+            <input matInput placeholder="{{pgOption.customPrompt}}" [formControlName]="createName(pgOption.customKey,i)">
+            <mat-error *ngIf="customOptionsForm.get(createName(pgOption.customKey,i)).hasError('error')">
+              {{customOptionsForm.get(createName(pgOption.customKey,i)).getError('msg')}}
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field >
+            <input matInput placeholder="{{copyOption.customPrompt}}" [formControlName]="createName(copyOption.customKey,i)">
+            <mat-error *ngIf="customOptionsForm.get(createName(copyOption.customKey,i)).hasError('error')">
+              {{customOptionsForm.get(createName(copyOption.customKey,i)).getError('msg')}}
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="float-right" style="margin-left: auto;">
+    <button mat-button mat-dialog-close >{{'BUTTON.cancel' | translate}}</button>
+    <div class="divider"></div>
+    <button [disabled]="!customOptionsForm.valid"  mat-stroked-button color="primary" type="submit">{{'BUTTON.submit' | translate}}</button>
+  </div>
+</mat-dialog-actions>
+</form>

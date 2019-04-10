@@ -1,0 +1,40 @@
+<div class="content">
+  <mat-card class="loginBox">
+    <h1  class="loginTitle userIcon" *ngIf="!loggedIn && !showLoader"><i class="far fa-user-circle fa-2x"></i></h1>
+    <div *ngIf="loggedIn" class="checkMarkSuccess">
+      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="0 0 98.5 98.5" enable-background="new 0 0 98.5 98.5" xml:space="preserve">
+        <path class="checkmark" fill="none" stroke-width="8" stroke-miterlimit="10" d="M81.7,17.8C73.5,9.3,62,4,49.2,4
+          C24.3,4,4,24.3,4,49.2s20.3,45.2,45.2,45.2s45.2-20.3,45.2-45.2c0-8.6-2.4-16.6-6.5-23.4l0,0L45.6,68.2L24.7,47.3"/>
+      </svg>
+    </div>
+    <div *ngIf="showLoader" class="checkMarkSuccess"><mat-spinner [diameter]=80></mat-spinner></div>
+    <mat-card-title><h3 class="loginTitle">{{'NAVBAR.solutionBuilder' | translate}}</h3></mat-card-title>
+    <div class="loginError" *ngIf="auth.authError | async">
+      {{ 'LOGIN.invalidCred' | translate}}
+    </div>
+    <mat-form-field class="full-width" *ngIf="!storeNumberSet">
+      <input matInput type="string" placeholder="{{'COMMON.enterStoreNumber' | translate}}" aria-label="Store Number" autocomplete="Store Number"
+             [(ngModel)]="storeNumber" #ctrl="ngModel" (ngModelChange)="storeNumberChange()"
+             min="1" max="5000" maxlength="4" required (keydown)="restrictInput($event)">
+    </mat-form-field>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="{{'LOGIN.username' | translate}}" aria-label="Username" [matAutocomplete]="auto"
+               type="text" formControlName="username" required>
+        <mat-autocomplete  autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let user of filteredOptions | async" [value]="user">
+            <span>{{user}}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input matInput type="password" placeholder="{{'LOGIN.password' | translate}}" aria-label="Password" autocomplete="current-password"
+                formControlName="password" required>
+      </mat-form-field>
+      <button mat-flat-button type="submit" color="primary" class="full-width" [disabled]="showLoader && loginForm.valid" >{{'BUTTON.login' | translate}}</button>
+
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{ 'CUSTOMERSEARCH.storeIdEnter' | translate }}</h1>
+
+<mat-form-field>
+  <input matInput name="storeNumber" id="storeNumber" placeholder="{{ 'COMMON.enterStoreNumber' | translate }}"
+         title="{{ 'COMMON.enterStoreNumber' | translate }}" 
+         [formControl]="storeNumber" 
+         (keyup.enter) = "saveStoreNumWithEnter($event)"
+         required #focusElement>
+  <mat-error *ngIf="storeNumber.invalid">{{ 'COMMON.error.invalidStoreNum' | translate }}</mat-error>
+</mat-form-field>
+
+<button mat-stroked-button color="primary" (click)="saveStoreNum()" [disabled]="storeNumber.invalid">
+  {{ 'BUTTON.submit' | translate }}
+</button>

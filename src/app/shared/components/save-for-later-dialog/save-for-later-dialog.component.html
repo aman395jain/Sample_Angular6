@@ -1,0 +1,7 @@
+<h3 mat-dialog-title>{{ 'COMMON.success.saveForLater' | translate }}</h3>
+<mat-dialog-content style="padding-bottom: 15px;">
+{{ 'COMMON.orderNum' | translate }}{{ data.orderNumber }}
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-stroked-button class="halfWidth red" color="primary" (click)="createNewOrder()">{{ 'BUTTON.newOrder' | translate }}</button>
+</mat-dialog-actions>

@@ -1,0 +1,26 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-container > * {
+    width: 100%;
+  }
+
+.pad {
+  padding: 15px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.card-margin {
+  margin-top: 2px;
+  margin-bottom: 16px;
+}
+
+#noForm {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

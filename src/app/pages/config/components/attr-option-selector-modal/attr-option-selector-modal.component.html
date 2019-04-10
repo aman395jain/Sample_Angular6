@@ -1,0 +1,23 @@
+<div mat-dialog-title>{{data.title}}</div>
+<hr>
+<div  mat-dialog-content>
+
+<mat-radio-group  [(ngModel)]="selectedOption">
+<mat-list>
+  <mat-list-item  *ngFor="let option of data.groupVO" [attr.code]="option.code" [attr.attId]="option.id" >
+    <mat-radio-button  color="primary" [value]="option" [attr.code]="option.code" [attr.attId]="option.id" [disabled]="option.isDisabled"> 
+      <span>
+        {{option.value}}
+        <span  *ngIf="hasColorCode(option.id)" class="badge badge-outline" [ngStyle]="changeBadgeStyle(option.id)">color</span>
+      </span>
+    </mat-radio-button>
+  </mat-list-item>
+</mat-list>
+</mat-radio-group>
+</div>
+
+<div mat-dialog-actions class="float-right">
+<button mat-stroked-button mat-dialog-close  > {{'BUTTON.close' | translate}} </button>
+<div class="divider"></div>
+<button mat-stroked-button color="primary" (click)="closeDialog()" [disabled]="!selectedOption"> {{'BUTTON.select' | translate}}</button>
+</div>

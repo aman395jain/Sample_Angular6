@@ -1,0 +1,30 @@
+<form #reorderForm="ngForm" (ngSubmit)="onSubmit()">
+
+	<h3 *ngIf="data?.operation === QuoteActions.Reorder">
+		{{ 'CUSTOMERSEARCH.reorder.creatingReorder' | translate}}{{ data.orderNumber }}
+  </h3>
+  <h3 *ngIf="data?.operation === QuoteActions.Copy">
+    {{'QUOTES.copyQuoteDialogTitle' | translate}}{{ data.orderNumber }}
+  </h3>
+  <h3 *ngIf="data?.operation === QuoteActions.Edit">
+    {{'QUOTES.editQuoteDialogTitle' | translate}}{{ data.orderNumber }}
+  </h3>
+  <h3 *ngIf="data?.operation === QuoteActions.OrderEdit">
+    {{'QUOTES.editOrderDialogTitle' | translate}}{{ data.orderNumber }}
+  </h3>
+	<hr>
+	<div class="col-xs-12 col-md-12">
+		<p *ngIf="data?.operation === QuoteActions.Copy">{{'QUOTES.copyQuoteWarning1' | translate}}</p>
+		<p>{{'CUSTOMERSEARCH.reorder.allPricesWillBeUpdated' | translate}}</p>
+	</div>
+  <mat-progress-bar mode="determinate" [value]="progressBarAmount" *ngIf="reOrdering"></mat-progress-bar>
+  <div class="alert alert-danger" role="alert" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+	<hr>
+	<div class="float-right">
+		<button mat-stroked-button type="button" (click)="onNoClick()">{{ 'BUTTON.cancel' | translate }}</button>
+    <div class="divider"></div>
+		<button mat-flat-button color=primary type="submit" [disabled]="!canContinue">{{ 'BUTTON.continue' | translate }}</button>
+	</div>
+</form>

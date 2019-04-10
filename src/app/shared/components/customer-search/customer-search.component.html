@@ -1,0 +1,137 @@
+<form #custSearchForm="ngForm" (ngSubmit)="submit()" (keydown.enter)="checkAndSubmit()">
+  <div>
+    <h4>{{ 'CUSTOMERSEARCH.retailCustomer' | translate }}</h4>
+    <hr>
+    <mat-form-field class="col-xs-6 col-md-6 float-left">
+      <input matInput type="text" id="firstName" pattern="^[A-Za-z\'\'_.-]{1,50}$" maxLength="50"
+             placeholder="{{ 'COMMON.firstName' | translate }}"
+             title="{{ 'COMMON.title.firstName' | translate}}"
+             [(ngModel)]="model.firstName" name="firstName"
+             (ngModelChange)="disableSearchFields($event,'retail', 'order')"
+             [disabled]="disableField.retail"
+             [required]='model.lastName !== null && model.lastName !== ""'>
+      <mat-error *ngIf="firstName.invalid">{{'COMMON.error.firstName' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-xs-6 col-md-6 float-right">
+      <input matInput type="text" id="lastName" pattern="^[A-Za-z\'\'_.-]{1,50}$" maxLength="50"
+             placeholder="{{ 'COMMON.lastName' | translate }}"
+             title="{{ 'COMMON.title.lastName' | translate}}"
+             [(ngModel)]="model.lastName" name="lastName"
+             (ngModelChange)="disableSearchFields($event,'retail', 'order')"
+             [disabled]="disableField.retail"
+             [required]='model.firstName !== null && model.firstName !== ""'>
+      <mat-error *ngIf="lastName.invalid">{{'COMMON.error.lastName' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-xs-6 col-md-6 float-left">
+      <input matInput type="email" name="email" id="email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+             placeholder="{{ 'COMMON.email' | translate }}"
+             title="{{ 'COMMON.title.email' | translate}}"
+             [(ngModel)]="model.email" #email="ngModel"
+             (ngModelChange)="disableSearchFields($event,'retail', 'order')"
+             [disabled]="disableField.retail">
+      <mat-error *ngIf="email.invalid && email.dirty">{{'COMMON.error.email' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-xs-6 col-md-6 float-right">
+      <input matInput type="tel" name="phoneNumber" id="phoneNumber"
+             placeholder="{{ 'COMMON.phoneNumber' | translate }}"
+             title="{{ 'COMMON.title.phoneNumber' | translate}}"
+             #phoneNumber="ngModel" #focusElement pattern="\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}"
+             [ngModel]="formattedPhoneNumber"
+             (ngModelChange)="removeFormatting($event); disableSearchFields($event,'retail', 'order');"
+             [disabled]="disableField.retail"
+             [textMask]="{mask: phoneMask}"
+             (paste)="onPaste($event)">
+      <mat-error *ngIf="phoneNumber.invalid">{{'COMMON.error.phoneNumber' | translate}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-xs-6 col-md-6 float-left">
+      <input matInput type="text" id="rewardsNumber" pattern="[0-9]{10}" maxlength="10"
+             placeholder="{{ 'COMMON.rewardsNumber' | translate }}"
+             title="{{ 'COMMON.title.rewardsNumber' | translate }}"
+             [(ngModel)]="model.rewardsNumber" name="rewardsNumber" #rewardsNumber="ngModel"
+             (ngModelChange)="disableSearchFields($event,'retail', 'order')"
+             [disabled]="disableField.retail">
+      <mat-error *ngIf="rewardsNumber.invalid">{{'COMMON.error.rewardsNumber' | translate}}</mat-error>
+    </mat-form-field>
+
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+  </div>
+
+  <div
+      *ngIf="storeInfo.isStoreFeature('masterAccountNumberSearch') || storeInfo.isStoreFeature('contractCompanySearch')">
+    <h4>{{ 'CUSTOMERSEARCH.businessAdvantageCustomer' | translate }}</h4>
+    <hr>
+    <mat-form-field class="col-xs-6 col-md-6 float-left"
+                    *ngIf="storeInfo.isStoreFeature('masterAccountNumberSearch')">
+      <input matInput type="text" id="masterAccountNumber" pattern="^[1-9][0-9]{3,10}$" maxlength="10"
+             title="{{ 'COMMON.title.masterAccountNo' | translate }}"
+             placeholder="{{ 'CUSTOMERSEARCH.masterAccountNo' | translate }}"
+             [(ngModel)]="model.masterAccountNumber"
+             name="masterAccountNumber"
+             (ngModelChange)="disableSearchFields($event,'business', 'order')"
+             [disabled]="disableField.business">
+      <mat-error *ngIf="masterAccountNo.invalid">{{'COMMON.error.masterAccountNo' | translate}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="col-xs-6 col-md-6 float-right"
+                    *ngIf="storeInfo.isStoreFeature('contractCompanySearch')">
+      <input matInput type="text" id="company" 
+             placeholder="{{ 'COMMON.companyName' | translate }}"
+             title="{{ 'COMMON.title.companyName' | translate }}"
+             [(ngModel)]="model.company" name="company"
+             (ngModelChange)="disableSearchFields($event,'business', 'order')"
+             [disabled]="disableField.business">
+      <mat-error *ngIf="companyName.invalid">{{'COMMON.error.companyName' | translate}}</mat-error>
+    </mat-form-field>
+
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+  </div>
+
+  <div *ngIf="displayMode == 'page'">
+    <h4>{{ 'CUSTOMERSEARCH.orderNumber' | translate }}</h4>
+    <hr>
+    <mat-form-field class="col-xs-6 col-md-6 float-left">
+      <input matInput type="text" id="orderNumber" pattern="[0-9]{10}" maxlength="10"
+             placeholder="{{ 'COMMON.orderNumber' | translate }}"
+             title="{{ 'COMMON.orderNumber' | translate }}"
+             [(ngModel)]="model.orderNumber" name="orderNumber" #orderNumber="ngModel"
+             (ngModelChange)="disableSearchFields($event,'retail', 'business')"
+             [disabled]="disableField.order">
+      <mat-error *ngIf="orderNumber.invalid || invalidOrderNumber">{{'COMMON.error.orderNumber' | translate}}</mat-error>
+    </mat-form-field>
+
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+    <div class="col-xs-6 col-md-6 float-right">
+      <label> </label>
+    </div>
+  </div>
+
+</form>
+
+<div style="height: 80px;"></div>

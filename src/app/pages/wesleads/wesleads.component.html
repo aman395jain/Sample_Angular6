@@ -1,0 +1,82 @@
+<div class="container standardPadding">
+<mat-card>
+	 <div class="page-header">
+		<h3>{{ 'WES.wesLeadManagement' | translate }} <span>
+		<small class="text-secondary mat-header-cell">{{ 'WES.allDataUpdatedNightly' | translate}}</small></span>
+		<div class="float-right" style="margin-right: 5px;">
+			<button mat-stroked-button color="primary" class="float-right" (click)="openNewWesLeadDialog(false)">{{ 'BUTTON.newLead' | translate}}</button>
+		</div>
+		</h3>
+	</div>
+</mat-card>
+
+	<mat-accordion class="example-headers-align">
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+       {{ 'WES.wesLeadManagement' | translate }}
+      </mat-panel-title>
+		</mat-expansion-panel-header>
+
+			<div class="col-md-6 float-right">
+				<mat-form-field class="float-right">
+					<input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ 'CUSTOMERSEARCH.search' | translate }}">
+				</mat-form-field>
+			</div>
+
+			<!-- Angular Material Table -->
+			<table mat-table [dataSource]="dataSource" matSortActive="submissionDate" matSortDirection="desc" matSort (matSortChange)="sortData($event)">
+				<ng-container matColumnDef="customerName">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'WES.customer' | translate }}</th>
+					<td mat-cell *matCellDef="let row">{{ row.name }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="submissionDate">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'WES.submissionDateAlt' | translate }}</th>
+					<td mat-cell *matCellDef="let row">{{ row.created_DATE_CALC__C }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="request">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'WES.request' | translate }}	</th>
+					<td mat-cell *matCellDef="let row">{{ row.description }}</td>
+				</ng-container>
+
+				<ng-container *ngIf="wesPricingIssueEnabled" matColumnDef="rtype">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>*</th>
+						<td mat-cell *matCellDef="let row">
+							<span *ngIf="row.pricingIssue !== undefined && row.pricingIssue"><mat-icon>monetization_on</mat-icon></span>
+						</td>
+				</ng-container>
+
+				<ng-container matColumnDef="status">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMMON.status' | translate }}</th>
+						<td mat-cell *matCellDef="let row">{{ row.comments }}</td>
+				</ng-container> 
+	
+				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cust-mat-row" (click)="openDialog(row)" ></tr>
+		</table>
+
+		<mat-paginator #tablePaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons style="margin: 6px 0"></mat-paginator>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'WES.wesLeadDetails' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-wes-details></app-wes-details>
+
+    <mat-action-row>
+      <button mat-stroked-button color="primary" (click)="prevStep()">{{'BUTTON.back' | translate}}</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+
+</mat-accordion>
+</div>

@@ -1,0 +1,8 @@
+.mat-dialog-content{
+	max-height:none;
+}
+
+.commentsSection{
+	max-height:300px;
+	overflow-y: scroll;
+}

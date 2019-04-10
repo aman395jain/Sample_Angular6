@@ -1,0 +1,40 @@
+.quarterWidth {
+    width: 20%;
+    margin-right: 3%;
+    margin-left: 3%;
+}
+
+.my-tooltip {
+    white-space: pre-line;
+    font-size: 12px;
+}
+
+.redBkg {
+    color: #660f00;
+    font-family: bold;
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: 15px;
+}
+
+.cardHeight {
+  max-height: 172px;
+  height: 172px;
+
+}
+
+.addressInformationCard {
+  max-width: 300px;
+  width: 300px;
+  margin: 5px;
+}
+
+.contentPadding{
+  padding-left: 10px;
+  padding-right: 10px;
+}
